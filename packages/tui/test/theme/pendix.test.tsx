@@ -3,6 +3,7 @@ import { RGBA, TextRenderable, type Renderable } from "@opentui/core"
 import { testRender } from "@opentui/solid"
 import { expect, test } from "bun:test"
 import { resolveThemeDocument, type ResolvedTheme } from "@pendix/theme/tui"
+import { BRAND_COLOURS } from "@pendix/shared/brand"
 import { ConfigProvider, resolve, type Info } from "../../src/config"
 import { Logo } from "../../src/component/logo"
 import { ThemeProvider, useTheme, useThemes } from "../../src/context/theme"
@@ -10,8 +11,8 @@ import { allThemes, DEFAULT_THEME_NAME, getPendixTheme, hasTheme } from "../../s
 import { emptyThemeSource, tmpdir } from "../fixture/fixture"
 import { TestTuiContexts } from "../fixture/tui-environment"
 
-const HOT_ORANGE = "#FF5A1F"
-const ORANGE_TINT = "#FFF1EB"
+const HOT_ORANGE = BRAND_COLOURS.hotOrange
+const ORANGE_TINT = BRAND_COLOURS.orangeTint
 
 const ALLOWED_ORANGE_TOKENS = [
   "background.action.primary.focused",
@@ -131,8 +132,18 @@ test.each(["dark", "light"] as const)(
 )
 
 test.each([
-  { mode: "dark" as const, background: "#1C1C1C", text: "#F6F5F2", border: "#6B6862" },
-  { mode: "light" as const, background: "#F6F5F2", text: "#0A0A0A", border: "#E4E2DD" },
+  {
+    mode: "dark" as const,
+    background: BRAND_COLOURS.offBlack,
+    text: BRAND_COLOURS.offWhite,
+    border: BRAND_COLOURS.muted,
+  },
+  {
+    mode: "light" as const,
+    background: BRAND_COLOURS.offWhite,
+    text: BRAND_COLOURS.ink,
+    border: BRAND_COLOURS.line,
+  },
 ])("uses pendix as the default theme in %s terminals", async ({ mode, background, text, border }) => {
   await using temporary = await tmpdir()
   const settings: Info = {}
@@ -211,7 +222,7 @@ test.each(["dark", "light"] as const)("start screen Logo renders lowercase pendi
     expect(wordmark).toBeDefined()
     expect(dot!.x).toBeLessThan(wordmark!.x)
     expect(toHex(dot!.fg)).toBe(HOT_ORANGE)
-    expect(toHex(wordmark!.fg)).toBe(mode === "dark" ? "#F6F5F2" : "#0A0A0A")
+    expect(toHex(wordmark!.fg)).toBe(mode === "dark" ? BRAND_COLOURS.offWhite : BRAND_COLOURS.ink)
   } finally {
     app.renderer.destroy()
   }

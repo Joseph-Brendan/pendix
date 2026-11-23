@@ -9,7 +9,7 @@ import { resolveThemeColors } from "./resolve"
 import { DEFAULT_THEMES, type Theme, type ThemeV1Json } from "./v1"
 import opencodeClassic from "./assets/v2/opencode-classic.json" with { type: "json" }
 import opencode from "./assets/v2/opencode.json" with { type: "json" }
-import pendix from "./assets/v2/pendix.json" with { type: "json" }
+import { pendixThemeSource } from "./pendix"
 
 export { DEFAULT_THEMES, type Theme, type ThemeV1Json } from "./v1"
 
@@ -31,7 +31,7 @@ let opencodeClassicTheme: BothModes | undefined
 
 /** The default "pendix" theme. */
 export function getPendixTheme() {
-  pendixTheme ??= parseThemeDocument(pendix, "pendix") as BothModes
+  pendixTheme ??= parseThemeDocument(pendixThemeSource, "pendix") as BothModes
   return pendixTheme
 }
 

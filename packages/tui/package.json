@@ -55,6 +55,7 @@
     "@pendix/merman": "workspace:*",
     "@pendix/plugin": "workspace:*",
     "@pendix/schema": "workspace:*",
+    "@pendix/shared": "workspace:*",
     "@pendix/simulation": "workspace:*",
     "@pendix/theme": "workspace:*",
     "@pendix/ui": "workspace:*",
