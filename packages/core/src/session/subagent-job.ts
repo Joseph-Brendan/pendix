@@ -1,8 +1,8 @@
 export * as SubagentJob from "./subagent-job.js"
 
 import { Context, Effect, Layer } from "effect"
-import { Node } from "@opencode/util/effect/app-node"
-import type { LayerNode } from "@opencode/util/effect/layer-node"
+import { Node } from "@pendix/util/effect/app-node"
+import type { LayerNode } from "@pendix/util/effect/layer-node"
 import { Job } from "../job.js"
 import { SessionExecution } from "./execution.js"
 

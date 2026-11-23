@@ -1,6 +1,6 @@
 // Generates Rust API types and endpoints from ClientApi.
-import { compile, type Endpoint } from "@opencode/httpapi-codegen"
-import { ClientApi, clientNamespace, groupNames, promiseOmitEndpoints } from "@opencode/protocol/client"
+import { compile, type Endpoint } from "@pendix/httpapi-codegen"
+import { ClientApi, clientNamespace, groupNames, promiseOmitEndpoints } from "@pendix/protocol/client"
 import { Schema, SchemaAST, SchemaRepresentation } from "effect"
 import { HttpApiSchema } from "effect/http-api"
 import { emitMethod, type Field, type Method } from "../rust/methods.ts"

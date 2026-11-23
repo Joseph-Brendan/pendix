@@ -16,8 +16,8 @@ import {
   Scope,
   SynchronizedRef,
 } from "effect"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
-import { Job as JobSchema } from "@opencode/schema/job"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
+import { Job as JobSchema } from "@pendix/schema/job"
 import { Bus } from "./bus.js"
 import { Database } from "./database/database.js"
 import { JobList } from "./job/list.js"

@@ -3,7 +3,7 @@ import type {
   SessionMessageAssistant,
   SessionMessageInfo,
   SessionMessageUser,
-} from "@opencode/client/promise"
+} from "@pendix/client/promise"
 import { createEffect, createMemo, For, onCleanup, onMount } from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { createStore } from "solid-js/store"

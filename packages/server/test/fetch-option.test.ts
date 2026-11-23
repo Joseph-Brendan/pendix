@@ -1,7 +1,7 @@
 import { expect } from "bun:test"
-import { Location } from "@opencode/core/location"
-import { LocationServiceMap } from "@opencode/core/location-service-map"
-import { Mcp } from "@opencode/core/mcp/index"
+import { Location } from "@pendix/core/location"
+import { LocationServiceMap } from "@pendix/core/location-service-map"
+import { Mcp } from "@pendix/core/mcp/index"
 import { Context, Effect, Layer } from "effect"
 import { HttpEffect, HttpRouter, HttpServer } from "effect/http"
 import { echoMcpHandler } from "../../core/test/fixture/mcp-echo"
@@ -76,14 +76,7 @@ it.live("sends Console config and remote MCP requests through the embedder's fet
         Effect.provideContext(context),
       )
 
-    expect(
-      yield* request("POST", "/api/credential", {
-        integrationID: "opencode",
-        value: { type: "key", key: "secret", metadata: { server: consoleServer } },
-      }),
-    ).toBe(200)
     expect(yield* request("GET", "/api/provider")).toBe(200)
-    yield* waitUntil(Effect.sync(() => requested.includes(`${consoleServer}/api/v2/config`)))
 
     yield* waitUntil(
       inLocation(Mcp.Service.use((service) => service.tools())).pipe(
@@ -95,6 +88,7 @@ it.live("sends Console config and remote MCP requests through the embedder's fet
     )
     expect(result.content).toEqual([{ type: "text", text: "called echo" }])
     expect(methods).toEqual(expect.arrayContaining(["server/discover", "tools/list", "tools/call"]))
+    expect(requested.includes(`${consoleServer}/api/v2/config`)).toBe(false)
 
     // A reconnect requested over the API starts the connection in the request's fiber rather than the MCP service's.
     methods.length = 0

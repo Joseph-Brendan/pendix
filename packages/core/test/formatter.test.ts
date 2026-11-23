@@ -2,16 +2,16 @@ import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Deferred, Effect, Fiber } from "effect"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { Bus } from "@opencode/core/bus"
-import { Database } from "@opencode/core/database/database"
-import { LocationServiceMap } from "@opencode/core/location-services"
-import { Plugin } from "@opencode/core/plugin"
-import { SdkPlugins } from "@opencode/core/plugin/sdk"
-import { AbsolutePath } from "@opencode/core/schema"
-import { Info } from "@opencode/schema/config"
-import { Global } from "@opencode/util/global"
-import { LayerNode } from "@opencode/util/effect/layer-node"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { Bus } from "@pendix/core/bus"
+import { Database } from "@pendix/core/database/database"
+import { LocationServiceMap } from "@pendix/core/location-services"
+import { Plugin } from "@pendix/core/plugin"
+import { SdkPlugins } from "@pendix/core/plugin/sdk"
+import { AbsolutePath } from "@pendix/core/schema"
+import { Info } from "@pendix/schema/config"
+import { Global } from "@pendix/util/global"
+import { LayerNode } from "@pendix/util/effect/layer-node"
 import { FileAccess } from "../src/file-access"
 import { Formatter } from "../src/formatter"
 import { Location } from "../src/location"
@@ -38,7 +38,7 @@ function withFormatter<A, E, R>(
 ) {
   return withTemp((directory) =>
     Effect.promise(() =>
-      fs.writeFile(path.join(directory, "opencode.json"), JSON.stringify({ formatter: configured })),
+      fs.writeFile(path.join(directory, "pendix.json"), JSON.stringify({ formatter: configured })),
     ).pipe(
       Effect.andThen(
         Effect.gen(function* () {
@@ -80,11 +80,11 @@ function withLayers<A, E, R>(
     Effect.gen(function* () {
       const global = yield* Global.Service
       yield* Effect.promise(async () => {
-        await fs.mkdir(path.join(directory, ".opencode"))
+        await fs.mkdir(path.join(directory, ".pendix"))
         const files = [
-          path.join(global.config, "opencode.jsonc"),
-          path.join(directory, "opencode.json"),
-          path.join(directory, ".opencode", "opencode.jsonc"),
+          path.join(global.config, "pendix.jsonc"),
+          path.join(directory, "pendix.json"),
+          path.join(directory, ".pendix", "pendix.jsonc"),
         ]
         await Promise.all(layers.map((formatter, index) => fs.writeFile(files[index], JSON.stringify({ formatter }))))
       })

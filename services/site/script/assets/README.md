@@ -93,7 +93,7 @@ The SDK has no UI. Two options:
 1. **Terminal capture (preferred).** Add a second VHS tape that opens the snippet in nvim and runs it in a split. This exists as a recording in `real-cli/term/gen.py` (`sdk2-*`). Move it into `capture-assets.ts` as `surfaces.sdk`, with the same stub model (it already replays the SDK steps) and `Screenshot` instead of video.
 2. **Static render.** Render the snippet from `src/component/site/products.tsx` with Shiki and the OpenCode light and dark syntax themes in headless Chromium at 2×. This is simple and fully deterministic, but it does not show the product running.
 
-The site's `sdkSnippet` shows the v2 `@opencode/sdk` API (`OpenCode.create()`); render that.
+The site's `sdkSnippet` shows the v2 `@pendix/sdk` API (`OpenCode.create()`); render that.
 
 ### Web: Playwright against `packages/app` (not automated yet)
 

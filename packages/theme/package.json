@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@opencode/theme",
+  "name": "@pendix/theme",
   "version": "2.4.0",
   "type": "module",
   "license": "MIT",

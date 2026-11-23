@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "opencode",
+  "name": "pendix",
   "description": "AI-powered development tool",
   "version": "2.4.0",
   "private": true,
@@ -109,7 +109,7 @@
   "devDependencies": {
     "@ast-grep/cli": "0.44.0",
     "@hona/strobe": "catalog:",
-    "@opencode/client": "workspace:*",
+    "@pendix/client": "workspace:*",
     "@oxlint/plugins": "1.93.0",
     "@tsconfig/bun": "catalog:",
     "@types/bun": "catalog:",
@@ -124,8 +124,8 @@
     "turbo": "2.10.2"
   },
   "dependencies": {
-    "@opencode/plugin": "workspace:*",
-    "@opencode/script": "workspace:*",
+    "@pendix/plugin": "workspace:*",
+    "@pendix/script": "workspace:*",
     "typescript": "catalog:"
   },
   "repository": {

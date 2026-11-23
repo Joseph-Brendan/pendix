@@ -1,9 +1,9 @@
 export * as FileWatch from "./file-watch.js"
 
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
-import { FSUtil } from "@opencode/util/fs-util"
-import { FileSystem } from "@opencode/schema/filesystem"
-import type { Location } from "@opencode/schema/location"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
+import { FSUtil } from "@pendix/util/fs-util"
+import { FileSystem } from "@pendix/schema/filesystem"
+import type { Location } from "@pendix/schema/location"
 import {
   Cause,
   Clock,

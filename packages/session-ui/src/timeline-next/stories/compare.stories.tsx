@@ -1,4 +1,4 @@
-import type { SessionMessageInfo } from "@opencode/client/promise"
+import type { SessionMessageInfo } from "@pendix/client/promise"
 import { For, Show, createEffect, createMemo, on, onCleanup, onMount, type JSX } from "solid-js"
 import { createStore } from "solid-js/store"
 import { timelinePresets } from "../../timeline/detail"

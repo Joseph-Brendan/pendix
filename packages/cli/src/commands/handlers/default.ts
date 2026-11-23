@@ -1,6 +1,6 @@
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { Global } from "@opencode/util/global"
-import { run } from "@opencode/tui"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { Global } from "@pendix/util/global"
+import { run } from "@pendix/tui"
 import { Commands } from "../commands"
 import { Runtime } from "../../framework/runtime"
 import { Config } from "../../config"
@@ -9,11 +9,11 @@ import { CliError } from "effect/cli"
 import { ServerConnection } from "../../services/server-connection"
 import { Updater } from "../../services/updater"
 import { UpdatePreflight } from "../../services/update-preflight"
-import { Npm } from "@opencode/util/npm"
+import { Npm } from "@pendix/util/npm"
 import { OPENCODE_ARTIFACT, OPENCODE_CHANNEL, OPENCODE_HIGHLIGHTS, OPENCODE_VERSION } from "../../version"
 import { Env } from "../../env"
-import { Service } from "@opencode/client/effect/service"
-import { OpenCode } from "@opencode/client/promise"
+import { Service } from "@pendix/client/effect/service"
+import { OpenCode } from "@pendix/client/promise"
 import { findSession } from "../../session-target"
 import { errorMessage } from "../../util/error"
 
@@ -61,7 +61,7 @@ export default Runtime.handler(Commands, (input) =>
       },
     }).pipe(
       Effect.tapError(() =>
-        Effect.promise(() => preflight.fail("OpenCode update could not start the new background service")),
+        Effect.promise(() => preflight.fail("Pendix update could not start the new background service")),
       ),
     )
     const session = Option.getOrUndefined(input.session)

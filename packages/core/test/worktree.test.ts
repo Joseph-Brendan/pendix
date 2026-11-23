@@ -4,28 +4,28 @@ import fs from "fs/promises"
 import path from "path"
 import { and, eq, isNull } from "drizzle-orm"
 import { Context, Effect, Exit, Fiber, Layer, Queue, Scope, Stream } from "effect"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { AbsolutePath } from "@opencode/core/schema"
-import { Git } from "@opencode/core/git"
-import { Database } from "@opencode/core/database/database"
-import { Bus } from "@opencode/core/bus"
-import { Project } from "@opencode/core/project"
-import { ProjectTable } from "@opencode/core/project/sql"
-import { Worktree } from "@opencode/core/worktree"
-import { WorktreeStrategies } from "@opencode/core/worktree/strategies"
-import { WorktreeDirectory } from "@opencode/core/worktree/directory"
-import { WorktreeTable } from "@opencode/core/worktree/sql"
-import { WorktreeGit } from "@opencode/core/worktree/git"
-import { Location } from "@opencode/core/location"
-import { Global } from "@opencode/util/global"
-import { FSUtil } from "@opencode/util/fs-util"
-import { Config } from "@opencode/core/config"
-import { ConfigWorktreePlugin } from "@opencode/core/config/plugin/worktree"
-import { ConfigNormalize } from "@opencode/core/config/normalize"
-import { Document, Event, Info } from "@opencode/schema/config"
-import { EventManifest } from "@opencode/schema/event-manifest"
-import { Workspace } from "@opencode/schema/workspace"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { AbsolutePath } from "@pendix/core/schema"
+import { Git } from "@pendix/core/git"
+import { Database } from "@pendix/core/database/database"
+import { Bus } from "@pendix/core/bus"
+import { Project } from "@pendix/core/project"
+import { ProjectTable } from "@pendix/core/project/sql"
+import { Worktree } from "@pendix/core/worktree"
+import { WorktreeStrategies } from "@pendix/core/worktree/strategies"
+import { WorktreeDirectory } from "@pendix/core/worktree/directory"
+import { WorktreeTable } from "@pendix/core/worktree/sql"
+import { WorktreeGit } from "@pendix/core/worktree/git"
+import { Location } from "@pendix/core/location"
+import { Global } from "@pendix/util/global"
+import { FSUtil } from "@pendix/util/fs-util"
+import { Config } from "@pendix/core/config"
+import { ConfigWorktreePlugin } from "@pendix/core/config/plugin/worktree"
+import { ConfigNormalize } from "@pendix/core/config/normalize"
+import { Document, Event, Info } from "@pendix/schema/config"
+import { EventManifest } from "@pendix/schema/event-manifest"
+import { Workspace } from "@pendix/schema/workspace"
 import { host } from "./plugin/host"
 import { initRepo } from "./fixture/git"
 import { tmpdir, tmpdirScoped } from "./fixture/tmpdir"
@@ -326,7 +326,7 @@ describe("Worktree", () => {
       yield* config.setEntries([
         new Document({
           type: "document",
-          path: abs(path.join(root.path, "global/opencode.json")),
+          path: abs(path.join(root.path, "global/pendix.json")),
           info: new Info({ worktree: { directory: ".lane/trees" } }),
         }),
       ])
@@ -896,12 +896,12 @@ describe("Worktree", () => {
       const documents = [
         new Document({
           type: "document",
-          path: abs(path.join(input.root.path, "opencode.json")),
+          path: abs(path.join(input.root.path, "pendix.json")),
           info: new Info({ worktree: { directory: "outer" } }),
         }),
         new Document({
           type: "document",
-          path: abs(path.join(input.root.path, "nested/opencode.json")),
+          path: abs(path.join(input.root.path, "nested/pendix.json")),
           info: new Info({ worktree: { directory: "copies" } }),
         }),
       ]
@@ -952,7 +952,7 @@ describe("Worktree", () => {
         yield* config.setEntries([
           new Document({
             type: "document",
-            path: abs(path.join(home, ".config/opencode/opencode.json")),
+            path: abs(path.join(home, ".config/opencode/pendix.json")),
             info: new Info({ worktree: { directory } }),
           }),
         ])

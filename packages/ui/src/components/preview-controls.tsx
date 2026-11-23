@@ -1,6 +1,6 @@
-import { Icon } from "@opencode/ui/icon"
-import { IconButton } from "@opencode/ui/icon-button"
-import { Tooltip } from "@opencode/ui/tooltip"
+import { Icon } from "@pendix/ui/icon"
+import { IconButton } from "@pendix/ui/icon-button"
+import { Tooltip } from "@pendix/ui/tooltip"
 import { useI18n } from "../context/i18n"
 import "./preview-controls.css"
 

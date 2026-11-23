@@ -1,5 +1,5 @@
-import type { OpenCodeClient } from "@opencode/client/promise"
-import { uuid } from "@opencode/util/uuid"
+import type { OpenCodeClient } from "@pendix/client/promise"
+import { uuid } from "@pendix/util/uuid"
 import { decodeEvent, type VoiceEvent } from "./protocol"
 import { delegatorInstructions, liveInstructions, tools } from "./spec"
 import {

@@ -1,4 +1,4 @@
-import type { ConfigEntry } from "@opencode/client"
+import type { ConfigEntry } from "@pendix/client"
 
 type ConfigInfo = Extract<ConfigEntry, { type: "document" }>["info"]
 

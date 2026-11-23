@@ -1,7 +1,7 @@
-import { Job } from "@opencode/core/job"
-import { Session } from "@opencode/core/session"
-import { SessionBackground } from "@opencode/core/session/background"
-import type { ListQuery } from "@opencode/protocol/groups/job"
+import { Job } from "@pendix/core/job"
+import { Session } from "@pendix/core/session"
+import { SessionBackground } from "@pendix/core/session/background"
+import type { ListQuery } from "@pendix/protocol/groups/job"
 import { Effect, Option } from "effect"
 import { missingSession } from "./session-error"
 

@@ -1,5 +1,5 @@
-import { Provider } from "@opencode/core/provider"
-import { ProviderNotFoundError } from "@opencode/protocol/errors"
+import { Provider } from "@pendix/core/provider"
+import { ProviderNotFoundError } from "@pendix/protocol/errors"
 import { Effect } from "effect"
 import { HttpApiBuilder } from "effect/http-api"
 import { Api } from "../api"

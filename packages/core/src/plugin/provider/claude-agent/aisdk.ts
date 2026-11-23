@@ -1,6 +1,6 @@
 export * as ClaudeAISDK from "./aisdk.js"
 
-import type { Context } from "@opencode/plugin/effect/plugin"
+import type { Context } from "@pendix/plugin/effect/plugin"
 import { Effect } from "effect"
 import { ClaudeAccounts } from "./claude/accounts.js"
 import { ClaudeQueryOptions } from "./claude/query-options.js"

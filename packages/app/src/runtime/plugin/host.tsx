@@ -1,4 +1,4 @@
-import { abort } from "@opencode/util/abort"
+import { abort } from "@pendix/util/abort"
 import {
   batch,
   catchError,
@@ -29,12 +29,12 @@ import {
   pluginIconName,
   type Bridge,
   type Entry,
-} from "@opencode/plugin/gui/host"
-import type { BuiltinCatalog, BuiltinContext } from "@opencode/plugin/gui/builtin"
+} from "@pendix/plugin/gui/host"
+import type { BuiltinCatalog, BuiltinContext } from "@pendix/plugin/gui/builtin"
 import { Predicate } from "effect"
-import { useDialog } from "@opencode/ui/context/dialog"
-import { pluralCategory, resolveTemplate } from "@opencode/ui/context/i18n"
-import { registerIcons } from "@opencode/ui/icons/registry"
+import { useDialog } from "@pendix/ui/context/dialog"
+import { pluralCategory, resolveTemplate } from "@pendix/ui/context/i18n"
+import { registerIcons } from "@pendix/ui/icons/registry"
 import {
   LinkHandler,
   type BaseContext,
@@ -57,8 +57,8 @@ import {
   type SessionRef,
   type SetupContext,
   type Token,
-} from "@opencode/plugin/gui"
-import { OpenCode, type OpenCodeClient } from "@opencode/client/promise"
+} from "@pendix/plugin/gui"
+import { OpenCode, type OpenCodeClient } from "@pendix/client/promise"
 import { useLanguage } from "@/runtime/i18n/language"
 import {
   createPluginDialogState,

@@ -1,17 +1,17 @@
 import { EOL } from "node:os"
 import path from "node:path"
 import { Effect } from "effect"
-import { OpenCode, type PluginInfo } from "@opencode/client"
-import { Service } from "@opencode/client/effect/service"
+import { OpenCode, type PluginInfo } from "@pendix/client"
+import { Service } from "@pendix/client/effect/service"
 import { Commands } from "../../commands"
 import { Runtime } from "../../../framework/runtime"
 import { ServerConnection } from "../../../services/server-connection"
 import { Config } from "../../../config"
-import { Global } from "@opencode/util/global"
-import { Npm } from "@opencode/util/npm"
-import { Host } from "@opencode/plugin/host"
+import { Global } from "@pendix/util/global"
+import { Npm } from "@pendix/util/npm"
+import { Host } from "@pendix/plugin/host"
 import { fileURLToPath } from "node:url"
-import { discoverPluginTargets, localPluginDirectories, localSource } from "@opencode/tui/plugin/discovery"
+import { discoverPluginTargets, localPluginDirectories, localSource } from "@pendix/tui/plugin/discovery"
 
 export default Runtime.handler(
   Commands.commands.plugin.commands.list,

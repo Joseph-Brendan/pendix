@@ -1,8 +1,8 @@
-import { Browser } from "@opencode/plugin-browser/rpc"
-import { uuid } from "@opencode/util/uuid"
+import { Browser } from "@pendix/plugin-browser/rpc"
+import { uuid } from "@pendix/util/uuid"
 import { Schema } from "effect"
-import { DialogProvider } from "@opencode/ui/context/dialog"
-import { ResizeHandle } from "@opencode/ui/resize-handle"
+import { DialogProvider } from "@pendix/ui/context/dialog"
+import { ResizeHandle } from "@pendix/ui/resize-handle"
 import {
   batch,
   createSignal,
@@ -23,7 +23,7 @@ import {
   type Bridge,
   type BridgeLayout,
   type Entry,
-} from "@opencode/plugin/gui/host"
+} from "@pendix/plugin/gui/host"
 import {
   type Appearance,
   type App,
@@ -47,7 +47,7 @@ import {
   type SetupContext,
   type Storage,
   type Workspaces,
-} from "@opencode/plugin/gui"
+} from "@pendix/plugin/gui"
 import barStyles from "./bar.css?inline"
 import { BrowserHistory } from "./history/ipc"
 import { pageKey, type PageVisit } from "./history/page"
@@ -61,7 +61,7 @@ import { BrowserPane, PluginTabHandle, type PaneEvent, type PromptAnswer, type P
 import { pageShortcut } from "./keys"
 import { normalizeURL, refusal } from "./policy"
 import { navigationNotice } from "./refusal-notice"
-import { type BuiltinLayout } from "@opencode/plugin/gui/builtin"
+import { type BuiltinLayout } from "@pendix/plugin/gui/builtin"
 
 /** The renderer host pieces the pane runs on, passed in by `packages/app/component-tests/browser-pane.spec.ts`. */
 type PaneHost = {
@@ -1659,7 +1659,7 @@ export function mountBrowserRegion(input: RegionHost) {
     const [apiResult, setApiResult] = createSignal("")
 
     const consumer: Entry = { id: "fixture-tabs", windowEntry: async () => {
-      const contract = await import("@opencode/plugin/gui/browser")
+      const contract = await import("@pendix/plugin/gui/browser")
 
       return { default(ctx: Context) {
         const read = ctx.use(contract.Browser)

@@ -1,18 +1,18 @@
 export * as Provider from "./provider.js"
 
 import { Context, Effect, Layer, Option, Schema, Stream, Struct } from "effect"
-import { Provider } from "@opencode/schema/provider"
-import { Model } from "@opencode/schema/model"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
-import { HttpTimeout, type ProviderPackage } from "@opencode/ai/effect"
-import { Npm } from "@opencode/util/npm"
+import { Provider } from "@pendix/schema/provider"
+import { Model } from "@pendix/schema/model"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
+import { HttpTimeout, type ProviderPackage } from "@pendix/ai/effect"
+import { Npm } from "@pendix/util/npm"
 import type { DeepMutable } from "./schema.js"
-import { importModule, resolveModule } from "@opencode/util/runtime-import"
+import { importModule, resolveModule } from "@pendix/util/runtime-import"
 import { Bus } from "./bus.js"
 import { Integration } from "./integration.js"
 import { State } from "./state.js"
 import { IntegrationConnection } from "./integration/connection.js"
-import { Credential } from "@opencode/schema/credential"
+import { Credential } from "@pendix/schema/credential"
 import { Location } from "./location.js"
 import { freeze } from "immer"
 import { AISDKNative } from "./aisdk-native.js"
@@ -29,171 +29,171 @@ export class LoadError extends Schema.TaggedError<LoadError>()("Provider.LoadErr
 
 const packages = new Map<string, Promise<unknown>>()
 const builtins = new Map<string, () => Promise<unknown>>([
-  ["@opencode/ai/providers/alibaba", () => import("@opencode/ai/providers/alibaba")],
-  ["@opencode/ai/providers/alibaba/chat", () => import("@opencode/ai/providers/alibaba/chat")],
-  ["@opencode/ai/providers/alibaba/messages", () => import("@opencode/ai/providers/alibaba/messages")],
-  ["@opencode/ai/providers/alibaba/responses", () => import("@opencode/ai/providers/alibaba/responses")],
-  ["@opencode/ai/providers/alibaba/images", () => import("@opencode/ai/providers/alibaba/images")],
-  ["@opencode/ai/providers/alibaba/embeddings", () => import("@opencode/ai/providers/alibaba/embeddings")],
-  ["@opencode/ai/providers/amazon-bedrock", () => import("@opencode/ai/providers/amazon-bedrock")],
-  ["@opencode/ai/providers/amazon-bedrock/mantle", () => import("@opencode/ai/providers/amazon-bedrock/mantle")],
+  ["@pendix/ai/providers/alibaba", () => import("@pendix/ai/providers/alibaba")],
+  ["@pendix/ai/providers/alibaba/chat", () => import("@pendix/ai/providers/alibaba/chat")],
+  ["@pendix/ai/providers/alibaba/messages", () => import("@pendix/ai/providers/alibaba/messages")],
+  ["@pendix/ai/providers/alibaba/responses", () => import("@pendix/ai/providers/alibaba/responses")],
+  ["@pendix/ai/providers/alibaba/images", () => import("@pendix/ai/providers/alibaba/images")],
+  ["@pendix/ai/providers/alibaba/embeddings", () => import("@pendix/ai/providers/alibaba/embeddings")],
+  ["@pendix/ai/providers/amazon-bedrock", () => import("@pendix/ai/providers/amazon-bedrock")],
+  ["@pendix/ai/providers/amazon-bedrock/mantle", () => import("@pendix/ai/providers/amazon-bedrock/mantle")],
   [
-    "@opencode/ai/providers/amazon-bedrock/mantle/chat",
-    () => import("@opencode/ai/providers/amazon-bedrock/mantle/chat"),
+    "@pendix/ai/providers/amazon-bedrock/mantle/chat",
+    () => import("@pendix/ai/providers/amazon-bedrock/mantle/chat"),
   ],
   [
-    "@opencode/ai/providers/amazon-bedrock/mantle/messages",
-    () => import("@opencode/ai/providers/amazon-bedrock/mantle/messages"),
+    "@pendix/ai/providers/amazon-bedrock/mantle/messages",
+    () => import("@pendix/ai/providers/amazon-bedrock/mantle/messages"),
   ],
   [
-    "@opencode/ai/providers/amazon-bedrock/mantle/responses",
-    () => import("@opencode/ai/providers/amazon-bedrock/mantle/responses"),
+    "@pendix/ai/providers/amazon-bedrock/mantle/responses",
+    () => import("@pendix/ai/providers/amazon-bedrock/mantle/responses"),
   ],
-  ["@opencode/ai/providers/anthropic", () => import("@opencode/ai/providers/anthropic")],
-  ["@opencode/ai/providers/anthropic-compatible", () => import("@opencode/ai/providers/anthropic-compatible")],
-  ["@opencode/ai/providers/azure", () => import("@opencode/ai/providers/azure")],
-  ["@opencode/ai/providers/azure/chat", () => import("@opencode/ai/providers/azure/chat")],
-  ["@opencode/ai/providers/azure/responses", () => import("@opencode/ai/providers/azure/responses")],
-  ["@opencode/ai/providers/azure/images", () => import("@opencode/ai/providers/azure/images")],
-  ["@opencode/ai/providers/azure/embeddings", () => import("@opencode/ai/providers/azure/embeddings")],
-  ["@opencode/ai/providers/azure/messages", () => import("@opencode/ai/providers/azure/messages")],
-  ["@opencode/ai/providers/baseten", () => import("@opencode/ai/providers/baseten")],
-  ["@opencode/ai/providers/baseten/decisions", () => import("@opencode/ai/providers/baseten/decisions")],
-  ["@opencode/ai/providers/byteplus/videos", () => import("@opencode/ai/providers/byteplus/videos")],
-  ["@opencode/ai/providers/cerebras", () => import("@opencode/ai/providers/cerebras")],
-  ["@opencode/ai/providers/cloudflare-ai-gateway", () => import("@opencode/ai/providers/cloudflare-ai-gateway")],
+  ["@pendix/ai/providers/anthropic", () => import("@pendix/ai/providers/anthropic")],
+  ["@pendix/ai/providers/anthropic-compatible", () => import("@pendix/ai/providers/anthropic-compatible")],
+  ["@pendix/ai/providers/azure", () => import("@pendix/ai/providers/azure")],
+  ["@pendix/ai/providers/azure/chat", () => import("@pendix/ai/providers/azure/chat")],
+  ["@pendix/ai/providers/azure/responses", () => import("@pendix/ai/providers/azure/responses")],
+  ["@pendix/ai/providers/azure/images", () => import("@pendix/ai/providers/azure/images")],
+  ["@pendix/ai/providers/azure/embeddings", () => import("@pendix/ai/providers/azure/embeddings")],
+  ["@pendix/ai/providers/azure/messages", () => import("@pendix/ai/providers/azure/messages")],
+  ["@pendix/ai/providers/baseten", () => import("@pendix/ai/providers/baseten")],
+  ["@pendix/ai/providers/baseten/decisions", () => import("@pendix/ai/providers/baseten/decisions")],
+  ["@pendix/ai/providers/byteplus/videos", () => import("@pendix/ai/providers/byteplus/videos")],
+  ["@pendix/ai/providers/cerebras", () => import("@pendix/ai/providers/cerebras")],
+  ["@pendix/ai/providers/cloudflare-ai-gateway", () => import("@pendix/ai/providers/cloudflare-ai-gateway")],
   [
-    "@opencode/ai/providers/cloudflare-ai-gateway/decisions",
-    () => import("@opencode/ai/providers/cloudflare-ai-gateway/decisions"),
+    "@pendix/ai/providers/cloudflare-ai-gateway/decisions",
+    () => import("@pendix/ai/providers/cloudflare-ai-gateway/decisions"),
   ],
-  ["@opencode/ai/providers/cloudflare-workers-ai", () => import("@opencode/ai/providers/cloudflare-workers-ai")],
+  ["@pendix/ai/providers/cloudflare-workers-ai", () => import("@pendix/ai/providers/cloudflare-workers-ai")],
   [
-    "@opencode/ai/providers/cloudflare-workers-ai/decisions",
-    () => import("@opencode/ai/providers/cloudflare-workers-ai/decisions"),
-  ],
-  [
-    "@opencode/ai/providers/cloudflare-workers-ai/images",
-    () => import("@opencode/ai/providers/cloudflare-workers-ai/images"),
-  ],
-  ["@opencode/ai/providers/cohere", () => import("@opencode/ai/providers/cohere")],
-  ["@opencode/ai/providers/cohere/chat", () => import("@opencode/ai/providers/cohere/chat")],
-  ["@opencode/ai/providers/cohere/embeddings", () => import("@opencode/ai/providers/cohere/embeddings")],
-  ["@opencode/ai/providers/deepinfra", () => import("@opencode/ai/providers/deepinfra")],
-  ["@opencode/ai/providers/deepinfra/embeddings", () => import("@opencode/ai/providers/deepinfra/embeddings")],
-  ["@opencode/ai/providers/deepseek", () => import("@opencode/ai/providers/deepseek")],
-  ["@opencode/ai/providers/digitalocean", () => import("@opencode/ai/providers/digitalocean")],
-  ["@opencode/ai/providers/digitalocean/decisions", () => import("@opencode/ai/providers/digitalocean/decisions")],
-  ["@opencode/ai/providers/digitalocean/embeddings", () => import("@opencode/ai/providers/digitalocean/embeddings")],
-  ["@opencode/ai/providers/digitalocean/images", () => import("@opencode/ai/providers/digitalocean/images")],
-  ["@opencode/ai/providers/digitalocean/responses", () => import("@opencode/ai/providers/digitalocean/responses")],
-  ["@opencode/ai/providers/fireworks", () => import("@opencode/ai/providers/fireworks")],
-  ["@opencode/ai/providers/fireworks/embeddings", () => import("@opencode/ai/providers/fireworks/embeddings")],
-  ["@opencode/ai/providers/google", () => import("@opencode/ai/providers/google")],
-  ["@opencode/ai/providers/google/decisions", () => import("@opencode/ai/providers/google/decisions")],
-  ["@opencode/ai/providers/google/interactions", () => import("@opencode/ai/providers/google/interactions")],
-  ["@opencode/ai/providers/google/embeddings", () => import("@opencode/ai/providers/google/embeddings")],
-  ["@opencode/ai/providers/google/images", () => import("@opencode/ai/providers/google/images")],
-  ["@opencode/ai/providers/google/videos", () => import("@opencode/ai/providers/google/videos")],
-  ["@opencode/ai/providers/google-vertex", () => import("@opencode/ai/providers/google-vertex")],
-  ["@opencode/ai/providers/google-vertex/chat", () => import("@opencode/ai/providers/google-vertex/chat")],
-  ["@opencode/ai/providers/google-vertex/gemini", () => import("@opencode/ai/providers/google-vertex/gemini")],
-  [
-    "@opencode/ai/providers/google-vertex/interactions",
-    () => import("@opencode/ai/providers/google-vertex/interactions"),
-  ],
-  ["@opencode/ai/providers/google-vertex/messages", () => import("@opencode/ai/providers/google-vertex/messages")],
-  ["@opencode/ai/providers/google-vertex/mistral", () => import("@opencode/ai/providers/google-vertex/mistral")],
-  ["@opencode/ai/providers/google-vertex/responses", () => import("@opencode/ai/providers/google-vertex/responses")],
-  ["@opencode/ai/providers/google-vertex/embeddings", () => import("@opencode/ai/providers/google-vertex/embeddings")],
-  ["@opencode/ai/providers/google-vertex/images", () => import("@opencode/ai/providers/google-vertex/images")],
-  ["@opencode/ai/providers/google-vertex-messages", () => import("@opencode/ai/providers/google-vertex-messages")],
-  ["@opencode/ai/providers/groq", () => import("@opencode/ai/providers/groq")],
-  ["@opencode/ai/providers/meta", () => import("@opencode/ai/providers/meta")],
-  ["@opencode/ai/providers/meta/chat", () => import("@opencode/ai/providers/meta/chat")],
-  ["@opencode/ai/providers/meta/images", () => import("@opencode/ai/providers/meta/images")],
-  ["@opencode/ai/providers/meta/messages", () => import("@opencode/ai/providers/meta/messages")],
-  ["@opencode/ai/providers/meta/responses", () => import("@opencode/ai/providers/meta/responses")],
-  ["@opencode/ai/providers/minimax", () => import("@opencode/ai/providers/minimax")],
-  ["@opencode/ai/providers/minimax/chat", () => import("@opencode/ai/providers/minimax/chat")],
-  ["@opencode/ai/providers/minimax/images", () => import("@opencode/ai/providers/minimax/images")],
-  ["@opencode/ai/providers/minimax/messages", () => import("@opencode/ai/providers/minimax/messages")],
-  ["@opencode/ai/providers/minimax/responses", () => import("@opencode/ai/providers/minimax/responses")],
-  ["@opencode/ai/providers/minimax/videos", () => import("@opencode/ai/providers/minimax/videos")],
-  ["@opencode/ai/providers/mistral", () => import("@opencode/ai/providers/mistral")],
-  ["@opencode/ai/providers/moonshot", () => import("@opencode/ai/providers/moonshot")],
-  ["@opencode/ai/providers/moonshot/chat", () => import("@opencode/ai/providers/moonshot/chat")],
-  ["@opencode/ai/providers/moonshot/messages", () => import("@opencode/ai/providers/moonshot/messages")],
-  ["@opencode/ai/providers/moonshot/responses", () => import("@opencode/ai/providers/moonshot/responses")],
-  ["@opencode/ai/providers/openai", () => import("@opencode/ai/providers/openai")],
-  ["@opencode/ai/providers/openai/chat", () => import("@opencode/ai/providers/openai/chat")],
-  ["@opencode/ai/providers/openai/responses", () => import("@opencode/ai/providers/openai/responses")],
-  ["@opencode/ai/providers/openai/images", () => import("@opencode/ai/providers/openai/images")],
-  ["@opencode/ai/providers/openai/embeddings", () => import("@opencode/ai/providers/openai/embeddings")],
-  ["@opencode/ai/providers/openai-compatible", () => import("@opencode/ai/providers/openai-compatible")],
-  [
-    "@opencode/ai/providers/openai-compatible/responses",
-    () => import("@opencode/ai/providers/openai-compatible/responses"),
-  ],
-  ["@opencode/ai/providers/openai-compatible/images", () => import("@opencode/ai/providers/openai-compatible/images")],
-  [
-    "@opencode/ai/providers/openai-compatible/decisions",
-    () => import("@opencode/ai/providers/openai-compatible/decisions"),
+    "@pendix/ai/providers/cloudflare-workers-ai/decisions",
+    () => import("@pendix/ai/providers/cloudflare-workers-ai/decisions"),
   ],
   [
-    "@opencode/ai/providers/openai-compatible/embeddings",
-    () => import("@opencode/ai/providers/openai-compatible/embeddings"),
+    "@pendix/ai/providers/cloudflare-workers-ai/images",
+    () => import("@pendix/ai/providers/cloudflare-workers-ai/images"),
+  ],
+  ["@pendix/ai/providers/cohere", () => import("@pendix/ai/providers/cohere")],
+  ["@pendix/ai/providers/cohere/chat", () => import("@pendix/ai/providers/cohere/chat")],
+  ["@pendix/ai/providers/cohere/embeddings", () => import("@pendix/ai/providers/cohere/embeddings")],
+  ["@pendix/ai/providers/deepinfra", () => import("@pendix/ai/providers/deepinfra")],
+  ["@pendix/ai/providers/deepinfra/embeddings", () => import("@pendix/ai/providers/deepinfra/embeddings")],
+  ["@pendix/ai/providers/deepseek", () => import("@pendix/ai/providers/deepseek")],
+  ["@pendix/ai/providers/digitalocean", () => import("@pendix/ai/providers/digitalocean")],
+  ["@pendix/ai/providers/digitalocean/decisions", () => import("@pendix/ai/providers/digitalocean/decisions")],
+  ["@pendix/ai/providers/digitalocean/embeddings", () => import("@pendix/ai/providers/digitalocean/embeddings")],
+  ["@pendix/ai/providers/digitalocean/images", () => import("@pendix/ai/providers/digitalocean/images")],
+  ["@pendix/ai/providers/digitalocean/responses", () => import("@pendix/ai/providers/digitalocean/responses")],
+  ["@pendix/ai/providers/fireworks", () => import("@pendix/ai/providers/fireworks")],
+  ["@pendix/ai/providers/fireworks/embeddings", () => import("@pendix/ai/providers/fireworks/embeddings")],
+  ["@pendix/ai/providers/google", () => import("@pendix/ai/providers/google")],
+  ["@pendix/ai/providers/google/decisions", () => import("@pendix/ai/providers/google/decisions")],
+  ["@pendix/ai/providers/google/interactions", () => import("@pendix/ai/providers/google/interactions")],
+  ["@pendix/ai/providers/google/embeddings", () => import("@pendix/ai/providers/google/embeddings")],
+  ["@pendix/ai/providers/google/images", () => import("@pendix/ai/providers/google/images")],
+  ["@pendix/ai/providers/google/videos", () => import("@pendix/ai/providers/google/videos")],
+  ["@pendix/ai/providers/google-vertex", () => import("@pendix/ai/providers/google-vertex")],
+  ["@pendix/ai/providers/google-vertex/chat", () => import("@pendix/ai/providers/google-vertex/chat")],
+  ["@pendix/ai/providers/google-vertex/gemini", () => import("@pendix/ai/providers/google-vertex/gemini")],
+  [
+    "@pendix/ai/providers/google-vertex/interactions",
+    () => import("@pendix/ai/providers/google-vertex/interactions"),
+  ],
+  ["@pendix/ai/providers/google-vertex/messages", () => import("@pendix/ai/providers/google-vertex/messages")],
+  ["@pendix/ai/providers/google-vertex/mistral", () => import("@pendix/ai/providers/google-vertex/mistral")],
+  ["@pendix/ai/providers/google-vertex/responses", () => import("@pendix/ai/providers/google-vertex/responses")],
+  ["@pendix/ai/providers/google-vertex/embeddings", () => import("@pendix/ai/providers/google-vertex/embeddings")],
+  ["@pendix/ai/providers/google-vertex/images", () => import("@pendix/ai/providers/google-vertex/images")],
+  ["@pendix/ai/providers/google-vertex-messages", () => import("@pendix/ai/providers/google-vertex-messages")],
+  ["@pendix/ai/providers/groq", () => import("@pendix/ai/providers/groq")],
+  ["@pendix/ai/providers/meta", () => import("@pendix/ai/providers/meta")],
+  ["@pendix/ai/providers/meta/chat", () => import("@pendix/ai/providers/meta/chat")],
+  ["@pendix/ai/providers/meta/images", () => import("@pendix/ai/providers/meta/images")],
+  ["@pendix/ai/providers/meta/messages", () => import("@pendix/ai/providers/meta/messages")],
+  ["@pendix/ai/providers/meta/responses", () => import("@pendix/ai/providers/meta/responses")],
+  ["@pendix/ai/providers/minimax", () => import("@pendix/ai/providers/minimax")],
+  ["@pendix/ai/providers/minimax/chat", () => import("@pendix/ai/providers/minimax/chat")],
+  ["@pendix/ai/providers/minimax/images", () => import("@pendix/ai/providers/minimax/images")],
+  ["@pendix/ai/providers/minimax/messages", () => import("@pendix/ai/providers/minimax/messages")],
+  ["@pendix/ai/providers/minimax/responses", () => import("@pendix/ai/providers/minimax/responses")],
+  ["@pendix/ai/providers/minimax/videos", () => import("@pendix/ai/providers/minimax/videos")],
+  ["@pendix/ai/providers/mistral", () => import("@pendix/ai/providers/mistral")],
+  ["@pendix/ai/providers/moonshot", () => import("@pendix/ai/providers/moonshot")],
+  ["@pendix/ai/providers/moonshot/chat", () => import("@pendix/ai/providers/moonshot/chat")],
+  ["@pendix/ai/providers/moonshot/messages", () => import("@pendix/ai/providers/moonshot/messages")],
+  ["@pendix/ai/providers/moonshot/responses", () => import("@pendix/ai/providers/moonshot/responses")],
+  ["@pendix/ai/providers/openai", () => import("@pendix/ai/providers/openai")],
+  ["@pendix/ai/providers/openai/chat", () => import("@pendix/ai/providers/openai/chat")],
+  ["@pendix/ai/providers/openai/responses", () => import("@pendix/ai/providers/openai/responses")],
+  ["@pendix/ai/providers/openai/images", () => import("@pendix/ai/providers/openai/images")],
+  ["@pendix/ai/providers/openai/embeddings", () => import("@pendix/ai/providers/openai/embeddings")],
+  ["@pendix/ai/providers/openai-compatible", () => import("@pendix/ai/providers/openai-compatible")],
+  [
+    "@pendix/ai/providers/openai-compatible/responses",
+    () => import("@pendix/ai/providers/openai-compatible/responses"),
+  ],
+  ["@pendix/ai/providers/openai-compatible/images", () => import("@pendix/ai/providers/openai-compatible/images")],
+  [
+    "@pendix/ai/providers/openai-compatible/decisions",
+    () => import("@pendix/ai/providers/openai-compatible/decisions"),
   ],
   [
-    "@opencode/ai/providers/openai-compatible-responses",
-    () => import("@opencode/ai/providers/openai-compatible-responses"),
-  ],
-  ["@opencode/ai/providers/opencode/decisions", () => import("@opencode/ai/providers/opencode/decisions")],
-  ["@opencode/ai/providers/openrouter", () => import("@opencode/ai/providers/openrouter")],
-  ["@opencode/ai/providers/openrouter/decisions", () => import("@opencode/ai/providers/openrouter/decisions")],
-  ["@opencode/ai/providers/openrouter/embeddings", () => import("@opencode/ai/providers/openrouter/embeddings")],
-  ["@opencode/ai/providers/openrouter/images", () => import("@opencode/ai/providers/openrouter/images")],
-  ["@opencode/ai/providers/openrouter/videos", () => import("@opencode/ai/providers/openrouter/videos")],
-  ["@opencode/ai/providers/openrouter/responses", () => import("@opencode/ai/providers/openrouter/responses")],
-  ["@opencode/ai/providers/togetherai", () => import("@opencode/ai/providers/togetherai")],
-  ["@opencode/ai/providers/typesafe-ai/decisions", () => import("@opencode/ai/providers/typesafe-ai/decisions")],
-  ["@opencode/ai/providers/venice", () => import("@opencode/ai/providers/venice")],
-  ["@opencode/ai/providers/venice/responses", () => import("@opencode/ai/providers/venice/responses")],
-  ["@opencode/ai/providers/volcengine/videos", () => import("@opencode/ai/providers/volcengine/videos")],
-  ["@opencode/ai/providers/vercel-ai-gateway", () => import("@opencode/ai/providers/vercel-ai-gateway")],
-  ["@opencode/ai/providers/vercel-ai-gateway/chat", () => import("@opencode/ai/providers/vercel-ai-gateway/chat")],
-  [
-    "@opencode/ai/providers/vercel-ai-gateway/messages",
-    () => import("@opencode/ai/providers/vercel-ai-gateway/messages"),
+    "@pendix/ai/providers/openai-compatible/embeddings",
+    () => import("@pendix/ai/providers/openai-compatible/embeddings"),
   ],
   [
-    "@opencode/ai/providers/vercel-ai-gateway/responses",
-    () => import("@opencode/ai/providers/vercel-ai-gateway/responses"),
+    "@pendix/ai/providers/openai-compatible-responses",
+    () => import("@pendix/ai/providers/openai-compatible-responses"),
+  ],
+  ["@pendix/ai/providers/opencode/decisions", () => import("@pendix/ai/providers/opencode/decisions")],
+  ["@pendix/ai/providers/openrouter", () => import("@pendix/ai/providers/openrouter")],
+  ["@pendix/ai/providers/openrouter/decisions", () => import("@pendix/ai/providers/openrouter/decisions")],
+  ["@pendix/ai/providers/openrouter/embeddings", () => import("@pendix/ai/providers/openrouter/embeddings")],
+  ["@pendix/ai/providers/openrouter/images", () => import("@pendix/ai/providers/openrouter/images")],
+  ["@pendix/ai/providers/openrouter/videos", () => import("@pendix/ai/providers/openrouter/videos")],
+  ["@pendix/ai/providers/openrouter/responses", () => import("@pendix/ai/providers/openrouter/responses")],
+  ["@pendix/ai/providers/togetherai", () => import("@pendix/ai/providers/togetherai")],
+  ["@pendix/ai/providers/typesafe-ai/decisions", () => import("@pendix/ai/providers/typesafe-ai/decisions")],
+  ["@pendix/ai/providers/venice", () => import("@pendix/ai/providers/venice")],
+  ["@pendix/ai/providers/venice/responses", () => import("@pendix/ai/providers/venice/responses")],
+  ["@pendix/ai/providers/volcengine/videos", () => import("@pendix/ai/providers/volcengine/videos")],
+  ["@pendix/ai/providers/vercel-ai-gateway", () => import("@pendix/ai/providers/vercel-ai-gateway")],
+  ["@pendix/ai/providers/vercel-ai-gateway/chat", () => import("@pendix/ai/providers/vercel-ai-gateway/chat")],
+  [
+    "@pendix/ai/providers/vercel-ai-gateway/messages",
+    () => import("@pendix/ai/providers/vercel-ai-gateway/messages"),
   ],
   [
-    "@opencode/ai/providers/vercel-ai-gateway/decisions",
-    () => import("@opencode/ai/providers/vercel-ai-gateway/decisions"),
+    "@pendix/ai/providers/vercel-ai-gateway/responses",
+    () => import("@pendix/ai/providers/vercel-ai-gateway/responses"),
   ],
-  ["@opencode/ai/providers/vercel-ai-gateway/images", () => import("@opencode/ai/providers/vercel-ai-gateway/images")],
   [
-    "@opencode/ai/providers/vercel-ai-gateway/embeddings",
-    () => import("@opencode/ai/providers/vercel-ai-gateway/embeddings"),
+    "@pendix/ai/providers/vercel-ai-gateway/decisions",
+    () => import("@pendix/ai/providers/vercel-ai-gateway/decisions"),
   ],
-  ["@opencode/ai/providers/xai", () => import("@opencode/ai/providers/xai")],
-  ["@opencode/ai/providers/xai/images", () => import("@opencode/ai/providers/xai/images")],
-  ["@opencode/ai/providers/xai/videos", () => import("@opencode/ai/providers/xai/videos")],
-  ["@opencode/ai/providers/zai", () => import("@opencode/ai/providers/zai")],
-  ["@opencode/ai/providers/zai/chat", () => import("@opencode/ai/providers/zai/chat")],
-  ["@opencode/ai/providers/zai/images", () => import("@opencode/ai/providers/zai/images")],
-  ["@opencode/ai/providers/zai-coding-plan", () => import("@opencode/ai/providers/zai-coding-plan")],
-  ["@opencode/ai/providers/zai-coding-plan/chat", () => import("@opencode/ai/providers/zai-coding-plan/chat")],
-  ["@opencode/ai/providers/zai-coding-plan/messages", () => import("@opencode/ai/providers/zai-coding-plan/messages")],
+  ["@pendix/ai/providers/vercel-ai-gateway/images", () => import("@pendix/ai/providers/vercel-ai-gateway/images")],
   [
-    "@opencode/ai/providers/zai-coding-plan/responses",
-    () => import("@opencode/ai/providers/zai-coding-plan/responses"),
+    "@pendix/ai/providers/vercel-ai-gateway/embeddings",
+    () => import("@pendix/ai/providers/vercel-ai-gateway/embeddings"),
+  ],
+  ["@pendix/ai/providers/xai", () => import("@pendix/ai/providers/xai")],
+  ["@pendix/ai/providers/xai/images", () => import("@pendix/ai/providers/xai/images")],
+  ["@pendix/ai/providers/xai/videos", () => import("@pendix/ai/providers/xai/videos")],
+  ["@pendix/ai/providers/zai", () => import("@pendix/ai/providers/zai")],
+  ["@pendix/ai/providers/zai/chat", () => import("@pendix/ai/providers/zai/chat")],
+  ["@pendix/ai/providers/zai/images", () => import("@pendix/ai/providers/zai/images")],
+  ["@pendix/ai/providers/zai-coding-plan", () => import("@pendix/ai/providers/zai-coding-plan")],
+  ["@pendix/ai/providers/zai-coding-plan/chat", () => import("@pendix/ai/providers/zai-coding-plan/chat")],
+  ["@pendix/ai/providers/zai-coding-plan/messages", () => import("@pendix/ai/providers/zai-coding-plan/messages")],
+  [
+    "@pendix/ai/providers/zai-coding-plan/responses",
+    () => import("@pendix/ai/providers/zai-coding-plan/responses"),
   ],
 ])
 
-/** Native `@opencode/ai/providers/*` entrypoints bundled with Core and loadable by name from config. */
+/** Native `@pendix/ai/providers/*` entrypoints bundled with Core and loadable by name from config. */
 export const builtinPackages: ReadonlySet<string> = new Set(builtins.keys())
 
 export const loadPackage = Effect.fn("Provider.loadPackage")(function* (input: string, npm?: Npm.Interface) {
@@ -201,7 +201,7 @@ export const loadPackage = Effect.fn("Provider.loadPackage")(function* (input: s
   const builtin = builtins.get(specifier)
   if (builtin) return yield* importPackage(specifier, specifier, builtin)
   const resolved = yield* Effect.sync(() => {
-    if (specifier.startsWith("file://") || specifier.startsWith("@opencode/ai/")) return specifier
+    if (specifier.startsWith("file://") || specifier.startsWith("@pendix/ai/")) return specifier
     try {
       return import.meta.resolve(specifier)
     } catch {
@@ -299,7 +299,7 @@ export type Info = Provider.Info
 
 export type MutableInfo = DeepMutable<Info>
 
-export { Event } from "@opencode/schema/provider"
+export { Event } from "@pendix/schema/provider"
 
 /** Provider metadata owns its drafts; model definitions remain immutable inputs. */
 export type Definition = {

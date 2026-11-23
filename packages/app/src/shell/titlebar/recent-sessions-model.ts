@@ -1,4 +1,4 @@
-import type { OpenCodeEvent, SessionInfo } from "@opencode/client/promise"
+import type { OpenCodeEvent, SessionInfo } from "@pendix/client/promise"
 import { ServerConnection } from "@/runtime/server/registry"
 
 const separator = "\u0000"

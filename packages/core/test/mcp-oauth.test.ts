@@ -1,13 +1,13 @@
 import { afterAll, describe, expect, test } from "bun:test"
 import { OAuthError, UnauthorizedError, type AuthProvider } from "@modelcontextprotocol/client"
 import path from "path"
-import { ConfigMCP } from "@opencode/schema/config/mcp"
-import { Credential } from "@opencode/core/credential"
-import { Database } from "@opencode/core/database/database"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { Integration } from "@opencode/core/integration"
-import { McpClient } from "@opencode/core/mcp/client"
-import { McpOAuth } from "@opencode/core/mcp/oauth"
+import { ConfigMCP } from "@pendix/schema/config/mcp"
+import { Credential } from "@pendix/core/credential"
+import { Database } from "@pendix/core/database/database"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { Integration } from "@pendix/core/integration"
+import { McpClient } from "@pendix/core/mcp/client"
+import { McpOAuth } from "@pendix/core/mcp/oauth"
 import { Cause, Effect, Exit, ManagedRuntime } from "effect"
 import { TestClock } from "effect/testing"
 import { hostEnvironmentLayer } from "./fixture/environment"
@@ -401,9 +401,9 @@ describe("MCP OAuth", () => {
       expect(url.searchParams.get("client_id")).toBe("registered")
       expect(registrations).toHaveLength(1)
       expect(registrations[0]).toMatchObject({
-        client_name: "opencode",
-        client_uri: "https://opencode.ai",
-        logo_uri: "https://opencode.ai/web-app-manifest-512x512.png",
+        client_name: "pendix",
+        client_uri: "https://pendix.dev",
+        logo_uri: "https://pendix.dev/web-app-manifest-512x512.png",
       })
     })
 

@@ -1,10 +1,10 @@
 import { expect } from "bun:test"
-import { RequestExecutor } from "@opencode/ai/route"
-import { Credential } from "@opencode/core/credential"
-import { Integration } from "@opencode/core/integration"
-import { ModelsDev } from "@opencode/core/models-dev"
-import { Provider } from "@opencode/core/provider"
-import { Voice } from "@opencode/core/voice"
+import { RequestExecutor } from "@pendix/ai/route"
+import { Credential } from "@pendix/core/credential"
+import { Integration } from "@pendix/core/integration"
+import { ModelsDev } from "@pendix/core/models-dev"
+import { Provider } from "@pendix/core/provider"
+import { Voice } from "@pendix/core/voice"
 import { Effect, Layer } from "effect"
 import { HttpClient, type HttpClientRequest, HttpClientResponse } from "effect/http"
 import { TestClock } from "effect/testing"
@@ -66,7 +66,7 @@ const modelsDev = Layer.mock(ModelsDev.Service, {
           id: Provider.ID.make(id),
           name: id,
           activation: "auto" as const,
-          package: "@opencode/ai/providers/openai",
+          package: "@pendix/ai/providers/openai",
         },
         models: [],
         voices,
@@ -184,36 +184,21 @@ it.effect("uses the first key or env connection Integration lists and never a Ch
 )
 
 it.effect(
-  "starts GPT-Live on OpenCode's hosted endpoint with an OpenCode Console connection only without an OpenAI key",
+  "does not fall back to OpenCode's hosted endpoint when no OpenAI key is configured",
   () =>
     Effect.gen(function* () {
       const requests: HttpClientRequest.HttpClientRequest[] = []
       const opencode = { opencode: [credential("console", "oauth")] }
 
-      yield* start("gpt-live-1", { openai: [credential("chatgpt", "oauth")], ...opencode }, requests)
-      yield* start("gpt-live-1", { opencode: [{ type: "env", name: "OPENCODE_API_KEY" }] }, requests)
-      yield* start("gpt-live-1", { openai: [credential("active", "key")], ...opencode }, requests)
-      expect(
-        requests.map((req): (string | undefined)[] => [
-          req.url,
-          req.headers.authorization,
-          req.headers["x-opencode-org-id"],
-        ]),
-      ).toEqual([
-        ["https://opencode.ai/inference/openai/v1/live/sessions", "Bearer console-access", "wrk_console"],
-        ["https://opencode.ai/inference/openai/v1/live/sessions", "Bearer opencode-env-key", undefined],
-        ["https://api.openai.com/v1/live/sessions", "Bearer sk-active", undefined],
-      ])
-
-      const realtime = yield* start("gpt-realtime-2.1", opencode, requests).pipe(Effect.flip)
-      expect(realtime).toMatchObject({ _tag: "Voice.UnavailableError", service: "openai" })
-
-      const unlisted = yield* start("gpt-live-1.1", opencode, requests).pipe(Effect.flip)
-      expect(unlisted).toMatchObject({ _tag: "Voice.InvalidRequestError" })
-      expect(unlisted.message).toBe(
-        "Unsupported voice model: gpt-live-1.1. This server lists gpt-live-1, gpt-realtime-2.1, grok-voice-3.0, gemini-3.8-live.",
+      const noKey = yield* start("gpt-live-1", { openai: [credential("chatgpt", "oauth")], ...opencode }, requests).pipe(
+        Effect.flip,
       )
-      expect(requests).toHaveLength(3)
+      expect(noKey).toMatchObject({ _tag: "Voice.UnavailableError", service: "openai" })
+
+      yield* start("gpt-live-1", { openai: [credential("active", "key")], ...opencode }, requests)
+      expect(requests.map((req) => [req.url, req.headers.authorization])).toEqual([
+        ["https://api.openai.com/v1/live/sessions", "Bearer sk-active"],
+      ])
     }),
 )
 
@@ -310,12 +295,13 @@ it.effect("lists voice models with availability and default without resolving cr
       yield* summary({ openai: [credential("chatgpt", "oauth")], opencode: [credential("console", "oauth")] }),
     ).toEqual({
       models: [
-        ["gpt-live-1", "opencode", true],
+        ["gpt-live-1.1", "openai", false],
+        ["gpt-live-1", "openai", false],
         ["gpt-realtime-2.1", "openai", false],
         ["grok-voice-3.0", "xai", false],
         ["gemini-3.8-live", "google", false],
       ],
-      default: "gpt-live-1",
+      default: undefined,
     })
 
     expect(yield* summary({ openai: [credential("chatgpt", "oauth")] })).toEqual({

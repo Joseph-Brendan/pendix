@@ -58,7 +58,7 @@ test("the art ticks at 30 fps only while drawn and animating, and leaves nothing
     // Each frame is one direct write into the art's own buffer, never a draw call per cell.
     expect(draws).toHaveBeenCalledTimes(1)
     expect(setCell).not.toHaveBeenCalled()
-    expect(app.captureCharFrame()).toContain("█▀▀▀ █▀▀█")
+    expect(app.captureCharFrame()).toContain("█▀▀█")
     await run(1000)
     const pictures = new Set<string>()
     let drawn = 0

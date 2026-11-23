@@ -1,12 +1,12 @@
 import { Link, Meta, Title } from "@solidjs/meta"
-import { ProviderIcon } from "@opencode/ui/provider-icon"
+import { ProviderIcon } from "@pendix/ui/provider-icon"
 import {
   getStatsModelsComparisonData,
   type ModelUsagePoint,
   type RetentionEntry,
   type StatsModelComparisonInput,
   type StatsModelComparisonEntry,
-} from "@opencode/data-core/domain/home"
+} from "@pendix/data-core/domain/home"
 import { createAsync, query, useParams, useSearchParams } from "@solidjs/router"
 import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js"
 import { getRequestEvent } from "solid-js/web"

@@ -2,18 +2,18 @@ import { expect, spyOn, test } from "bun:test"
 import { EmbeddedTerminalRenderable, type Renderable } from "@opentui/core"
 import { createTestRenderer } from "@opentui/core/testing"
 import { Effect, FileSystem } from "effect"
-import { Global } from "@opencode/util/global"
-import * as Open from "@opencode/util/open"
+import { Global } from "@pendix/util/global"
+import * as Open from "@pendix/util/open"
 import { waitForGoUpsellConnect } from "../src/component/dialog-go-upsell"
 import { GoUpsellArtRenderable } from "../src/component/go-upsell-art"
-import { SimulationRenderer } from "@opencode/simulation/frontend/renderer"
+import { SimulationRenderer } from "@pendix/simulation/frontend/renderer"
 import path from "node:path"
 import { Writable } from "node:stream"
 import { createEventStream, createFetch, directory, json } from "./fixture/tui-client"
 import { tmpdir } from "./fixture/fixture"
 import { createAppFixture } from "./fixture/app"
 import { waitForHighlightedFrame } from "./fixture/frame"
-import type { PluginInfo } from "@opencode/client"
+import type { PluginInfo } from "@pendix/client"
 
 test.each([100, 44])("Ctrl-O is immediate, dismissible, and prunes cached deletions at width %s", async (width) => {
   await using state = await tmpdir()
@@ -256,7 +256,7 @@ test("SIGHUP clears title and disposes scoped resources once", async () => {
   })
   const setTitle = setup.renderer.setTerminalTitle.bind(setup.renderer)
   setup.renderer.setTerminalTitle = (title) => {
-    if (title === "OpenCode") started()
+    if (title === "Pendix") started()
     setTitle(title)
   }
   const listeners = new Set(process.listeners("SIGHUP"))
@@ -304,8 +304,8 @@ test("session lifecycle updates the terminal title and prints the epilogue after
   })
   const setTitle = setup.renderer.setTerminalTitle.bind(setup.renderer)
   setup.renderer.setTerminalTitle = (title) => {
-    if (title === "OC | Demo session") initialTitle()
-    if (title === "OC | Renamed session") renamedTitle()
+    if (title === "Pendix | Demo session") initialTitle()
+    if (title === "Pendix | Renamed session") renamedTitle()
     setTitle(title)
   }
   const events = createEventStream()
@@ -369,7 +369,7 @@ test("session lifecycle updates the terminal title and prints the epilogue after
     await task
 
     expect(stdout).toContain("Renamed session")
-    expect(stdout).toContain("opencode -s dummy")
+    expect(stdout).toContain("pendix -s dummy")
     expect(promptRequests).toBe(0)
   } finally {
     process.stdout.write = originalWrite
@@ -387,7 +387,7 @@ test("session title generated while an untitled session is loading remains visib
   const generatedTitle = Promise.withResolvers<void>()
   setup.renderer.setTerminalTitle = (title) => {
     titles.push(title)
-    if (title === "OC | Generated title") generatedTitle.resolve()
+    if (title === "Pendix | Generated title") generatedTitle.resolve()
     setTitle(title)
   }
   const sessionRequested = Promise.withResolvers<void>()
@@ -455,9 +455,9 @@ test("session title generated while an untitled session is loading remains visib
     ])
     await Bun.sleep(20)
 
-    const generated = titles.lastIndexOf("OC | Generated title")
+    const generated = titles.lastIndexOf("Pendix | Generated title")
     expect(generated).toBeGreaterThan(-1)
-    expect(titles.slice(generated + 1)).not.toContain("OpenCode")
+    expect(titles.slice(generated + 1)).not.toContain("Pendix")
     setup.renderer.destroy()
     await task
   } finally {
@@ -2015,9 +2015,9 @@ test("free usage limit offers OpenCode Go once per 24h, transitions Subscribe to
   using openSpy = spyOn(Open, "openUrl").mockResolvedValue(undefined as never)
   await setup.waitForFrame((frame) => frame.includes("Free limit reached"))
   const upsell = setup.captureCharFrame()
-  expect(upsell).toContain("OpenCode Go gives you reliable access")
-  expect(upsell).toContain("▀▀▀▀ ▀▀▀▀")
-  expect(upsell).toContain("opencode.ai/go")
+  expect(upsell).toContain("Connect your own provider API key")
+  expect(upsell).toContain("█▀▀█")
+  expect(upsell).toContain("pendix.dev")
   expect(upsell).toContain("don't show again")
   expect(upsell).toContain("dismiss")
   expect(upsell).toContain("subscribe")
@@ -2029,7 +2029,7 @@ test("free usage limit offers OpenCode Go once per 24h, transitions Subscribe to
   await setup.waitForFrame((frame) => !frame.includes("Free limit reached"))
   const frame = setup.captureCharFrame()
   expect(frame).toContain("You've used today's free messages. They reset at")
-  expect(frame).toContain("Upgrade to OpenCode Go → /connect · Switch model → /models")
+  expect(frame).toContain("Connect a provider → /connect · Switch model → /models")
   expect(frame).not.toContain("Error:")
   expect(frame).not.toContain("Session failed")
   // The delivered prompt (not the queued one) shows once in the transcript and once more back in the composer.
@@ -2105,7 +2105,7 @@ test("free usage limit offers OpenCode Go once per 24h, transitions Subscribe to
   await setup.waitForFrame((frame) => frame.includes("Free limit reached"))
   setup.mockInput.pressEnter()
   await setup.waitForFrame((frame) => frame.includes("GOGO-1234"))
-  expect(openSpy).toHaveBeenCalledWith("https://opencode.ai/go")
+  expect(openSpy).toHaveBeenCalledWith("https://pendix.dev")
   expect(oauthRequests).toEqual([
     { methodID: "device", answer: { server: "https://opencode.ai/console" } },
   ])
@@ -2301,7 +2301,7 @@ test("free usage limit Subscribe handles mid-auth/mid-sync Escape, sync failure,
   })
   await setup.waitForFrame((frame) => frame.includes("Free limit reached"))
   setup.mockInput.pressEnter()
-  expect(openSpy).toHaveBeenCalledWith("https://opencode.ai/go")
+  expect(openSpy).toHaveBeenCalledWith("https://pendix.dev")
   await setup.waitForFrame((frame) => frame.includes("Connect an integration"))
   releaseCatalog()
   await setup.waitForFrame((frame) => frame.includes("Waiting for authorization…"))
@@ -2731,13 +2731,12 @@ test("Go usage limit restores the prompt and explains the limit with its reset t
   })
   await setup.waitForFrame(
     (frame) =>
-      frame.includes("OpenCode Go 5 hour usage limit reached") &&
+      frame.includes("Provider 5 hour usage limit reached") &&
       frame.includes("Resets ") &&
       frame.split("Refactor the parser").length === 3,
   )
   const frame = setup.captureCharFrame()
   expect(frame).toContain("Switch to a free model with")
-  expect(frame).toContain("https://opencode.ai/console/wrk_go_limit/go")
   expect(frame).not.toContain("Error:")
   expect(frame).not.toContain("Free limit reached")
 })

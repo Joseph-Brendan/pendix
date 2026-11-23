@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test"
-import { AIError, HttpContext, InvalidRequestError, TransportError } from "@opencode/ai/effect"
+import { AIError, HttpContext, InvalidRequestError, TransportError } from "@pendix/ai/effect"
 import type {
   ChannelObservation,
   WebSocketChannelExchange,
   WebSocketConnection,
   WebSocketConnector,
-} from "@opencode/ai/route"
-import { SessionModelTransport } from "@opencode/core/session/model-transport"
-import { Session } from "@opencode/schema/session"
+} from "@pendix/ai/route"
+import { SessionModelTransport } from "@pendix/core/session/model-transport"
+import { Session } from "@pendix/schema/session"
 import { Cause, Deferred, Effect, Fiber, Metric, Queue, Stream } from "effect"
 import { TestClock } from "effect/testing"
 import { Headers } from "effect/http"

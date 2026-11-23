@@ -417,7 +417,7 @@ test("client.rpc calls a plugin's own server RPC and hears its events", async ()
     },
   }
   const ctx = context(base, fake) as Json
-  const Rpc = (modules["@opencode/plugin/rpc"] as Json).Rpc
+  const Rpc = (modules["@pendix/plugin/rpc"] as Json).Rpc
   const Echo = Rpc.define({ id: "echo", methods: { say: { input: {}, output: {} } }, events: { said: { schema: {} } } })
   const echo = ctx.client.rpc(Echo)
   expect(await echo.say({ text: "hi" }, { location: { directory: "/d" } })).toEqual({ echoed: { text: "hi" } })
@@ -513,9 +513,9 @@ test("a Portal draws its children over the mount's room", () => {
   expect(fake.toasts()).toEqual([])
 })
 
-test("@opencode/plugin/effect serves Rpc", () => {
-  const effect = modules["@opencode/plugin/effect"] as Json
-  expect(effect.Rpc).toBe((modules["@opencode/plugin/rpc"] as Json).Rpc)
+test("@pendix/plugin/effect serves Rpc", () => {
+  const effect = modules["@pendix/plugin/effect"] as Json
+  expect(effect.Rpc).toBe((modules["@pendix/plugin/rpc"] as Json).Rpc)
   expect("Agent" in effect && effect.Agent === undefined).toBe(true)
 })
 

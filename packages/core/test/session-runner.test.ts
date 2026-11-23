@@ -16,74 +16,74 @@ import {
   RateLimitError,
   UnknownProviderError,
   type UserMessage,
-} from "@opencode/ai/effect"
-import { OpenAIChat } from "@opencode/ai/protocols/openai-chat"
-import { AnthropicMessages, OpenAIResponses } from "@opencode/ai/protocols"
-import { TestLLM, compileRequest } from "@opencode/ai/testing"
-import { RequestExecutor } from "@opencode/ai/route"
-import type { SessionHooks } from "@opencode/plugin/effect/session"
-import { Database } from "@opencode/core/database/database"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { LayerNodePlatform } from "@opencode/core/effect/app-node-platform"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { Bus } from "@opencode/core/bus"
-import { Event } from "@opencode/schema/event"
-import { App } from "@opencode/core/app"
-import { Permission } from "@opencode/core/permission"
-import { EventTable } from "@opencode/core/event/sql"
-import { Project } from "@opencode/core/project"
-import { ProjectTable } from "@opencode/core/project/sql"
-import { Form } from "@opencode/core/form"
-import { Job } from "@opencode/core/job"
-import { AbsolutePath } from "@opencode/core/schema"
-import { Session } from "@opencode/core/session"
-import { Snapshot } from "@opencode/core/snapshot"
-import { SessionEvent } from "@opencode/core/session/event"
-import { SessionCompaction } from "@opencode/core/session/compaction"
-import { SessionInbox } from "@opencode/core/session/inbox"
-import { SessionMessage } from "@opencode/core/session/message"
-import { SessionModelTransport } from "@opencode/core/session/model-transport"
-import { Money } from "@opencode/schema/money"
-import { SessionProjector } from "@opencode/core/session/projector"
-import { SessionExecution } from "@opencode/core/session/execution"
-import { SessionRunCoordinator } from "@opencode/core/session/run-coordinator"
-import { SessionRunner } from "@opencode/core/session/runner/index"
-import { SessionRunnerLLM } from "@opencode/core/session/runner/llm"
-import { SessionRunnerModel } from "@opencode/core/session/runner/model"
-import { SessionUsage } from "@opencode/core/session/usage"
-import { PluginSupervisor } from "@opencode/core/plugin/supervisor"
-import { Plugin } from "@opencode/core/plugin"
-import { PluginHooks } from "@opencode/core/plugin/hooks"
-import { PluginPromise } from "@opencode/core/plugin/promise"
-import { OptimizePlugin } from "@opencode/core/plugin/optimize"
-import { IdentityPlugin } from "@opencode/core/plugin/identity"
-import { QuestionTool } from "@opencode/core/tool/plugin/question"
-import { Agent } from "@opencode/core/agent"
-import { Config } from "@opencode/core/config"
-import { Document, Info } from "@opencode/schema/config"
-import { ConfigCompaction } from "@opencode/schema/config/compaction"
-import { Tool } from "@opencode/core/tool"
-import type { Info as ToolInfo } from "@opencode/schema/tool"
+} from "@pendix/ai/effect"
+import { OpenAIChat } from "@pendix/ai/protocols/openai-chat"
+import { AnthropicMessages, OpenAIResponses } from "@pendix/ai/protocols"
+import { TestLLM, compileRequest } from "@pendix/ai/testing"
+import { RequestExecutor } from "@pendix/ai/route"
+import type { SessionHooks } from "@pendix/plugin/effect/session"
+import { Database } from "@pendix/core/database/database"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { LayerNodePlatform } from "@pendix/core/effect/app-node-platform"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { Bus } from "@pendix/core/bus"
+import { Event } from "@pendix/schema/event"
+import { App } from "@pendix/core/app"
+import { Permission } from "@pendix/core/permission"
+import { EventTable } from "@pendix/core/event/sql"
+import { Project } from "@pendix/core/project"
+import { ProjectTable } from "@pendix/core/project/sql"
+import { Form } from "@pendix/core/form"
+import { Job } from "@pendix/core/job"
+import { AbsolutePath } from "@pendix/core/schema"
+import { Session } from "@pendix/core/session"
+import { Snapshot } from "@pendix/core/snapshot"
+import { SessionEvent } from "@pendix/core/session/event"
+import { SessionCompaction } from "@pendix/core/session/compaction"
+import { SessionInbox } from "@pendix/core/session/inbox"
+import { SessionMessage } from "@pendix/core/session/message"
+import { SessionModelTransport } from "@pendix/core/session/model-transport"
+import { Money } from "@pendix/schema/money"
+import { SessionProjector } from "@pendix/core/session/projector"
+import { SessionExecution } from "@pendix/core/session/execution"
+import { SessionRunCoordinator } from "@pendix/core/session/run-coordinator"
+import { SessionRunner } from "@pendix/core/session/runner/index"
+import { SessionRunnerLLM } from "@pendix/core/session/runner/llm"
+import { SessionRunnerModel } from "@pendix/core/session/runner/model"
+import { SessionUsage } from "@pendix/core/session/usage"
+import { PluginSupervisor } from "@pendix/core/plugin/supervisor"
+import { Plugin } from "@pendix/core/plugin"
+import { PluginHooks } from "@pendix/core/plugin/hooks"
+import { PluginPromise } from "@pendix/core/plugin/promise"
+import { OptimizePlugin } from "@pendix/core/plugin/optimize"
+import { IdentityPlugin } from "@pendix/core/plugin/identity"
+import { QuestionTool } from "@pendix/core/tool/plugin/question"
+import { Agent } from "@pendix/core/agent"
+import { Config } from "@pendix/core/config"
+import { Document, Info } from "@pendix/schema/config"
+import { ConfigCompaction } from "@pendix/schema/config/compaction"
+import { Tool } from "@pendix/core/tool"
+import type { Info as ToolInfo } from "@pendix/schema/tool"
 import {
   InstructionStateTable,
   SessionInboxTable,
   SessionMessageTable,
   SessionPartTable,
   SessionTable,
-} from "@opencode/core/session/sql"
-import { InstructionEntry } from "@opencode/core/session/instruction-entry"
-import { SessionStore } from "@opencode/core/session/store"
-import { Instructions } from "@opencode/core/instructions/index"
-import { InstructionBuiltIns } from "@opencode/core/instructions/builtins"
-import { InstructionDiscovery } from "@opencode/core/instruction-discovery"
-import { SkillInstructions } from "@opencode/core/skill/instructions"
-import { ReferenceInstructions } from "@opencode/core/reference/instructions"
-import { McpInstructions } from "@opencode/core/mcp/instructions"
-import { SessionSystemPrompt } from "@opencode/core/session/system-prompt"
-import { ID, Model } from "@opencode/core/model"
-import { Location } from "@opencode/core/location"
-import { Provider } from "@opencode/core/provider"
+} from "@pendix/core/session/sql"
+import { InstructionEntry } from "@pendix/core/session/instruction-entry"
+import { SessionStore } from "@pendix/core/session/store"
+import { Instructions } from "@pendix/core/instructions/index"
+import { InstructionBuiltIns } from "@pendix/core/instructions/builtins"
+import { InstructionDiscovery } from "@pendix/core/instruction-discovery"
+import { SkillInstructions } from "@pendix/core/skill/instructions"
+import { ReferenceInstructions } from "@pendix/core/reference/instructions"
+import { McpInstructions } from "@pendix/core/mcp/instructions"
+import { SessionSystemPrompt } from "@pendix/core/session/system-prompt"
+import { ID, Model } from "@pendix/core/model"
+import { Location } from "@pendix/core/location"
+import { Provider } from "@pendix/core/provider"
 import {
   Cause,
   Context,
@@ -103,11 +103,11 @@ import { TestClock } from "effect/testing"
 import { and, asc, desc, eq, sql } from "drizzle-orm"
 import { testEffect } from "./lib/effect"
 import { promptLocationNode } from "./fixture/prompt-location"
-import { LocationServiceMap } from "@opencode/core/location-service-map"
+import { LocationServiceMap } from "@pendix/core/location-service-map"
 import { Expected } from "./lib/session-message"
 import { permissionLayer } from "./lib/permission"
 import { agentHost, modelHost, host, noProviders } from "./plugin/host"
-import { CodeModeInstructions } from "@opencode/core/codemode/instructions"
+import { CodeModeInstructions } from "@pendix/core/codemode/instructions"
 
 const emptyCodeMode = `${CodeModeInstructions.render({ total: 0, namespaces: [] })}\n\n`
 type ToolBarrier = {
@@ -5400,7 +5400,7 @@ describe("SessionRunnerLLM", () => {
       "User-Agent": App.useragent(App.make()),
       "x-opencode-project": Project.ID.global,
       "x-opencode-session": sessionID,
-      "x-opencode-client": "opencode",
+      "x-opencode-client": "pendix",
     })
   })
 
@@ -7000,7 +7000,7 @@ describe("SessionRunnerLLM", () => {
           error: {
             type: "provider.go-limit",
             message:
-              "OpenCode Go 5 hour usage limit reached. Switch to a free model, or turn on Extra Usage on the Go page in OpenCode Console to keep going.",
+              "Provider 5 hour usage limit reached. Switch to another model or provider to keep going.",
             status: 429,
             response: { body },
             retryAfterMs: 3_600_000,

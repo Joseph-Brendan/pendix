@@ -1,8 +1,8 @@
 import { createEffect, onCleanup, onMount, type ParentProps } from "solid-js"
 import { MetaProvider } from "@solidjs/meta"
-import { DialogProvider } from "@opencode/ui/context/dialog"
-import { Font } from "@opencode/ui/font"
-import { ThemeProvider, useTheme, type ColorScheme } from "@opencode/ui/theme"
+import { DialogProvider } from "@pendix/ui/context/dialog"
+import { Font } from "@pendix/ui/font"
+import { ThemeProvider, useTheme, type ColorScheme } from "@pendix/ui/theme"
 import { LanguageProvider, UiI18nBridge, useLanguage } from "@/runtime/i18n/language"
 import { SettingsProvider } from "@/settings/model"
 

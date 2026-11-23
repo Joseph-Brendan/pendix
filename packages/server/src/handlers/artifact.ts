@@ -1,9 +1,9 @@
-import { Artifact } from "@opencode/core/artifact"
-import { KV } from "@opencode/core/kv"
-import { Location } from "@opencode/core/location"
-import { LocationServiceMap } from "@opencode/core/location-service-map"
-import { AbsolutePath } from "@opencode/core/schema"
-import { Session } from "@opencode/core/session"
+import { Artifact } from "@pendix/core/artifact"
+import { KV } from "@pendix/core/kv"
+import { Location } from "@pendix/core/location"
+import { LocationServiceMap } from "@pendix/core/location-service-map"
+import { AbsolutePath } from "@pendix/core/schema"
+import { Session } from "@pendix/core/session"
 import {
   ArtifactNotFoundError,
   FileNotFoundError,
@@ -11,7 +11,7 @@ import {
   InvalidRequestError,
   ProviderNotFoundError,
   ServiceUnavailableError,
-} from "@opencode/protocol/errors"
+} from "@pendix/protocol/errors"
 import { Effect } from "effect"
 import { type HttpServerRequest, HttpServerResponse } from "effect/http"
 import { HttpApiSchema } from "effect/http-api"

@@ -1,5 +1,5 @@
-import { Scope } from "@opencode/plugin/gui/host"
-import type { Cleanup } from "@opencode/plugin/gui/main"
+import { Scope } from "@pendix/plugin/gui/host"
+import type { Cleanup } from "@pendix/plugin/gui/main"
 import { isQuitting, keptScope, type Handoff, type State } from "../lifecycle/machine"
 import {
   createLifecycleState,

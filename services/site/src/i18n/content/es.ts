@@ -191,7 +191,7 @@ export const content = {
         },
         "npm-or-bun": {
           title: "npm o bun",
-          body: "Instálalo con npm i @opencode/sdk o bun add @opencode/sdk.",
+          body: "Instálalo con npm i @pendix/sdk o bun add @opencode/sdk.",
         },
         "in-process-host": {
           title: "Host en proceso",

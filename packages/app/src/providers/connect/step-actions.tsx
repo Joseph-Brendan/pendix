@@ -1,5 +1,5 @@
-import { Button } from "@opencode/ui/button"
-import { Spinner } from "@opencode/ui/spinner"
+import { Button } from "@pendix/ui/button"
+import { Spinner } from "@pendix/ui/spinner"
 import type { JSX } from "solid-js"
 
 // Secondary actions first, the main action furthest right.

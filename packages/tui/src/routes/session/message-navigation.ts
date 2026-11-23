@@ -1,4 +1,4 @@
-import type { SessionMessageInfo } from "@opencode/client"
+import type { SessionMessageInfo } from "@pendix/client"
 
 type MessageChild = {
   readonly id?: string

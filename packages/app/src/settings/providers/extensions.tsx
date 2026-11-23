@@ -1,4 +1,4 @@
-import type { McpServer, PluginInfo } from "@opencode/client/promise"
+import type { McpServer, PluginInfo } from "@pendix/client/promise"
 import {
   Component,
   For,
@@ -11,12 +11,12 @@ import {
   untrack,
   type JSX,
 } from "solid-js"
-import { useDialog } from "@opencode/ui/context/dialog"
-import { Icon } from "@opencode/ui/icon"
-import { Button } from "@opencode/ui/button"
-import { Switch } from "@opencode/ui/switch"
-import { Tabs } from "@opencode/ui/tabs"
-import { TruncatedText } from "@opencode/ui/truncated-text"
+import { useDialog } from "@pendix/ui/context/dialog"
+import { Icon } from "@pendix/ui/icon"
+import { Button } from "@pendix/ui/button"
+import { Switch } from "@pendix/ui/switch"
+import { Tabs } from "@pendix/ui/tabs"
+import { TruncatedText } from "@pendix/ui/truncated-text"
 import { useLanguage } from "@/runtime/i18n/language"
 import { useData } from "@/runtime/server/current"
 import { useServerSDK } from "@/runtime/server/client"

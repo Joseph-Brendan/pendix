@@ -1,4 +1,4 @@
-import { installFocusRescue } from "@opencode/ui/context/focus-rescue"
+import { installFocusRescue } from "@pendix/ui/context/focus-rescue"
 
 /** Scopes whose buttons remove themselves when pressed, all but the opener. */
 export function mountFocusRescue() {

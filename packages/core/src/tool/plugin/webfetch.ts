@@ -1,7 +1,7 @@
 export * as WebFetchTool from "./webfetch.js"
 
-import type { Context } from "@opencode/plugin/effect/plugin"
-import { ToolFailure } from "@opencode/ai/effect"
+import type { Context } from "@pendix/plugin/effect/plugin"
+import { ToolFailure } from "@pendix/ai/effect"
 import { Duration, Effect, Schema } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientError, HttpClientRequest, HttpClientResponse } from "effect/http"
 import { Parser } from "htmlparser2"
@@ -55,7 +55,7 @@ const headers = (format: Format, userAgent: string) => ({
 })
 
 const openCodeUserAgent =
-  "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OpenCode-User/1.0; +https://opencode.ai"
+  "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; Pendix-User/1.0; +https://pendix.dev"
 
 const isCloudflareChallenge = (error: unknown) => {
   if (!HttpClientError.isHttpClientError(error) || error.reason._tag !== "StatusCodeError") return false
@@ -164,7 +164,7 @@ export const Plugin = {
                     ...Permission.invocation(context),
                   })
                 const response = yield* execute(http, check, url, input.format).pipe(
-                  Effect.catchIf(isCloudflareChallenge, () => execute(http, check, url, input.format, "opencode")),
+                  Effect.catchIf(isCloudflareChallenge, () => execute(http, check, url, input.format, "pendix")),
                 )
                 const contentType = response.headers["content-type"] || ""
                 const mime = mimeFrom(contentType)

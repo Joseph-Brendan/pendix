@@ -2,11 +2,11 @@ import { expect } from "bun:test"
 import fs from "node:fs/promises"
 import { createServer } from "node:http"
 import path from "node:path"
-import { Agent } from "@opencode/schema/agent"
-import { Integration } from "@opencode/schema/integration"
-import { ServerInfo } from "@opencode/protocol/groups/server"
+import { Agent } from "@pendix/schema/agent"
+import { Integration } from "@pendix/schema/integration"
+import { ServerInfo } from "@pendix/protocol/groups/server"
 import { Effect, Schedule, Schema } from "effect"
-import { Session } from "@opencode/schema/session"
+import { Session } from "@pendix/schema/session"
 import { tmpdir } from "../../core/test/fixture/tmpdir"
 import { it } from "../../core/test/lib/effect"
 import { ServerFetch } from "../src/fetch"
@@ -222,7 +222,7 @@ it.live("serves the HttpApi and enforces Basic auth like the Node server", () =>
       Effect.flatMap(Schema.decodeUnknownEffect(ServerInfo)),
     )
     expect(body.version).toBe("test-version")
-    expect(body.paths.tmp).toEndWith("opencode")
+    expect(body.paths.tmp).toEndWith("pendix")
     expect(body.capabilities?.persistentPty).toBe(true)
   }),
 )

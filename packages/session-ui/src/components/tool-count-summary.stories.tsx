@@ -1,4 +1,4 @@
-import { Button } from "@opencode/ui/button"
+import { Button } from "@pendix/ui/button"
 import { createEffect } from "solid-js"
 import { createStore } from "solid-js/store"
 import { AnimatedCountList, type CountItem } from "./tool-count-summary"

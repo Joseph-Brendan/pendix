@@ -1,9 +1,9 @@
 export * as Flag from "./flag.js"
 
 import { Context, Effect, Layer } from "effect"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
-import { ConfigFlag } from "@opencode/schema/config/flag"
-import type { Entry } from "@opencode/schema/config"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
+import { ConfigFlag } from "@pendix/schema/config/flag"
+import type { Entry } from "@pendix/schema/config"
 import { App } from "./app.js"
 import { Config } from "./config.js"
 import { FlagResolve } from "./flag/resolve.js"

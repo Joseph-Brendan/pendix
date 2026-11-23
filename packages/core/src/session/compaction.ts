@@ -13,11 +13,11 @@ import {
   type ToolEntry,
   UnknownProviderError,
   type Usage,
-} from "@opencode/ai/effect"
-import type { StreamOptions } from "@opencode/ai/route"
-import type { SessionCompactionResult } from "@opencode/plugin/effect/session"
-import type { SessionError } from "@opencode/schema/session-error"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+} from "@pendix/ai/effect"
+import type { StreamOptions } from "@pendix/ai/route"
+import type { SessionCompactionResult } from "@pendix/plugin/effect/session"
+import type { SessionError } from "@pendix/schema/session-error"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Clock, Context, DateTime, Effect, Exit, Fiber, Layer, Result, Scope, Stream } from "effect"
 import { Agent } from "../agent.js"
 import { Bus } from "../bus.js"

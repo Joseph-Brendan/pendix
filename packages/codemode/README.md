@@ -1,4 +1,4 @@
-# @opencode/codemode
+# @pendix/codemode
 
 This is our take on code mode: a lightweight, pure interpreter for a JavaScript-like language built around calling
 tools. The language itself is [psychoscript](https://github.com/anomalyco/psychoscript); see its interpreter support
@@ -34,7 +34,7 @@ and Extension.make.
 ## Quick Start
 
 ```ts
-import { CodeMode, Namespace, Tool } from "@opencode/codemode"
+import { CodeMode, Namespace, Tool } from "@pendix/codemode"
 import { Effect, Schema } from "effect"
 
 const lookupOrder = Tool.make({

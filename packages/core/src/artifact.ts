@@ -14,10 +14,10 @@ import {
   Provider,
   ProviderID,
   UpdateInput,
-} from "@opencode/schema/artifact"
-import type { SessionID } from "@opencode/schema/session-id"
-import { Global } from "@opencode/util/global"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+} from "@pendix/schema/artifact"
+import type { SessionID } from "@pendix/schema/session-id"
+import { Global } from "@pendix/util/global"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Clock, Context, Effect, Layer, Option, Schema } from "effect"
 import { Bus } from "./bus.js"
 import { Flag } from "./flag.js"

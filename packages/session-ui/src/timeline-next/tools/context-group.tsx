@@ -1,8 +1,8 @@
-import type { SessionMessageAssistantTool } from "@opencode/client/promise"
-import { AnimatedNumber } from "@opencode/ui/animated-number"
-import { Badge } from "@opencode/ui/badge"
-import { type UiI18n, useI18n } from "@opencode/ui/context/i18n"
-import { TextShimmer } from "@opencode/ui/text-shimmer"
+import type { SessionMessageAssistantTool } from "@pendix/client/promise"
+import { AnimatedNumber } from "@pendix/ui/animated-number"
+import { Badge } from "@pendix/ui/badge"
+import { type UiI18n, useI18n } from "@pendix/ui/context/i18n"
+import { TextShimmer } from "@pendix/ui/text-shimmer"
 import { createMemo, For, Index, Match, Show, Switch } from "solid-js"
 import { BasicTool } from "../../components/basic-tool"
 import {

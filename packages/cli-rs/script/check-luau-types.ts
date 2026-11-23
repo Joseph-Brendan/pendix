@@ -2,7 +2,7 @@
 // `luau-analyze` at the runtime's Luau release, the new solver, and `--formatter=gnu` (`plain` always exits 0). Each
 // plugin is one run over its files by absolute path: a module given by a relative path and also required is checked
 // twice. Each plugin's nearest `.luaurc` must say `"languageMode": "strict"` and alias `opencode` to the generated stub
-// (crates/plugin/src/luau/opencode), which types `require("@opencode/plugin")`.
+// (crates/plugin/src/luau/opencode), which types `require("@pendix/plugin")`.
 //
 // The release is the one the runtime vendors, read from Cargo.lock (`luau0-src 0.22.0+luau740` is 0.740, and the
 // fork's `0.24.1+luau747.sk.aa9d8201` is 0.747, whose analyzer it does not change), so the analyzer moves with a Luau

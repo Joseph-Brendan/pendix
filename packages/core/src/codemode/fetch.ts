@@ -1,7 +1,7 @@
 export * as CodeModeFetch from "./fetch.js"
 
-import { Extension } from "@opencode/codemode"
-import { isRecord } from "@opencode/util/record"
+import { Extension } from "@pendix/codemode"
+import { isRecord } from "@pendix/util/record"
 import { Effect, Option } from "effect"
 import { Location } from "../location.js"
 import { Permission } from "../permission.js"

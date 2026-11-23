@@ -83,7 +83,7 @@ export async function sandbox(env: Record<string, string> = {}): Promise<Sandbox
       PATH: process.env.PATH ?? "/usr/bin:/bin",
       LANG: "C.UTF-8",
       HOME: paths.home,
-      // The TS home for discovery and the global skill folders (`@opencode/util/global`).
+      // The TS home for discovery and the global skill folders (`@pendix/util/global`).
       OPENCODE_TEST_HOME: paths.home,
       XDG_CONFIG_HOME: paths.config,
       XDG_DATA_HOME: paths.data,

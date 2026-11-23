@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron"
-import { sameLoopbackServer } from "@opencode/app/loopback"
-import { builtins } from "@opencode/gui-plugins/main"
+import { sameLoopbackServer } from "@pendix/app/loopback"
+import { builtins } from "@pendix/gui-plugins/main"
 import {
   pluginIdAvailable,
   runsOn,
@@ -8,7 +8,7 @@ import {
   type BridgeMenubarItem,
   type Entry,
   type Scope,
-} from "@opencode/plugin/gui/host"
+} from "@pendix/plugin/gui/host"
 import {
   MenubarItem,
   type Plugin,
@@ -31,9 +31,9 @@ import {
   type ServerEndpoint,
   type ServerEndpoints,
   type Windows,
-} from "@opencode/plugin/gui/main"
-import type { BuiltinCatalog, BuiltinMainContext, Lifecycle } from "@opencode/plugin/gui/builtin"
-import type { OpenCodeClient, PluginGuiBundle } from "@opencode/client"
+} from "@pendix/plugin/gui/main"
+import type { BuiltinCatalog, BuiltinMainContext, Lifecycle } from "@pendix/plugin/gui/builtin"
+import type { OpenCodeClient, PluginGuiBundle } from "@pendix/client"
 import { Exit, Match, Predicate, Schema } from "effect"
 import type { PluginEndpoint, PluginInstalled } from "../../shared/ipc-rpc/plugins"
 import {
@@ -125,7 +125,7 @@ type Listing = {
   readonly skipped: ReadonlyMap<string, string>
 }
 
-const loadClient = () => import("@opencode/client")
+const loadClient = () => import("@pendix/client")
 
 /** The client of the app's own server, made once the client module loaded and again when the endpoint changes. */
 type SidecarClient = {

@@ -1,8 +1,8 @@
 export * as FileWrite from "./file-write.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
-import type { FileDiff } from "@opencode/schema/file-diff"
-import { Bom } from "@opencode/util/bom"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
+import type { FileDiff } from "@pendix/schema/file-diff"
+import { Bom } from "@pendix/util/bom"
 import { Context, Effect, Layer } from "effect"
 import { Environment } from "./environment/index.js"
 import { FileAccess } from "./file-access.js"

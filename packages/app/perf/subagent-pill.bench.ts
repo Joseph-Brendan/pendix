@@ -1,8 +1,8 @@
 // Scrolling the background activity menu with 20 long-running subagents open, both quiet and while the parent
 // session streams tool progress and child sessions update in the background.
 import { bench, web } from "@hona/strobe"
-import { base64Encode } from "@opencode/util/encode"
-import type { OpenCodeEvent, SessionMessageAssistantTool, SessionMessageInfo } from "@opencode/client/promise"
+import { base64Encode } from "@pendix/util/encode"
+import type { OpenCodeEvent, SessionMessageAssistantTool, SessionMessageInfo } from "@pendix/client/promise"
 import { mockOpenCodeServer } from "../e2e/utils/mock-server"
 import { cached } from "./fixtures/mock"
 import { eventSource } from "./fixtures/events"

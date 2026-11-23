@@ -31,13 +31,13 @@
           "generate-content": {
             "base_url": "https://api.acme.test/v1",
             "sdk": {
-              "opencodeai": "@opencode/ai/providers/google"
+              "opencodeai": "@pendix/ai/providers/google"
             }
           },
           "interactions": {
             "base_url": "https://api.acme.test/v1beta",
             "sdk": {
-              "opencodeai": "@opencode/ai/providers/google/interactions"
+              "opencodeai": "@pendix/ai/providers/google/interactions"
             }
           }
         }

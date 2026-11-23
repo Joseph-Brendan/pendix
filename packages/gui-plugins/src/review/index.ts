@@ -1,7 +1,7 @@
-import { builtinCatalog } from "@opencode/plugin/gui/builtin"
+import { builtinCatalog } from "@pendix/plugin/gui/builtin"
 import { Schema } from "effect"
-import { Plugin } from "@opencode/plugin/gui"
-import { BuiltinStore } from "@opencode/plugin/gui/builtin"
+import { Plugin } from "@pendix/plugin/gui"
+import { BuiltinStore } from "@pendix/plugin/gui/builtin"
 import en from "./i18n/en"
 
 const DiffState = Schema.Struct({ diffStyle: Schema.Literals(["unified", "split"]) })

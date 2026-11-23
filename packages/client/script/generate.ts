@@ -1,5 +1,5 @@
 import { NodeFileSystem } from "@effect/platform-node"
-import { compile, emitEffectImported, emitEffectShape, emitPromise, write } from "@opencode/httpapi-codegen"
+import { compile, emitEffectImported, emitEffectShape, emitPromise, write } from "@pendix/httpapi-codegen"
 import {
   ClientApi,
   clientNamespace,
@@ -7,50 +7,50 @@ import {
   effectOmitEndpoints,
   groupNames,
   promiseOmitEndpoints,
-} from "@opencode/protocol/client"
-import { Agent } from "@opencode/schema/agent"
-import { Artifact } from "@opencode/schema/artifact"
-import { Automation } from "@opencode/schema/automation"
-import { Command } from "@opencode/schema/command"
-import { Config } from "@opencode/schema/config"
-import { Credential } from "@opencode/schema/credential"
-import { Event } from "@opencode/schema/event"
-import { EventLog } from "@opencode/schema/event-log"
-import { FileDiff } from "@opencode/schema/file-diff"
-import { FileSystem } from "@opencode/schema/filesystem"
-import { Form } from "@opencode/schema/form"
-import { Generate } from "@opencode/schema/generate"
-import { Instruction } from "@opencode/schema/instruction"
-import { InstructionEntry } from "@opencode/schema/instruction-entry"
-import { Integration } from "@opencode/schema/integration"
-import { Job } from "@opencode/schema/job"
-import { Location } from "@opencode/schema/location"
-import { Mcp } from "@opencode/schema/mcp"
-import { Model } from "@opencode/schema/model"
-import { Money } from "@opencode/schema/money"
-import { Permission } from "@opencode/schema/permission"
-import { PermissionSaved } from "@opencode/schema/permission-saved"
-import { Plugin } from "@opencode/schema/plugin"
-import { Project } from "@opencode/schema/project"
-import { Worktree } from "@opencode/schema/worktree"
-import { AgentAttachment, FileAttachment, Prompt, PromptMention } from "@opencode/schema/prompt"
-import { PromptInput } from "@opencode/schema/prompt-input"
-import { Provider } from "@opencode/schema/provider"
-import { Pty } from "@opencode/schema/pty"
-import { PtyTicket } from "@opencode/schema/pty-ticket"
-import { Question } from "@opencode/schema/question"
-import { Reference } from "@opencode/schema/reference"
-import { AbsolutePath, RelativePath } from "@opencode/schema/schema"
-import { Session } from "@opencode/schema/session"
-import { SessionMessage } from "@opencode/schema/session-message"
-import { SessionInbox } from "@opencode/schema/session-inbox"
-import { Shell } from "@opencode/schema/shell"
-import { Skill } from "@opencode/schema/skill"
-import { Snapshot } from "@opencode/schema/snapshot"
-import { UsageLimits } from "@opencode/schema/usage-limits"
-import { Vcs } from "@opencode/schema/vcs"
-import { WebSearch } from "@opencode/schema/websearch"
-import { Workspace } from "@opencode/schema/workspace"
+} from "@pendix/protocol/client"
+import { Agent } from "@pendix/schema/agent"
+import { Artifact } from "@pendix/schema/artifact"
+import { Automation } from "@pendix/schema/automation"
+import { Command } from "@pendix/schema/command"
+import { Config } from "@pendix/schema/config"
+import { Credential } from "@pendix/schema/credential"
+import { Event } from "@pendix/schema/event"
+import { EventLog } from "@pendix/schema/event-log"
+import { FileDiff } from "@pendix/schema/file-diff"
+import { FileSystem } from "@pendix/schema/filesystem"
+import { Form } from "@pendix/schema/form"
+import { Generate } from "@pendix/schema/generate"
+import { Instruction } from "@pendix/schema/instruction"
+import { InstructionEntry } from "@pendix/schema/instruction-entry"
+import { Integration } from "@pendix/schema/integration"
+import { Job } from "@pendix/schema/job"
+import { Location } from "@pendix/schema/location"
+import { Mcp } from "@pendix/schema/mcp"
+import { Model } from "@pendix/schema/model"
+import { Money } from "@pendix/schema/money"
+import { Permission } from "@pendix/schema/permission"
+import { PermissionSaved } from "@pendix/schema/permission-saved"
+import { Plugin } from "@pendix/schema/plugin"
+import { Project } from "@pendix/schema/project"
+import { Worktree } from "@pendix/schema/worktree"
+import { AgentAttachment, FileAttachment, Prompt, PromptMention } from "@pendix/schema/prompt"
+import { PromptInput } from "@pendix/schema/prompt-input"
+import { Provider } from "@pendix/schema/provider"
+import { Pty } from "@pendix/schema/pty"
+import { PtyTicket } from "@pendix/schema/pty-ticket"
+import { Question } from "@pendix/schema/question"
+import { Reference } from "@pendix/schema/reference"
+import { AbsolutePath, RelativePath } from "@pendix/schema/schema"
+import { Session } from "@pendix/schema/session"
+import { SessionMessage } from "@pendix/schema/session-message"
+import { SessionInbox } from "@pendix/schema/session-inbox"
+import { Shell } from "@pendix/schema/shell"
+import { Skill } from "@pendix/schema/skill"
+import { Snapshot } from "@pendix/schema/snapshot"
+import { UsageLimits } from "@pendix/schema/usage-limits"
+import { Vcs } from "@pendix/schema/vcs"
+import { WebSearch } from "@pendix/schema/websearch"
+import { Workspace } from "@pendix/schema/workspace"
 import { Effect, Schema } from "effect"
 import { fileURLToPath } from "url"
 
@@ -67,54 +67,54 @@ const effectContract = compile(ClientApi, {
   aliases: deprecatedClientPaths,
 })
 const effectTypeReferences = [
-  ...namespaceTypes("Agent", "@opencode/schema/agent", Agent),
-  ...namespaceTypes("Artifact", "@opencode/schema/artifact", Artifact),
-  ...namespaceTypes("Automation", "@opencode/schema/automation", Automation),
-  ...namespaceTypes("Command", "@opencode/schema/command", Command),
-  ...namespaceTypes("Config", "@opencode/schema/config", Config),
-  ...namespaceTypes("Credential", "@opencode/schema/credential", Credential),
-  ...namespaceTypes("Event", "@opencode/schema/event", Event),
-  ...namespaceTypes("EventLog", "@opencode/schema/event-log", EventLog),
-  ...namespaceTypes("FileDiff", "@opencode/schema/file-diff", FileDiff),
-  ...namespaceTypes("FileSystem", "@opencode/schema/filesystem", FileSystem),
-  ...namespaceTypes("Form", "@opencode/schema/form", Form),
-  ...namespaceTypes("Generate", "@opencode/schema/generate", Generate),
-  ...namespaceTypes("Instruction", "@opencode/schema/instruction", Instruction),
-  ...namespaceTypes("InstructionEntry", "@opencode/schema/instruction-entry", InstructionEntry),
-  ...namespaceTypes("Integration", "@opencode/schema/integration", Integration),
-  ...namespaceTypes("Job", "@opencode/schema/job", Job),
-  typeReference("Location.PublicRef", "@opencode/schema/location", Location.PublicRef),
-  typeReference("Location.PublicInfo", "@opencode/schema/location", Location.PublicInfo),
-  ...namespaceTypes("Mcp", "@opencode/schema/mcp", Mcp),
-  ...namespaceTypes("Model", "@opencode/schema/model", Model),
-  ...namespaceTypes("Money", "@opencode/schema/money", Money),
-  ...namespaceTypes("Permission", "@opencode/schema/permission", Permission),
-  ...namespaceTypes("PermissionSaved", "@opencode/schema/permission-saved", PermissionSaved),
-  ...namespaceTypes("Plugin", "@opencode/schema/plugin", Plugin),
-  ...namespaceTypes("Project", "@opencode/schema/project", Project),
-  ...namespaceTypes("Worktree", "@opencode/schema/worktree", Worktree),
-  ...namespaceTypes("PromptInput", "@opencode/schema/prompt-input", PromptInput),
-  ...namespaceTypes("Provider", "@opencode/schema/provider", Provider),
-  ...namespaceTypes("Pty", "@opencode/schema/pty", Pty),
-  ...namespaceTypes("PtyTicket", "@opencode/schema/pty-ticket", PtyTicket),
-  ...namespaceTypes("Question", "@opencode/schema/question", Question),
-  ...namespaceTypes("Reference", "@opencode/schema/reference", Reference),
-  ...namespaceTypes("Session", "@opencode/schema/session", Session),
-  ...namespaceTypes("SessionMessage", "@opencode/schema/session-message", SessionMessage),
-  ...namespaceTypes("SessionInbox", "@opencode/schema/session-inbox", SessionInbox),
-  ...namespaceTypes("Shell", "@opencode/schema/shell", Shell),
-  ...namespaceTypes("Skill", "@opencode/schema/skill", Skill),
-  ...namespaceTypes("Snapshot", "@opencode/schema/snapshot", Snapshot),
-  ...namespaceTypes("UsageLimits", "@opencode/schema/usage-limits", UsageLimits),
-  ...namespaceTypes("Vcs", "@opencode/schema/vcs", Vcs),
-  ...namespaceTypes("WebSearch", "@opencode/schema/websearch", WebSearch),
-  ...namespaceTypes("Workspace", "@opencode/schema/workspace", Workspace),
-  typeReference("Prompt", "@opencode/schema/prompt", Prompt),
-  typeReference("PromptMention", "@opencode/schema/prompt", PromptMention),
-  typeReference("FileAttachment", "@opencode/schema/prompt", FileAttachment),
-  typeReference("AgentAttachment", "@opencode/schema/prompt", AgentAttachment),
-  typeReference("AbsolutePath", "@opencode/schema/schema", AbsolutePath),
-  typeReference("RelativePath", "@opencode/schema/schema", RelativePath),
+  ...namespaceTypes("Agent", "@pendix/schema/agent", Agent),
+  ...namespaceTypes("Artifact", "@pendix/schema/artifact", Artifact),
+  ...namespaceTypes("Automation", "@pendix/schema/automation", Automation),
+  ...namespaceTypes("Command", "@pendix/schema/command", Command),
+  ...namespaceTypes("Config", "@pendix/schema/config", Config),
+  ...namespaceTypes("Credential", "@pendix/schema/credential", Credential),
+  ...namespaceTypes("Event", "@pendix/schema/event", Event),
+  ...namespaceTypes("EventLog", "@pendix/schema/event-log", EventLog),
+  ...namespaceTypes("FileDiff", "@pendix/schema/file-diff", FileDiff),
+  ...namespaceTypes("FileSystem", "@pendix/schema/filesystem", FileSystem),
+  ...namespaceTypes("Form", "@pendix/schema/form", Form),
+  ...namespaceTypes("Generate", "@pendix/schema/generate", Generate),
+  ...namespaceTypes("Instruction", "@pendix/schema/instruction", Instruction),
+  ...namespaceTypes("InstructionEntry", "@pendix/schema/instruction-entry", InstructionEntry),
+  ...namespaceTypes("Integration", "@pendix/schema/integration", Integration),
+  ...namespaceTypes("Job", "@pendix/schema/job", Job),
+  typeReference("Location.PublicRef", "@pendix/schema/location", Location.PublicRef),
+  typeReference("Location.PublicInfo", "@pendix/schema/location", Location.PublicInfo),
+  ...namespaceTypes("Mcp", "@pendix/schema/mcp", Mcp),
+  ...namespaceTypes("Model", "@pendix/schema/model", Model),
+  ...namespaceTypes("Money", "@pendix/schema/money", Money),
+  ...namespaceTypes("Permission", "@pendix/schema/permission", Permission),
+  ...namespaceTypes("PermissionSaved", "@pendix/schema/permission-saved", PermissionSaved),
+  ...namespaceTypes("Plugin", "@pendix/schema/plugin", Plugin),
+  ...namespaceTypes("Project", "@pendix/schema/project", Project),
+  ...namespaceTypes("Worktree", "@pendix/schema/worktree", Worktree),
+  ...namespaceTypes("PromptInput", "@pendix/schema/prompt-input", PromptInput),
+  ...namespaceTypes("Provider", "@pendix/schema/provider", Provider),
+  ...namespaceTypes("Pty", "@pendix/schema/pty", Pty),
+  ...namespaceTypes("PtyTicket", "@pendix/schema/pty-ticket", PtyTicket),
+  ...namespaceTypes("Question", "@pendix/schema/question", Question),
+  ...namespaceTypes("Reference", "@pendix/schema/reference", Reference),
+  ...namespaceTypes("Session", "@pendix/schema/session", Session),
+  ...namespaceTypes("SessionMessage", "@pendix/schema/session-message", SessionMessage),
+  ...namespaceTypes("SessionInbox", "@pendix/schema/session-inbox", SessionInbox),
+  ...namespaceTypes("Shell", "@pendix/schema/shell", Shell),
+  ...namespaceTypes("Skill", "@pendix/schema/skill", Skill),
+  ...namespaceTypes("Snapshot", "@pendix/schema/snapshot", Snapshot),
+  ...namespaceTypes("UsageLimits", "@pendix/schema/usage-limits", UsageLimits),
+  ...namespaceTypes("Vcs", "@pendix/schema/vcs", Vcs),
+  ...namespaceTypes("WebSearch", "@pendix/schema/websearch", WebSearch),
+  ...namespaceTypes("Workspace", "@pendix/schema/workspace", Workspace),
+  typeReference("Prompt", "@pendix/schema/prompt", Prompt),
+  typeReference("PromptMention", "@pendix/schema/prompt", PromptMention),
+  typeReference("FileAttachment", "@pendix/schema/prompt", FileAttachment),
+  typeReference("AgentAttachment", "@pendix/schema/prompt", AgentAttachment),
+  typeReference("AbsolutePath", "@pendix/schema/schema", AbsolutePath),
+  typeReference("RelativePath", "@pendix/schema/schema", RelativePath),
 ]
 
 await Effect.runPromise(
@@ -140,7 +140,7 @@ await Effect.runPromise(
           outputTypes: {
             "event.subscribe": {
               name: "OpenCodeEvent",
-              import: 'import type { OpenCodeEvent } from "@opencode/protocol/groups/event"',
+              import: 'import type { OpenCodeEvent } from "@pendix/protocol/groups/event"',
             },
           },
         }),

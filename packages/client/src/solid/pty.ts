@@ -1,4 +1,4 @@
-import { PersistentPty } from "@opencode/schema/persistent-pty"
+import { PersistentPty } from "@pendix/schema/persistent-pty"
 import { Schema } from "effect"
 import type { ExperimentalPersistentPtyConnectTokenInput, OpenCodeClient } from "../promise"
 

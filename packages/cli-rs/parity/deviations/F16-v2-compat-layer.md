@@ -6,7 +6,7 @@ synchronous. A module under `node_modules` (an installed package) compiles with 
 read once as the component is created; a local module compiles with Solid's compiler, whose props follow their signals
 (`@opentui/solid/scripts/solid-plugin.js`).
 
-**Rust.** The JS host gives the module the same context and the modules TS gives it (`@opencode/plugin/tui`, Solid,
+**Rust.** The JS host gives the module the same context and the modules TS gives it (`@pendix/plugin/tui`, Solid,
 `@opentui/solid`, `@opentui/core`), from the compatibility layer (`crates/plugin/src/pipe/compat`). Its JSX renders with
 Solid's universal renderer into plain nodes, which each view reads into a contract 2.0 tree for the host to draw. The JS host is on unless
 `OPENCODE_PLUGIN_JS` is `0`, `false` or `off`. What differs:
@@ -78,7 +78,7 @@ Solid's universal renderer into plain nodes, which each view reads into a contra
   client names (`EventSubscribeInput`), made with its first listener; a type the client does not name, as a plugin's
   own `rpc.*` events, never comes. The streaming deltas (`session.*.delta`) do not come, as the host's store sends no
   plugin a delta.
-- **Server RPC** (CT-4): `@opencode/plugin/rpc` gives `Rpc.define`, and so does `@opencode/plugin/effect`, whose other
+- **Server RPC** (CT-4): `@pendix/plugin/rpc` gives `Rpc.define`, and so does `@pendix/plugin/effect`, whose other
   names (the server's Effect schemas, `Agent`, `Tool` and the rest) link but are undefined (CT-23:
   opencode-superagent's TUI); and `client.rpc(definition)` calls each method as
   TS's client does (`/api/rpc/<id>/<method>`, the output answered), with its events heard as the host's events of type

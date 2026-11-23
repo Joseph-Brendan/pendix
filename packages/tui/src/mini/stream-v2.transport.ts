@@ -8,10 +8,10 @@ import type {
   SessionMessageInfo,
   SessionMessageUser,
   SessionInboxInfo,
-} from "@opencode/client/promise"
-import { ClientError } from "@opencode/client/promise"
-import { Event } from "@opencode/schema/event"
-import { SessionMessage } from "@opencode/schema/session-message"
+} from "@pendix/client/promise"
+import { ClientError } from "@pendix/client/promise"
+import { Event } from "@pendix/schema/event"
+import { SessionMessage } from "@pendix/schema/session-message"
 import { blockerStatus, pickBlockerView } from "./session-data"
 import { writeSessionOutput } from "./stream"
 import { createFragmentReconciler, fragmentRef, type FragmentReconciler } from "./stream-v2.fragment"

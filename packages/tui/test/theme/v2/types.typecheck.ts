@@ -1,5 +1,5 @@
-import { selectTheme } from "@opencode/theme/tui"
-import type { BackgroundDefinition, TextDefinition, ThemeDefinition, ThemeDocument } from "@opencode/theme/tui"
+import { selectTheme } from "@pendix/theme/tui"
+import type { BackgroundDefinition, TextDefinition, ThemeDefinition, ThemeDocument } from "@pendix/theme/tui"
 import { getOpenCodeClassicTheme } from "../../../src/theme"
 
 const text = {

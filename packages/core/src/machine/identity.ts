@@ -3,8 +3,8 @@ export * as Identity from "./identity.js"
 import crypto from "node:crypto"
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises"
 import path from "node:path"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
-import { Global } from "@opencode/util/global"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
+import { Global } from "@pendix/util/global"
 import { Context, Effect, Layer, Schema } from "effect"
 
 const FILE = path.join("machine", "home-key")

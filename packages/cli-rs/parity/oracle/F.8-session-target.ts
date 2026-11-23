@@ -3,7 +3,7 @@
 // scripted server. Each case records the requests the client sent, what `prepare` saw, and the result or error.
 // Writes parity/fixtures/F.8/session-target.json; crates/store/tests/all/target_oracle.rs serves the same routes to the
 // Rust port and compares.
-import { OpenCode } from "@opencode/client/promise"
+import { OpenCode } from "@pendix/client/promise"
 import { records } from "../lib/records"
 import {
   createWorktreeLocation,

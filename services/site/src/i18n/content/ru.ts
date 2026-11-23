@@ -147,7 +147,7 @@ export const content = {
           body: "Создавайте сессии и отправляйте промпты из любого скрипта.",
         },
         "any-model": { title: "Любая модель", body: "Использует модели, настроенные в вашем OpenCode." },
-        "npm-or-bun": { title: "npm или bun", body: "Установите через npm i @opencode/sdk или bun add @opencode/sdk." },
+        "npm-or-bun": { title: "npm или bun", body: "Установите через npm i @pendix/sdk или bun add @opencode/sdk." },
         "in-process-host": { title: "Хост в процессе", body: "Запускает OpenCode в памяти, без сетевых запросов." },
         "your-plugins": { title: "Ваши плагины", body: "Передайте свои плагины при создании хоста в процессе." },
         "promise-or-effect": {

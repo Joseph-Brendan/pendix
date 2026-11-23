@@ -1,8 +1,8 @@
 export * as FlagResolve from "./resolve.js"
 
 import { Context, Record } from "effect"
-import { ConfigFlag } from "@opencode/schema/config/flag"
-import type { Document, Entry } from "@opencode/schema/config"
+import { ConfigFlag } from "@pendix/schema/config/flag"
+import type { Document, Entry } from "@pendix/schema/config"
 
 export interface State {
   readonly enabled: boolean

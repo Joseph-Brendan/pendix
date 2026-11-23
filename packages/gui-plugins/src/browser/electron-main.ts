@@ -1,5 +1,5 @@
 import electron from "electron"
-import type { Caller, Ipc, IpcImpl, IpcSpec, MainContext } from "@opencode/plugin/gui/main"
+import type { Caller, Ipc, IpcImpl, IpcSpec, MainContext } from "@pendix/plugin/gui/main"
 
 /**
  * The browser plugin's own main entry, run in the Electron of a real-Electron fixture, and the two Ipcs it provides as

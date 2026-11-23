@@ -565,7 +565,7 @@ The JS host loads a directory's TUI module as the TypeScript client does (`packa
 ### The compatibility layer
 
 `crates/plugin/src/pipe/compat`, bundled into `compat.js` by `script/gen/js-host.ts`, gives setup the TypeScript
-client's context. Imports of `@opencode/plugin/tui`, `solid-js`, `solid-js/store`, `@opentui/solid` (and its JSX
+client's context. Imports of `@pendix/plugin/tui`, `solid-js`, `solid-js/store`, `@opentui/solid` (and its JSX
 runtimes) and `@opentui/core` get the layer's, also from a package's own `node_modules`.
 
 - A slot claim, a route and the session panel are surfaces. Each mount renders the JSX with Solid's universal

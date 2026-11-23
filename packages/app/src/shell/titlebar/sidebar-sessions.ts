@@ -1,4 +1,4 @@
-import type { OpenCodeEvent } from "@opencode/client/promise"
+import type { OpenCodeEvent } from "@pendix/client/promise"
 import { mergeHomeSessionIndex } from "@/home/sessions/index"
 
 // Events that keep a preview tab. This is deliberately separate from recency: opening or passively updating a

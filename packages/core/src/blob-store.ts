@@ -1,11 +1,11 @@
 export * as BlobStore from "./blob-store.js"
 
 import path from "path"
-import { Media } from "@opencode/ai/effect"
-import { BlobStore } from "@opencode/schema/blob-store"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
-import { FSUtil } from "@opencode/util/fs-util"
-import { Global } from "@opencode/util/global"
+import { Media } from "@pendix/ai/effect"
+import { BlobStore } from "@pendix/schema/blob-store"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
+import { FSUtil } from "@pendix/util/fs-util"
+import { Global } from "@pendix/util/global"
 import { Context, Duration, Effect, Layer, Schedule, Schema, Stream } from "effect"
 import { FileRetention } from "./file-retention.js"
 

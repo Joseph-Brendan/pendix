@@ -1,8 +1,8 @@
 /** @jsxImportSource @opentui/solid */
-import type { FileDiffInfo, LocationRef } from "@opencode/client"
-import type { Vcs } from "@opencode/schema/vcs"
-import { Plugin } from "@opencode/plugin/tui"
-import type { KeymapCommand, PanelInput, Route } from "@opencode/plugin/tui/context"
+import type { FileDiffInfo, LocationRef } from "@pendix/client"
+import type { Vcs } from "@pendix/schema/vcs"
+import { Plugin } from "@pendix/plugin/tui"
+import type { KeymapCommand, PanelInput, Route } from "@pendix/plugin/tui/context"
 import {
   MouseButton,
   TextAttributes,

@@ -1,4 +1,4 @@
-import type { BuiltinMainStorage, MainStoreFrom } from "@opencode/plugin/gui/builtin"
+import type { BuiltinMainStorage, MainStoreFrom } from "@pendix/plugin/gui/builtin"
 import { History } from "./visits"
 
 /**

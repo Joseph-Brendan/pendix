@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import type { SessionMessageInfo } from "@opencode/client/promise"
+import type { SessionMessageInfo } from "@pendix/client/promise"
 import {
   createTimelineSearchState,
   extractSearchableParts,

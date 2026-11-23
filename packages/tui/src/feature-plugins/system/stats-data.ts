@@ -1,5 +1,5 @@
-import type { SessionStatsInfo } from "@opencode/client"
-import { TokenUsage } from "@opencode/schema/token-usage"
+import type { SessionStatsInfo } from "@pendix/client"
+import { TokenUsage } from "@pendix/schema/token-usage"
 
 export function statsMetrics(stats: SessionStatsInfo) {
   return [

@@ -1,4 +1,4 @@
-import { markdown } from "@opencode/ui/storybook/fixtures"
+import { markdown } from "@pendix/ui/storybook/fixtures"
 import { createEffect, createSignal, onCleanup } from "solid-js"
 import { MarkdownProvider } from "../context/markdown"
 import { Markdown } from "./markdown"
@@ -39,7 +39,7 @@ const longCode = [
   "Reproduce it with:",
   "",
   "```sh",
-  'NODE_OPTIONS="--max-old-space-size=4096 --enable-source-maps" bun install --frozen-lockfile --filter "@opencode/session-ui" && bun run --cwd packages/session-ui typecheck:tsc',
+  'NODE_OPTIONS="--max-old-space-size=4096 --enable-source-maps" bun install --frozen-lockfile --filter "@pendix/session-ui" && bun run --cwd packages/session-ui typecheck:tsc',
   "```",
   "",
   "The failing line:",

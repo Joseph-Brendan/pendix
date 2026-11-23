@@ -1,7 +1,7 @@
 import { For, type JSX } from "solid-js"
-import { Icon } from "@opencode/ui/icon"
-import { IconButton } from "@opencode/ui/icon-button"
-import { Menu } from "@opencode/ui/menu"
+import { Icon } from "@pendix/ui/icon"
+import { IconButton } from "@pendix/ui/icon-button"
+import { Menu } from "@pendix/ui/menu"
 import { useLanguage } from "@/runtime/i18n/language"
 import {
   DEFAULT_RECENT_VIEW,

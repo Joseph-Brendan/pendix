@@ -1,6 +1,6 @@
 export * as ModelResolver from "./model-resolver.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import {
   DecisionModel,
   DecisionModelCompatibility,
@@ -12,15 +12,15 @@ import {
   type ProviderPackage,
   VideoModel,
   VideoModelSchema,
-} from "@opencode/ai/effect"
-import { Auth, mergeTransport } from "@opencode/ai/route"
+} from "@pendix/ai/effect"
+import { Auth, mergeTransport } from "@pendix/ai/route"
 import { Context, Effect, Layer, Schema, Struct } from "effect"
 import { AISDK } from "./aisdk.js"
 import { Credential } from "./credential.js"
 import { Integration } from "./integration.js"
 import { Capabilities, Compatibility, ID, Info, Model, Ref, VariantID } from "./model.js"
 import type { RuntimeInfo } from "./model.js"
-import { Npm } from "@opencode/util/npm"
+import { Npm } from "@pendix/util/npm"
 import { Provider } from "./provider.js"
 
 export class VariantUnavailableError extends Schema.TaggedError<VariantUnavailableError>()(
@@ -420,7 +420,7 @@ const nativeCredentialSettings = (model: RuntimeInfo, specifier: string, credent
   if (credential.type === "key") return { apiKey: credential.key }
   if (credential.type === "oauth") return tokenSettings(specifier, credential.access)
   // The Bedrock plugin projects the saved profile into settings; SigV4 keeps an ambient bearer token from taking over.
-  if (specifier.startsWith("@opencode/ai/providers/amazon-bedrock")) return { auth: "sigv4" }
+  if (specifier.startsWith("@pendix/ai/providers/amazon-bedrock")) return { auth: "sigv4" }
   // The Azure plugin's request hooks replace this with an Entra ID token from the Azure CLI; it only gets the
   // request past the package's own credential check.
   if (model.providerID === Provider.ID.azure) return tokenSettings(specifier, "azure-cli")
@@ -428,11 +428,11 @@ const nativeCredentialSettings = (model: RuntimeInfo, specifier: string, credent
 }
 
 const tokenSettings = (specifier: string, token: string) => {
-  if (specifier === "@opencode/ai/providers/anthropic" || specifier === "@opencode/ai/providers/anthropic-compatible")
+  if (specifier === "@pendix/ai/providers/anthropic" || specifier === "@pendix/ai/providers/anthropic-compatible")
     return { authToken: token }
   if (
-    specifier === "@opencode/ai/providers/google-vertex" ||
-    specifier.startsWith("@opencode/ai/providers/google-vertex/")
+    specifier === "@pendix/ai/providers/google-vertex" ||
+    specifier.startsWith("@pendix/ai/providers/google-vertex/")
   )
     return { accessToken: token }
   return { apiKey: token }
@@ -597,27 +597,27 @@ const API_KEY_AUTH_PACKAGES: ReadonlySet<string> = new Set([
   "@ai-sdk/xai",
   "@openrouter/ai-sdk-provider",
   "@ai-sdk/azure",
-  "@opencode/ai/providers/openai",
-  "@opencode/ai/providers/anthropic",
-  "@opencode/ai/providers/anthropic-compatible",
-  "@opencode/ai/providers/baseten",
-  "@opencode/ai/providers/cerebras",
-  "@opencode/ai/providers/cloudflare-ai-gateway",
-  "@opencode/ai/providers/cloudflare-workers-ai",
-  "@opencode/ai/providers/deepinfra",
-  "@opencode/ai/providers/deepseek",
-  "@opencode/ai/providers/fireworks",
-  "@opencode/ai/providers/openai-compatible",
-  "@opencode/ai/providers/openai-compatible/decisions",
-  "@opencode/ai/providers/google",
-  "@opencode/ai/providers/google/interactions",
-  "@opencode/ai/providers/groq",
-  "@opencode/ai/providers/mistral",
-  "@opencode/ai/providers/togetherai",
-  "@opencode/ai/providers/vercel-ai-gateway",
-  "@opencode/ai/providers/xai",
-  "@opencode/ai/providers/openrouter",
-  "@opencode/ai/providers/azure",
+  "@pendix/ai/providers/openai",
+  "@pendix/ai/providers/anthropic",
+  "@pendix/ai/providers/anthropic-compatible",
+  "@pendix/ai/providers/baseten",
+  "@pendix/ai/providers/cerebras",
+  "@pendix/ai/providers/cloudflare-ai-gateway",
+  "@pendix/ai/providers/cloudflare-workers-ai",
+  "@pendix/ai/providers/deepinfra",
+  "@pendix/ai/providers/deepseek",
+  "@pendix/ai/providers/fireworks",
+  "@pendix/ai/providers/openai-compatible",
+  "@pendix/ai/providers/openai-compatible/decisions",
+  "@pendix/ai/providers/google",
+  "@pendix/ai/providers/google/interactions",
+  "@pendix/ai/providers/groq",
+  "@pendix/ai/providers/mistral",
+  "@pendix/ai/providers/togetherai",
+  "@pendix/ai/providers/vercel-ai-gateway",
+  "@pendix/ai/providers/xai",
+  "@pendix/ai/providers/openrouter",
+  "@pendix/ai/providers/azure",
 ])
 
 function usesAPIKeyAuth(packageName: string | undefined) {
@@ -625,8 +625,8 @@ function usesAPIKeyAuth(packageName: string | undefined) {
   if (name === undefined) return false
   return (
     API_KEY_AUTH_PACKAGES.has(name) ||
-    name.startsWith("@opencode/ai/providers/openai/") ||
-    name.startsWith("@opencode/ai/providers/azure/")
+    name.startsWith("@pendix/ai/providers/openai/") ||
+    name.startsWith("@pendix/ai/providers/azure/")
   )
 }
 

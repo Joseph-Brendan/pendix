@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@opencode/plugin-browser",
+  "name": "@pendix/plugin-browser",
   "version": "2.4.0",
   "description": "OpenCode's desktop browser plugin",
   "type": "module",
@@ -31,9 +31,9 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@opencode/plugin": "workspace:*",
-    "@opencode/schema": "workspace:*",
-    "@opencode/util": "workspace:*",
+    "@pendix/plugin": "workspace:*",
+    "@pendix/schema": "workspace:*",
+    "@pendix/util": "workspace:*",
     "effect": "catalog:"
   },
   "devDependencies": {

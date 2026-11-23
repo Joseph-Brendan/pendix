@@ -1,14 +1,14 @@
 import fs from "fs/promises"
 import path from "path"
 import { expect } from "bun:test"
-import { LanguageModel, LLMClient } from "@opencode/ai/effect"
-import { OpenAIChat } from "@opencode/ai/protocols"
-import { TestLLM } from "@opencode/ai/testing"
-import { llmClient } from "@opencode/core/effect/app-node-platform"
-import { makeMemoryDriver } from "@opencode/core/environment/index"
-import { SessionRunnerModel } from "@opencode/core/session/runner/model"
-import { WorkspaceDriver } from "@opencode/core/workspace/driver"
-import { Plugin } from "@opencode/plugin/effect"
+import { LanguageModel, LLMClient } from "@pendix/ai/effect"
+import { OpenAIChat } from "@pendix/ai/protocols"
+import { TestLLM } from "@pendix/ai/testing"
+import { llmClient } from "@pendix/core/effect/app-node-platform"
+import { makeMemoryDriver } from "@pendix/core/environment/index"
+import { SessionRunnerModel } from "@pendix/core/session/runner/model"
+import { WorkspaceDriver } from "@pendix/core/workspace/driver"
+import { Plugin } from "@pendix/plugin/effect"
 import { makeDurableObjectStorage } from "../../core/test/fixture/durable-object-storage"
 import { OpenCodeWorkerd } from "../src/effect/workerd"
 import { Deferred, Effect, Fiber, Latch, Layer, Option, Schedule, Stream } from "effect"
@@ -119,7 +119,7 @@ it.live("seeds host plugins from CreateOptions and loads delayed model plugins w
               providers.update(fixture.sdk.Provider.ID.make("seeded"), (provider) => {
                 provider.name = "Seeded Provider"
                 provider.activation = "enabled"
-                provider.package = "@opencode/ai/providers/openai-compatible"
+                provider.package = "@pendix/ai/providers/openai-compatible"
                 provider.settings = { baseURL: "https://provider.example/v1", apiKey: "secret" }
               })
               providers.models.update(
@@ -184,7 +184,7 @@ it.live("OpenCodeWorkerd seeds plugins before cold model resolution", () =>
                   providers.update(fixture.sdk.Provider.ID.make("workerd-seeded"), (provider) => {
                     provider.name = "Workerd Seeded"
                     provider.activation = "enabled"
-                    provider.package = "@opencode/ai/providers/openai-compatible"
+                    provider.package = "@pendix/ai/providers/openai-compatible"
                     provider.settings = { baseURL: "https://provider.example/v1", apiKey: "secret" }
                   })
                   providers.models.update(

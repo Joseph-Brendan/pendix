@@ -1,6 +1,6 @@
 import "./product-lockup.css"
-import "@opencode/nav-menus/nav-menus.css"
-import { installNavMenus } from "@opencode/nav-menus"
+import "@pendix/nav-menus/nav-menus.css"
+import { installNavMenus } from "@pendix/nav-menus"
 import { onCleanup, onMount } from "solid-js"
 
 /**

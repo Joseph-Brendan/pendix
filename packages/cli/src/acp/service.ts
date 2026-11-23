@@ -1,9 +1,9 @@
-import type { OpenCodeClient } from "@opencode/client/effect"
-import { AbsolutePath } from "@opencode/schema/schema"
-import { Session } from "@opencode/schema/session"
-import { FSUtil } from "@opencode/util/fs-util"
+import type { OpenCodeClient } from "@pendix/client/effect"
+import { AbsolutePath } from "@pendix/schema/schema"
+import { Session } from "@pendix/schema/session"
+import { FSUtil } from "@pendix/util/fs-util"
 import { DateTime, Effect, Ref, Schema } from "effect"
-import { withTimestampedFallback } from "@opencode/util/session-title-fallback"
+import { withTimestampedFallback } from "@pendix/util/session-title-fallback"
 import type {
   AuthenticateRequest,
   AuthenticateResponse,
@@ -120,14 +120,14 @@ export function make(input: {
     initialize: Effect.fnUntraced(function* (params) {
       yield* Ref.set(input.capabilities, ACPCapabilities.parse(params.clientCapabilities))
       const authMethod: AuthMethod = {
-        description: "Run `opencode auth login` in the terminal",
-        name: "Login with opencode",
+        description: "Run `pendix auth login` in the terminal",
+        name: "Login with Pendix",
         id: AuthMethodID,
         ...(params.clientCapabilities?.auth?.terminal ? { type: "terminal" as const, args: ["--login"] } : {}),
       }
       if (params.clientCapabilities?._meta?.["terminal-auth"] === true) {
         authMethod._meta = {
-          "terminal-auth": { command: "opencode", args: ["auth", "login"], label: "OpenCode Login" },
+          "terminal-auth": { command: "pendix", args: ["auth", "login"], label: "Pendix Login" },
         }
       }
       return {
@@ -141,7 +141,7 @@ export function make(input: {
         },
         authMethods: [authMethod],
         _meta: { steering: { supported: true } },
-        agentInfo: { name: "OpenCode", version: OPENCODE_VERSION },
+        agentInfo: { name: "Pendix", version: OPENCODE_VERSION },
       }
     }),
     authenticate: Effect.fnUntraced(function* (params) {

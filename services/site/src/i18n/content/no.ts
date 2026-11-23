@@ -149,7 +149,7 @@ export const content = {
         "any-model": { title: "Alle modeller", body: "Bruker modellene OpenCode-oppsettet ditt har." },
         "npm-or-bun": {
           title: "npm eller bun",
-          body: "Installer med npm i @opencode/sdk eller bun add @opencode/sdk.",
+          body: "Installer med npm i @pendix/sdk eller bun add @opencode/sdk.",
         },
         "in-process-host": { title: "In-process-vert", body: "Kjører OpenCode i minnet, uten nettverkshopp." },
         "your-plugins": { title: "Dine plugins", body: "Send inn egne plugins når du oppretter in-process-verten." },

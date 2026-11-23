@@ -1,4 +1,4 @@
-import { TextShimmer } from "@opencode/ui/text-shimmer"
+import { TextShimmer } from "@pendix/ui/text-shimmer"
 import { Show, createEffect, createMemo, createSignal, onCleanup, onMount } from "solid-js"
 import { BackgroundMoveHint } from "../../../../app/src/session/timeline/message-timeline"
 import { createStore, reconcile } from "solid-js/store"

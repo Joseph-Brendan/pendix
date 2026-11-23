@@ -1,8 +1,8 @@
 export * as SessionSearchTools from "./session-search.js"
 
-import { ToolFailure } from "@opencode/ai/effect"
-import type { Context } from "@opencode/plugin/effect/plugin"
-import { Session } from "@opencode/schema/session"
+import { ToolFailure } from "@pendix/ai/effect"
+import type { Context } from "@pendix/plugin/effect/plugin"
+import { Session } from "@pendix/schema/session"
 import { Effect, Schema } from "effect"
 import { Config } from "../../config.js"
 import { ConfigEntryObserver } from "../../config/plugin/entry-observer.js"

@@ -13,7 +13,7 @@ import {
   STORY_TIME,
   subagentDocument,
   terminalPassedDocument,
-} from "@opencode/session-ui/storybook"
+} from "@pendix/session-ui/storybook"
 import { SessionPreview } from "./story-model"
 import type { SubagentStatus } from "./composer/subagent-bar"
 

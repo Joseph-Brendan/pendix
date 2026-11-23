@@ -1,7 +1,7 @@
 import { writeFile } from "node:fs/promises"
 import path from "node:path"
 import { app, webContents, webFrameMain, type Extension, type ServiceWorkerMain, type Session, type WebContents } from "electron"
-import type { Log } from "@opencode/plugin/gui/main"
+import type { Log } from "@pendix/plugin/gui/main"
 import { allowed, apiReply, namespaceOf, type ApiModule, type Emit, type ExtensionContext, type Wire } from "./api"
 import type { Manifests } from "./manifest"
 import { sendBackgroundEvent, workerQueue } from "./worker-events"

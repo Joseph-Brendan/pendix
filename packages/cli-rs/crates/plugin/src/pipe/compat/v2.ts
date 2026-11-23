@@ -49,7 +49,7 @@ const EMITTER = new Set<string | symbol>([
   "setMaxListeners",
 ])
 
-// A hue's steps, and an action's states in the order TS's `state` asks them (`@opencode/theme`'s `HueStep`, `ActionState`).
+// A hue's steps, and an action's states in the order TS's `state` asks them (`@pendix/theme`'s `HueStep`, `ActionState`).
 const STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900]
 const STATES = ["disabled", "pressed", "focused", "selected", "hovered"]
 const FIELDS = new Set(["input", "textarea"])

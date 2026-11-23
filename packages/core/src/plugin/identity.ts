@@ -1,9 +1,9 @@
 export * as IdentityPlugin from "./identity.js"
 
-import { SystemPart } from "@opencode/ai/effect"
-import { define } from "@opencode/plugin/effect/plugin"
-import type { SessionHooks } from "@opencode/plugin/effect/session"
-import { Model } from "@opencode/schema/model"
+import { SystemPart } from "@pendix/ai/effect"
+import { define } from "@pendix/plugin/effect/plugin"
+import type { SessionHooks } from "@pendix/plugin/effect/session"
+import { Model } from "@pendix/schema/model"
 import { Effect } from "effect"
 import { OptimizePlugin } from "./optimize.js"
 

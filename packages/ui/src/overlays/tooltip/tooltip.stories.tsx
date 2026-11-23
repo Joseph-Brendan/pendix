@@ -1,8 +1,8 @@
 import { createSignal } from "solid-js"
 import { Tooltip } from "./tooltip"
-import { Button } from "@opencode/ui/button"
-import { Keybind } from "@opencode/ui/keybind"
-import { Menu } from "@opencode/ui/menu"
+import { Button } from "@pendix/ui/button"
+import { Keybind } from "@pendix/ui/keybind"
+import { Menu } from "@pendix/ui/menu"
 
 const docs = `### Overview
 Floating tooltip built on Kobalte's tooltip primitive.

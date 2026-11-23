@@ -1,8 +1,8 @@
-import type { PluginInfo, SessionMessageInfo } from "@opencode/client/promise"
-import { DialogProvider, useDialog } from "@opencode/ui/context/dialog"
-import { Icon } from "@opencode/ui/icon"
-import { Menu } from "@opencode/ui/menu"
-import { Toast } from "@opencode/ui/toast"
+import type { PluginInfo, SessionMessageInfo } from "@pendix/client/promise"
+import { DialogProvider, useDialog } from "@pendix/ui/context/dialog"
+import { Icon } from "@pendix/ui/icon"
+import { Menu } from "@pendix/ui/menu"
+import { Toast } from "@pendix/ui/toast"
 import {
   Panel,
   type Appearance,
@@ -19,8 +19,8 @@ import {
   type Storage,
   type StoreOptions,
   type Workspaces,
-} from "@opencode/plugin/gui"
-import type { BuiltinLayout, BuiltinLocale } from "@opencode/plugin/gui/builtin"
+} from "@pendix/plugin/gui"
+import type { BuiltinLayout, BuiltinLocale } from "@pendix/plugin/gui/builtin"
 import {
   createComponent,
   createMemo,
@@ -41,14 +41,14 @@ import { Persist, persisted } from "@/runtime/persistence/storage"
 import { ServerScope } from "@/runtime/server/scope"
 import { PluginHostProvider, usePluginHost, type HostApiFactories, type PluginInput } from "../src/runtime/plugin/host"
 import { createHostApis } from "../src/runtime/plugin/host-apis"
-import type { Bridge, Entry } from "@opencode/plugin/gui/host"
+import type { Bridge, Entry } from "@pendix/plugin/gui/host"
 import { createRegion, RegionContent } from "../src/runtime/plugin/panels"
 import { createSessionScreenLayout } from "../src/session/screen-layout"
 import type { SessionModel } from "../src/session/model"
 import { createClosedTabs } from "../src/runtime/plugin/closed-tabs"
 import { PluginLinks, PluginSlot, PluginThemes } from "../src/runtime/plugin/render"
-import { Markdown } from "@opencode/session-ui/markdown"
-import { ThemeProvider, useTheme, type ColorScheme } from "@opencode/ui/theme/context"
+import { Markdown } from "@pendix/session-ui/markdown"
+import { ThemeProvider, useTheme, type ColorScheme } from "@pendix/ui/theme/context"
 import { persistedHandle } from "../src/runtime/plugin/stores"
 import { LanguageProvider } from "../src/runtime/i18n/language"
 import { ExtensionPlugins } from "../src/runtime/plugin/extension-plugins"
@@ -68,7 +68,7 @@ export {
   Slot,
   Store,
   Theme,
-} from "@opencode/plugin/gui"
+} from "@pendix/plugin/gui"
 
 export { Schema }
 

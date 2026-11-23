@@ -1,6 +1,6 @@
 import { NodeFileSystem } from "@effect/platform-node"
-import { Flock } from "@opencode/util/flock"
-import { Global } from "@opencode/util/global"
+import { Flock } from "@pendix/util/flock"
+import { Global } from "@pendix/util/global"
 import { Effect, FileSystem, Option, Schema } from "effect"
 import { expect, test } from "bun:test"
 import { parse } from "jsonc-parser"
@@ -48,7 +48,7 @@ test("includes the published schema when creating cli.json", async () => {
     }),
   )
 
-  expect(config).toEqual({ $schema: "https://opencode.ai/v2/cli.json", animations: false })
+  expect(config).toEqual({ $schema: "https://pendix.dev/cli.json", animations: false })
   expect(await Bun.file(path.join(directory.path, "cli.json")).json()).toEqual(config)
 })
 
@@ -189,7 +189,7 @@ test("migrates tui and kv config into cli.json", async () => {
   )
 
   expect(config).toMatchObject({
-    $schema: "https://opencode.ai/v2/cli.json",
+    $schema: "https://pendix.dev/cli.json",
     theme: { name: "legacy", mode: "light" },
     keybinds: {
       leader: "ctrl+o",
@@ -243,13 +243,13 @@ test("migrates before the first update and does not remigrate afterward", async 
   )
 
   expect(config).toEqual({
-    $schema: "https://opencode.ai/v2/cli.json",
+    $schema: "https://pendix.dev/cli.json",
     theme: { name: "legacy" },
     animations: false,
     mouse: false,
   })
   expect(await Bun.file(path.join(directory.path, "cli.json")).json()).toEqual({
-    $schema: "https://opencode.ai/v2/cli.json",
+    $schema: "https://pendix.dev/cli.json",
     theme: { name: "legacy" },
     animations: false,
     mouse: false,

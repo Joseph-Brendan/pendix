@@ -1,5 +1,5 @@
-import type { Plugin } from "@opencode/plugin/tui"
-import { Goal } from "@opencode/schema/goal"
+import type { Plugin } from "@pendix/plugin/tui"
+import { Goal } from "@pendix/schema/goal"
 import { createEffect, createMemo, createSignal, on, onCleanup, Show, type Accessor } from "solid-js"
 import { Keymap } from "../../context/keymap"
 import { useTheme } from "../../context/theme"

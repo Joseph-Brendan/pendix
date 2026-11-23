@@ -1,5 +1,5 @@
-import type { SessionInfo, SessionMoveInput, WorktreeDirectory } from "@opencode/client/promise"
-import { Button } from "@opencode/ui/button"
+import type { SessionInfo, SessionMoveInput, WorktreeDirectory } from "@pendix/client/promise"
+import { Button } from "@pendix/ui/button"
 import { createSignal, onMount, Show } from "solid-js"
 import {
   createMemoryStorage,

@@ -9,11 +9,11 @@ import {
   VideoID,
   type VideoJob,
   type VideoRunning,
-} from "@opencode/schema/generate"
-import { Model } from "@opencode/schema/model"
-import { makeGlobalNode, Node } from "@opencode/util/effect/app-node"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { Global } from "@opencode/util/global"
+} from "@pendix/schema/generate"
+import { Model } from "@pendix/schema/model"
+import { makeGlobalNode, Node } from "@pendix/util/effect/app-node"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { Global } from "@pendix/util/global"
 import { Clock, Context, Duration, Effect, Fiber, FiberMap, Layer, Option, Schedule, Schema } from "effect"
 import { BlobStore } from "./blob-store.js"
 import { Database } from "./database/database.js"

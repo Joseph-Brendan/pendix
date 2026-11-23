@@ -1,5 +1,5 @@
-import { CrossSpawnSpawner } from "@opencode/util/cross-spawn-spawner"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { CrossSpawnSpawner } from "@pendix/util/cross-spawn-spawner"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Context, Effect, Layer, Schema } from "effect"
 import { ChildProcessSpawner } from "effect/process/ChildProcessSpawner"
 import type { PlatformPath } from "node:path"

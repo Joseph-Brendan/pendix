@@ -1,9 +1,9 @@
 import type { PromptResponse, SessionUpdate } from "@agentclientprotocol/sdk"
-import type { OpenCodeEvent } from "@opencode/client/effect"
-import type { Session } from "@opencode/schema/session"
-import type { SessionError } from "@opencode/schema/session-error"
-import type { SessionMessage } from "@opencode/schema/session-message"
-import { TokenUsage } from "@opencode/schema/token-usage"
+import type { OpenCodeEvent } from "@pendix/client/effect"
+import type { Session } from "@pendix/schema/session"
+import type { SessionError } from "@pendix/schema/session-error"
+import type { SessionMessage } from "@pendix/schema/session-message"
+import { TokenUsage } from "@pendix/schema/token-usage"
 import { ACPChild } from "./child"
 import { ACPCompaction } from "./compaction"
 import { ACPError } from "./error"
@@ -156,7 +156,7 @@ export function failure(state: TurnState) {
   if (error?.type === "provider.auth") return new ACPError.AuthRequiredError()
   if (error && error.type !== "aborted" && error.type !== "provider.content-filter") {
     return new ACPError.ServiceFailureError({
-      safeMessage: error.message || "OpenCode prompt failed",
+      safeMessage: error.message || "Pendix prompt failed",
       service: "session",
       errorName: error.type,
     })

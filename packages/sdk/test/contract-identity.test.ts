@@ -1,34 +1,34 @@
 import { expect, test } from "bun:test"
-import { EnvironmentDriver } from "@opencode/core/environment/driver"
-import { EnvironmentFiles } from "@opencode/core/environment/files"
-import { Location as CoreLocation } from "@opencode/core/location"
-import { WorkspaceDriver } from "@opencode/core/workspace/driver"
-import { SessionInbox as CoreSessionInbox } from "@opencode/core/session/inbox"
-import { SessionMessage as CoreSessionMessage } from "@opencode/core/session/message"
-import { Agent } from "@opencode/schema/agent"
-import { Config } from "@opencode/schema/config"
-import { Event } from "@opencode/schema/event"
-import { Location } from "@opencode/schema/location"
-import { Model } from "@opencode/schema/model"
-import { Project } from "@opencode/schema/project"
-import { Provider } from "@opencode/schema/provider"
-import { WebSearch } from "@opencode/schema/websearch"
-import { Session } from "@opencode/schema/session"
-import { SessionInbox } from "@opencode/schema/session-inbox"
-import { SessionMessage } from "@opencode/schema/session-message"
-import { Workspace } from "@opencode/schema/workspace"
-import { Worktree } from "@opencode/schema/worktree"
-import { Api } from "@opencode/server/api"
-import { ClientApi, clientNamespace, groupNames, promiseOmitEndpoints } from "@opencode/protocol/client"
-import { compile, emitPromise } from "@opencode/httpapi-codegen"
+import { EnvironmentDriver } from "@pendix/core/environment/driver"
+import { EnvironmentFiles } from "@pendix/core/environment/files"
+import { Location as CoreLocation } from "@pendix/core/location"
+import { WorkspaceDriver } from "@pendix/core/workspace/driver"
+import { SessionInbox as CoreSessionInbox } from "@pendix/core/session/inbox"
+import { SessionMessage as CoreSessionMessage } from "@pendix/core/session/message"
+import { Agent } from "@pendix/schema/agent"
+import { Config } from "@pendix/schema/config"
+import { Event } from "@pendix/schema/event"
+import { Location } from "@pendix/schema/location"
+import { Model } from "@pendix/schema/model"
+import { Project } from "@pendix/schema/project"
+import { Provider } from "@pendix/schema/provider"
+import { WebSearch } from "@pendix/schema/websearch"
+import { Session } from "@pendix/schema/session"
+import { SessionInbox } from "@pendix/schema/session-inbox"
+import { SessionMessage } from "@pendix/schema/session-message"
+import { Workspace } from "@pendix/schema/workspace"
+import { Worktree } from "@pendix/schema/worktree"
+import { Api } from "@pendix/server/api"
+import { ClientApi, clientNamespace, groupNames, promiseOmitEndpoints } from "@pendix/protocol/client"
+import { compile, emitPromise } from "@pendix/httpapi-codegen"
 
 const SDK = await import("../src/index")
 const SDKEffect = await import("../src/effect")
-const CoreAgent = await import("@opencode/core/agent")
-const CoreModel = await import("@opencode/core/model")
-const CoreProject = await import("@opencode/core/project")
-const CoreSession = await import("@opencode/core/session")
-const CoreWorktree = await import("@opencode/core/worktree")
+const CoreAgent = await import("@pendix/core/agent")
+const CoreModel = await import("@pendix/core/model")
+const CoreProject = await import("@pendix/core/project")
+const CoreSession = await import("@pendix/core/session")
+const CoreWorktree = await import("@pendix/core/worktree")
 
 test("re-exports canonical contracts directly from Schema", () => {
   expect(SDK.Agent).toBe(Agent)
@@ -103,7 +103,7 @@ test("client and Server contracts generate identically", () => {
   expect(emitPromise(client)).toEqual(emitPromise(server))
 })
 
-test("re-exports workspace and environment driver contracts from @opencode/sdk/effect", () => {
+test("re-exports workspace and environment driver contracts from @pendix/sdk/effect", () => {
   expect(SDKEffect.WorkspaceDriver).toBe(WorkspaceDriver)
   expect(SDKEffect.EnvironmentDriver).toBe(EnvironmentDriver)
   expect(SDKEffect.EnvironmentFiles).toBe(EnvironmentFiles)

@@ -1,11 +1,11 @@
 export * as QuestionTool from "./question.js"
 
-import type { Context } from "@opencode/plugin/effect/plugin"
-import { ToolFailure } from "@opencode/ai/effect"
+import type { Context } from "@pendix/plugin/effect/plugin"
+import { ToolFailure } from "@pendix/ai/effect"
 import { Effect, Schema } from "effect"
 import { Form } from "../../form.js"
 import { Permission } from "../../permission.js"
-import { Question } from "@opencode/schema/question"
+import { Question } from "@pendix/schema/question"
 
 export const name = "question"
 

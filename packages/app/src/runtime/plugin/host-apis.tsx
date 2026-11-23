@@ -13,12 +13,12 @@ import {
 } from "solid-js"
 import { createStore, produce, type Store } from "solid-js/store"
 import type { Schema } from "effect"
-import { useDialog } from "@opencode/ui/context/dialog"
-import { useTheme } from "@opencode/ui/theme/context"
-import { toaster } from "@opencode/ui/toast"
-import { writeClipboard } from "@opencode/session-ui/copy"
-import { base64Encode } from "@opencode/util/encode"
-import { uuid } from "@opencode/util/uuid"
+import { useDialog } from "@pendix/ui/context/dialog"
+import { useTheme } from "@pendix/ui/theme/context"
+import { toaster } from "@pendix/ui/toast"
+import { writeClipboard } from "@pendix/session-ui/copy"
+import { base64Encode } from "@pendix/util/encode"
+import { uuid } from "@pendix/util/uuid"
 import {
   type App,
   type Layout,
@@ -34,8 +34,8 @@ import {
   type Storage,
   type StorageScope,
   type Tabs,
-} from "@opencode/plugin/gui"
-import { BuiltinPanel, BuiltinPromptGate, type BuiltinOpenOptions, type BuiltinStoreFrom, type BuiltinStoreOptions } from "@opencode/plugin/gui/builtin"
+} from "@pendix/plugin/gui"
+import { BuiltinPanel, BuiltinPromptGate, type BuiltinOpenOptions, type BuiltinStoreFrom, type BuiltinStoreOptions } from "@pendix/plugin/gui/builtin"
 import { usePlatform } from "@/runtime/platform/platform"
 import { startDragOut } from "@/runtime/platform/drag-out"
 import { same } from "@/runtime/persistence/equality"

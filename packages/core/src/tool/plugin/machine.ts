@@ -1,6 +1,6 @@
 export * as MachineTools from "./machine.js"
 
-import type { Context } from "@opencode/plugin/effect/plugin"
+import type { Context } from "@pendix/plugin/effect/plugin"
 import { Effect, Schema } from "effect"
 import { Flag } from "../../flag.js"
 import { Machines } from "../../machine/machines.js"

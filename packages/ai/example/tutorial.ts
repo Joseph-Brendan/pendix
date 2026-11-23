@@ -1,10 +1,10 @@
 import { Config, Effect, Formatter, Schema, Stream } from "effect"
 import { HttpClientResponse } from "effect/http"
 import { NodeFileSystem } from "@effect/platform-node"
-import { ai, AIClient, Media, Message, ProviderID, ToolRuntime } from "@opencode/ai/effect"
-import { tool } from "@opencode/ai/effect"
-import { Route, Auth, Endpoint, Framing, Protocol, RequestExecutor } from "@opencode/ai/route"
-import { OpenAI } from "@opencode/ai/providers"
+import { ai, AIClient, Media, Message, ProviderID, ToolRuntime } from "@pendix/ai/effect"
+import { tool } from "@pendix/ai/effect"
+import { Route, Auth, Endpoint, Framing, Protocol, RequestExecutor } from "@pendix/ai/route"
+import { OpenAI } from "@pendix/ai/providers"
 
 /**
  * A runnable walkthrough of the LLM package use-site API.

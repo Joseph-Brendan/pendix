@@ -1,6 +1,6 @@
 import { For, Show, createEffect, createMemo, on, onCleanup } from "solid-js"
 import { createStore } from "solid-js/store"
-import { TextShimmer } from "@opencode/ui/text-shimmer"
+import { TextShimmer } from "@pendix/ui/text-shimmer"
 import { CurrentSessionProviders } from "../../storybook/current-session-story"
 import { timelinePresets } from "../../timeline/detail"
 import { SessionTimeline } from "../../timeline/session-timeline"

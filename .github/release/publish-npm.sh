@@ -7,7 +7,7 @@
 npm_dir=$1
 shift
 targets="linux-arm64 linux-x64 linux-x64-baseline linux-arm64-musl linux-x64-musl linux-x64-baseline-musl darwin-arm64 darwin-x64 darwin-x64-baseline windows-arm64 windows-x64 windows-x64-baseline"
-expected="@opencode/cli"
+expected="pendix"
 for target in $targets; do expected="$expected @opencode/cli-$target"; done
 for lib in schema codemode theme ai util protocol client plugin plugin-browser core simulation server sdk ui; do expected="$expected @opencode/$lib"; done
 if [ "$OPENCODE_CHANNEL" != latest ]; then
@@ -39,7 +39,7 @@ for file in "${files[@]}"; do
   esac
   [ "$version" = "$OPENCODE_VERSION" ] || die "$name has version $version, expected $OPENCODE_VERSION"
   [ "$config" = false ] || die "$name sets publishConfig beyond access"
-  [ "$install" = false ] || [ "$name" = @opencode/cli ] || [ "$name" = @opencode/cli-node ] || die "$name has an install script"
+  [ "$install" = false ] || [ "$name" = pendix ] || [ "$name" = @opencode/cli-node ] || die "$name has an install script"
   printf '%s\t%s\n' "$name" "$file" >> "$list"
 done
 for name in $expected; do cut -f1 "$list" | grep -qxF -- "$name" || die "Missing package $name"; done

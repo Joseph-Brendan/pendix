@@ -23,8 +23,8 @@ import type {
   ShellInfo,
   SkillInfo,
   VcsInfo,
-} from "@opencode/client"
-import type { ResolvedTheme } from "@opencode/theme/tui"
+} from "@pendix/client"
+import type { ResolvedTheme } from "@pendix/theme/tui"
 import type { CliRenderer, KeyEvent, MarkdownCodeBlockRenderer, Renderable } from "@opentui/core"
 import type { JSX } from "@opentui/solid"
 import type { Store } from "solid-js/store"

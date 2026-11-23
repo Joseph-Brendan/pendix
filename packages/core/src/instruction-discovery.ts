@@ -1,7 +1,7 @@
 export * as InstructionDiscovery from "./instruction-discovery.js"
 
 import { Context, Effect, Layer, Schema, Types } from "effect"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { createPatch } from "diff"
 import { basename, dirname, join } from "path"
 import { Bus } from "./bus.js"

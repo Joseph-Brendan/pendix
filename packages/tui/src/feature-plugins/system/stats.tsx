@@ -1,6 +1,6 @@
-import type { SessionStatsInfo } from "@opencode/client"
-import { Plugin } from "@opencode/plugin/tui"
-import { activityCalendar } from "@opencode/util/activity-calendar"
+import type { SessionStatsInfo } from "@pendix/client"
+import { Plugin } from "@pendix/plugin/tui"
+import { activityCalendar } from "@pendix/util/activity-calendar"
 import { TextAttributes } from "@opentui/core"
 import { useTerminalDimensions } from "@opentui/solid"
 import { createMemo, createResource, createSignal, For, Show } from "solid-js"
@@ -62,7 +62,7 @@ export function StatsPoster(props: { stats: SessionStatsInfo }) {
     <box width={width()} flexDirection="column" alignItems="center" flexShrink={0} gap={compact() ? 1 : 2}>
       <box width="100%" flexDirection={width() < 44 ? "column" : "row"} justifyContent="space-between">
         <text fg={theme.text.base} attributes={TextAttributes.BOLD}>
-          opencode / stats
+          pendix / stats
         </text>
         <text fg={theme.text.muted}>{dates()}</text>
       </box>
@@ -131,7 +131,7 @@ export function StatsPoster(props: { stats: SessionStatsInfo }) {
         </For>
       </box>
       <box width="100%" flexDirection="row" justifyContent="flex-end">
-        <text fg={theme.text.base}>opencode.ai</text>
+        <text fg={theme.text.base}>pendix.dev</text>
       </box>
     </box>
   )

@@ -1,12 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@opencode/cli",
+  "name": "pendix",
   "version": "2.4.0",
   "type": "module",
   "license": "MIT",
   "bin": {
-    "opencode": "./bin/opencode.cjs",
-    "opencode2": "./bin/opencode2.cjs"
+    "pendix": "./bin/pendix.cjs"
   },
   "files": [
     "bin"
@@ -30,13 +29,13 @@
     "@clack/core": "1.0.0-alpha.1",
     "@clack/prompts": "1.0.0-alpha.1",
     "@effect/platform-node": "catalog:",
-    "@opencode/client": "workspace:*",
-    "@opencode/plugin": "workspace:*",
+    "@pendix/client": "workspace:*",
+    "@pendix/plugin": "workspace:*",
     "@opencode/pty": "0.6.0",
-    "@opencode/schema": "workspace:*",
-    "@opencode/server": "workspace:*",
-    "@opencode/tui": "workspace:*",
-    "@opencode/util": "workspace:*",
+    "@pendix/schema": "workspace:*",
+    "@pendix/server": "workspace:*",
+    "@pendix/tui": "workspace:*",
+    "@pendix/util": "workspace:*",
     "@opentui/core": "catalog:",
     "@opentui/solid": "catalog:",
     "@opentunnel/client": "0.6.1",
@@ -52,8 +51,8 @@
     "ws": "8.21.0"
   },
   "devDependencies": {
-    "@opencode/script": "workspace:*",
-    "@opencode/protocol": "workspace:*",
+    "@pendix/script": "workspace:*",
+    "@pendix/protocol": "workspace:*",
     "@tsconfig/bun": "catalog:",
     "@types/bun": "catalog:",
     "@typescript/native": "catalog:",

@@ -1,13 +1,13 @@
 import { WorkflowEntrypoint, type WorkflowEvent, type WorkflowStep, type WorkflowStepConfig } from "cloudflare:workers"
-import { R2Sql } from "@opencode/data-core/r2-sql"
-import { layer } from "@opencode/data-core/runtime"
+import { R2Sql } from "@pendix/data-core/r2-sql"
+import { layer } from "@pendix/data-core/runtime"
 import {
   deterministicFailureAsResult,
   planDataSync,
   syncRetentionCohort,
   syncStatPeriod,
   type DataSyncError,
-} from "@opencode/data-core/stat-sync"
+} from "@pendix/data-core/stat-sync"
 import { Effect, Layer } from "effect"
 import type { DataSyncParams } from "./schedule"
 

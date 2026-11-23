@@ -1,7 +1,7 @@
-import type { ProviderApi } from "@opencode/client/effect/api"
-import type { Model } from "@opencode/schema/model"
-import type { Provider } from "@opencode/schema/provider"
-import type { ConnectionInfo } from "@opencode/client"
+import type { ProviderApi } from "@pendix/client/effect/api"
+import type { Model } from "@pendix/schema/model"
+import type { Provider } from "@pendix/schema/provider"
+import type { ConnectionInfo } from "@pendix/client"
 import type { Effect, Types } from "effect"
 import type { Transform } from "./registration.js"
 

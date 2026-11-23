@@ -1,7 +1,7 @@
 import { MessageTooLargeError, ndJsonStream } from "@agentclientprotocol/sdk"
-import { OpenCode } from "@opencode/client/effect"
-import { Service } from "@opencode/client/effect/service"
-import { CrossSpawnSpawner } from "@opencode/util/cross-spawn-spawner"
+import { OpenCode } from "@pendix/client/effect"
+import { Service } from "@pendix/client/effect/service"
+import { CrossSpawnSpawner } from "@pendix/util/cross-spawn-spawner"
 import { Effect, Option } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/http"
 import { Writable } from "node:stream"
@@ -52,7 +52,7 @@ export default Runtime.handler(
     )
     // Exit directly: closing the scope would wait on the server's graceful shutdown, and its lease pipe ends it anyway.
     yield* Effect.sync(() => {
-      if (failure) process.stderr.write(`opencode acp: ${failure}\n`)
+      if (failure) process.stderr.write(`pendix acp: ${failure}\n`)
       process.exit(failure ? 1 : 0)
     })
   }),

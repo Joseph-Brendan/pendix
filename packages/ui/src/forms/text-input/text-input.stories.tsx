@@ -1,7 +1,7 @@
 import { createEffect, createSignal, splitProps } from "solid-js"
-import { Field } from "@opencode/ui/field"
-import { Icon } from "@opencode/ui/icon"
-import { Keybind } from "@opencode/ui/keybind"
+import { Field } from "@pendix/ui/field"
+import { Icon } from "@pendix/ui/icon"
+import { Keybind } from "@pendix/ui/keybind"
 import { TextInput, type TextInputProps } from "./text-input"
 
 const docs = `### Overview

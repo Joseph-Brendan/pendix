@@ -1,8 +1,8 @@
 export * as BrowserMachine from "./machine.js"
 
-import type { Permission } from "@opencode/schema/permission"
-import type { Session } from "@opencode/schema/session"
-import { Tool } from "@opencode/schema/tool"
+import type { Permission } from "@pendix/schema/permission"
+import type { Session } from "@pendix/schema/session"
+import { Tool } from "@pendix/schema/tool"
 import type { Browser } from "./rpc.js"
 import { BrowserSkill } from "./skill.js"
 import { Wildcard } from "./wildcard.js"

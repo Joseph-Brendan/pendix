@@ -1,4 +1,4 @@
-import type { ProjectListOutput, SessionInfo } from "@opencode/client/promise"
+import type { ProjectListOutput, SessionInfo } from "@pendix/client/promise"
 import { createMemoryHistory, MemoryRouter, Route } from "@solidjs/router"
 import { createEffect, on, Show } from "solid-js"
 import {

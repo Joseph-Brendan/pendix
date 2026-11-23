@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { compile } from "@opencode/httpapi-codegen"
+import { compile } from "@pendix/httpapi-codegen"
 import {
   ClientApi,
   clientNamespace,
@@ -7,7 +7,7 @@ import {
   effectOmitEndpoints,
   groupNames,
   promiseOmitEndpoints,
-} from "@opencode/protocol/client"
+} from "@pendix/protocol/client"
 import { Effect } from "effect"
 import { HttpClient } from "effect/http"
 import { OpenCode as EffectOpenCode } from "../src/effect/index"

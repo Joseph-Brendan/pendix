@@ -1,6 +1,6 @@
 import { expect } from "bun:test"
-import { PermissionSaved } from "@opencode/schema/permission-saved"
-import { Session } from "@opencode/schema/session"
+import { PermissionSaved } from "@pendix/schema/permission-saved"
+import { Session } from "@pendix/schema/session"
 import { Effect, Schema } from "effect"
 import { it } from "../../core/test/lib/effect"
 import { ServerFetch } from "../src/fetch"

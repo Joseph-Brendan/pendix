@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { ChangeKind } from "@opencode/plugin/gui/review"
-import type { FileNode } from "@opencode/plugin/gui"
+import type { ChangeKind } from "@pendix/plugin/gui/review"
+import type { FileNode } from "@pendix/plugin/gui"
 import {
   createPierreTreeState,
   runPierreTreeSync,

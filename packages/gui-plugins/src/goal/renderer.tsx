@@ -1,8 +1,8 @@
 import { createSignal, Match, onCleanup, Show, Switch, untrack } from "solid-js"
-import { ComposerPill, createKeyed, Style, type ComposerPillProps, type Plugin } from "@opencode/plugin/gui"
-import { Goal } from "@opencode/schema/goal"
-import { Button } from "@opencode/ui/button"
-import { showToast } from "@opencode/ui/toast"
+import { ComposerPill, createKeyed, Style, type ComposerPillProps, type Plugin } from "@pendix/plugin/gui"
+import { Goal } from "@pendix/schema/goal"
+import { Button } from "@pendix/ui/button"
+import { showToast } from "@pendix/ui/toast"
 import styles from "./goal.css?inline"
 import type GoalDefinition from "./index"
 import {

@@ -1,5 +1,5 @@
-import type { FormInfo, PermissionRequest, SessionInfo } from "@opencode/client/promise"
-import type { Data } from "@opencode/client/solid"
+import type { FormInfo, PermissionRequest, SessionInfo } from "@pendix/client/promise"
+import type { Data } from "@pendix/client/solid"
 
 function sessionTreeRequest<T>(
   session: SessionInfo[],

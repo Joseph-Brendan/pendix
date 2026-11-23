@@ -11,14 +11,14 @@ import {
   Switch,
   untrack,
 } from "solid-js"
-import { Button } from "@opencode/ui/button"
-import { Loader } from "@opencode/ui/loader"
-import { Command, createKeyed, LinkHandler, MenuItem, SettingsPage, Style, type Plugin } from "@opencode/plugin/gui"
-import { BuiltinAppLink, builtinContext, BuiltinCommand, BuiltinPanel, BuiltinPromptGate, onIdle, type BuiltinPanelTab } from "@opencode/plugin/gui/builtin"
-import { Browser, type ExperimentalBrowserTab } from "@opencode/plugin/gui/browser"
+import { Button } from "@pendix/ui/button"
+import { Loader } from "@pendix/ui/loader"
+import { Command, createKeyed, LinkHandler, MenuItem, SettingsPage, Style, type Plugin } from "@pendix/plugin/gui"
+import { BuiltinAppLink, builtinContext, BuiltinCommand, BuiltinPanel, BuiltinPromptGate, onIdle, type BuiltinPanelTab } from "@pendix/plugin/gui/builtin"
+import { Browser, type ExperimentalBrowserTab } from "@pendix/plugin/gui/browser"
 import type definition from "./index"
 import type { Model } from "./model"
-import { uuid } from "@opencode/util/uuid"
+import { uuid } from "@pendix/util/uuid"
 import {
   BROWSER_MODEL_LOAD_TIMEOUT_MS,
   createBrowserModelState,

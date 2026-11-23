@@ -1,7 +1,7 @@
-import type { Browser } from "@opencode/plugin-browser/rpc"
-import type { IpcClient } from "@opencode/plugin/gui"
-import type { ExperimentalBrowserTab } from "@opencode/plugin/gui/browser"
-import { uuid } from "@opencode/util/uuid"
+import type { Browser } from "@pendix/plugin-browser/rpc"
+import type { IpcClient } from "@pendix/plugin/gui"
+import type { ExperimentalBrowserTab } from "@pendix/plugin/gui/browser"
+import { uuid } from "@pendix/util/uuid"
 import type { BrowserPane, FindAction, PaneEvent, PromptAnswer, Viewport } from "./ipc"
 
 type Client = IpcClient<(typeof BrowserPane)["spec"]>

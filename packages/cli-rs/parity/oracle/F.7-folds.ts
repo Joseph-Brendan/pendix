@@ -9,8 +9,8 @@
 //
 // The TUI uses Solid's browser build, whose effects and stores react; the script runs itself again under
 // `bun --conditions=browser` when started without it.
-import type { CreateDataInput } from "@opencode/client/solid"
-import type { OpenCodeEvent, SessionMessageInfo } from "@opencode/client/promise"
+import type { CreateDataInput } from "@pendix/client/solid"
+import type { OpenCodeEvent, SessionMessageInfo } from "@pendix/client/promise"
 import { records } from "../lib/records"
 
 if (process.env.F7_BROWSER !== "1") {
@@ -23,8 +23,8 @@ if (process.env.F7_BROWSER !== "1") {
 }
 
 const { createRoot } = await import("solid-js")
-const { createData } = await import("@opencode/client/solid")
-const { OpenCode } = await import("@opencode/client/promise")
+const { createData } = await import("@pendix/client/solid")
+const { OpenCode } = await import("@pendix/client/promise")
 
 type Schema = Record<string, unknown> & {
   $ref?: string

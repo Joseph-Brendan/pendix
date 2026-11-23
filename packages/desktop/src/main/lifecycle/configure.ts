@@ -4,7 +4,7 @@ import { enableCompileCache } from "node:module"
 import { homedir, tmpdir } from "node:os"
 import path from "node:path"
 import { app } from "electron"
-import { debugBuild, memoryLogInterval } from "@opencode/gui-plugins/debug/options"
+import { debugBuild, memoryLogInterval } from "@pendix/gui-plugins/debug/options"
 import { APP_ID, APP_NAME, APP_USER_MODEL_ID, CHANNEL } from "../constants"
 import { debuggingSwitches } from "../diagnostics/options"
 

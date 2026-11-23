@@ -1,5 +1,5 @@
-import { createMarkdownStream, type MarkdownBlock, type PatchmarkStream } from "@opencode/patchmark"
-import { isMathFence } from "@opencode/ui/context/marked-parser"
+import { createMarkdownStream, type MarkdownBlock, type PatchmarkStream } from "@pendix/patchmark"
+import { isMathFence } from "@pendix/ui/context/marked-parser"
 import { completedProjection } from "./markdown-projection"
 
 export type Block = {

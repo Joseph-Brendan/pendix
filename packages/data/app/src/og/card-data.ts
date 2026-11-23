@@ -1,4 +1,4 @@
-import { statModel } from "@opencode/data-core/domain/model-normalization"
+import { statModel } from "@pendix/data-core/domain/model-normalization"
 import { formatTokens, fromFirstUsage } from "../lib/format"
 import { baseUrl } from "../lib/language"
 import { publicModelName } from "../lib/model-name"

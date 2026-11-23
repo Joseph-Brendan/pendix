@@ -43,9 +43,9 @@ import {
   Semaphore,
   Stream,
 } from "effect"
-import { ConfigMCP } from "@opencode/schema/config/mcp"
-import type { Session } from "@opencode/schema/session"
-import { isRecord } from "@opencode/util/record"
+import { ConfigMCP } from "@pendix/schema/config/mcp"
+import type { Session } from "@pendix/schema/session"
+import { isRecord } from "@pendix/util/record"
 import { codecFor } from "../tool/runtime.js"
 import { McpStdio } from "./stdio.js"
 import { EventStreamRejectedError, EventStreamTerminatedError, reopen } from "./event-stream.js"

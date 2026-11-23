@@ -9,32 +9,32 @@ import {
   SystemPart,
   TransportError,
   type LLMRequest,
-} from "@opencode/ai/effect"
-import { OpenAIChat, OpenAIResponses } from "@opencode/ai/protocols"
-import { Agent } from "@opencode/core/agent"
-import { Database } from "@opencode/core/database/database"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { llmClient } from "@opencode/core/effect/app-node-platform"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { Bus } from "@opencode/core/bus"
-import { SessionEvent } from "@opencode/core/session/event"
-import { SessionMessage } from "@opencode/core/session/message"
-import { SessionProjector } from "@opencode/core/session/projector"
-import { SessionRunnerModel } from "@opencode/core/session/runner/model"
-import { SessionTable } from "@opencode/core/session/sql"
-import { SessionStore } from "@opencode/core/session/store"
-import { SessionTitle } from "@opencode/core/session/title"
-import { PluginHooks } from "@opencode/core/plugin/hooks"
-import { PluginSupervisor } from "@opencode/core/plugin/supervisor"
-import { Location } from "@opencode/core/location"
-import { Session } from "@opencode/core/session"
-import { Project } from "@opencode/core/project"
-import { ProjectTable } from "@opencode/core/project/sql"
-import { App } from "@opencode/core/app"
-import { Model } from "@opencode/core/model"
-import { Provider } from "@opencode/core/provider"
-import { AbsolutePath } from "@opencode/core/schema"
-import { Money } from "@opencode/schema/money"
+} from "@pendix/ai/effect"
+import { OpenAIChat, OpenAIResponses } from "@pendix/ai/protocols"
+import { Agent } from "@pendix/core/agent"
+import { Database } from "@pendix/core/database/database"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { llmClient } from "@pendix/core/effect/app-node-platform"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { Bus } from "@pendix/core/bus"
+import { SessionEvent } from "@pendix/core/session/event"
+import { SessionMessage } from "@pendix/core/session/message"
+import { SessionProjector } from "@pendix/core/session/projector"
+import { SessionRunnerModel } from "@pendix/core/session/runner/model"
+import { SessionTable } from "@pendix/core/session/sql"
+import { SessionStore } from "@pendix/core/session/store"
+import { SessionTitle } from "@pendix/core/session/title"
+import { PluginHooks } from "@pendix/core/plugin/hooks"
+import { PluginSupervisor } from "@pendix/core/plugin/supervisor"
+import { Location } from "@pendix/core/location"
+import { Session } from "@pendix/core/session"
+import { Project } from "@pendix/core/project"
+import { ProjectTable } from "@pendix/core/project/sql"
+import { App } from "@pendix/core/app"
+import { Model } from "@pendix/core/model"
+import { Provider } from "@pendix/core/provider"
+import { AbsolutePath } from "@pendix/core/schema"
+import { Money } from "@pendix/schema/money"
 import { Deferred, Effect, Fiber, Layer, Schema, Stream } from "effect"
 import { testEffect } from "./lib/effect"
 
@@ -224,7 +224,7 @@ it.effect("generates a title from the sole user message and renames the session"
       "User-Agent": App.useragent(App.make()),
       "x-opencode-project": Project.ID.global,
       "x-opencode-session": sessionID,
-      "x-opencode-client": "opencode",
+      "x-opencode-client": "pendix",
     })
     expect(requests[0]?.promptCacheKey).toBe(sessionID)
     expect(requests[0]?.tools).toEqual([])

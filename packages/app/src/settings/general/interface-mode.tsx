@@ -1,6 +1,6 @@
 import { For, Show, createUniqueId } from "solid-js"
-import { Icon } from "@opencode/ui/icon"
-import { Select } from "@opencode/ui/select"
+import { Icon } from "@pendix/ui/icon"
+import { Select } from "@pendix/ui/select"
 import { useLanguage } from "@/runtime/i18n/language"
 import { type TabLayout, useSettings } from "@/settings/model"
 import { SettingsRow } from "@/settings/row"

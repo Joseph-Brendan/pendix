@@ -14,10 +14,10 @@ import {
   LLMEvent,
   Media,
   RawEvent,
-} from "@opencode/ai/effect"
-import { AI } from "@opencode/ai"
-import { Speech, SpeechClient, SpeechEvent, TranscriptionClient } from "@opencode/ai/experimental"
-import { Route, Protocol, RequestExecutor, WebSocketTransport } from "@opencode/ai/route"
+} from "@pendix/ai/effect"
+import { AI } from "@pendix/ai"
+import { Speech, SpeechClient, SpeechEvent, TranscriptionClient } from "@pendix/ai/experimental"
+import { Route, Protocol, RequestExecutor, WebSocketTransport } from "@pendix/ai/route"
 import {
   Alibaba,
   AssemblyAI,
@@ -41,7 +41,7 @@ import {
   VercelAIGateway,
   XAI,
   ZAI,
-} from "@opencode/ai/providers"
+} from "@pendix/ai/providers"
 import {
   AnthropicMessages,
   OpenAIChat,
@@ -50,8 +50,8 @@ import {
   OpenAIResponses,
   OpenResponses,
   OpenResponsesChannel,
-} from "@opencode/ai/protocols"
-import { TestLLM } from "@opencode/ai/testing"
+} from "@pendix/ai/protocols"
+import { TestLLM } from "@pendix/ai/testing"
 
 describe("public exports", () => {
   test("modality, provider, and protocol entrypoints load first in a fresh process", async () => {
@@ -134,7 +134,7 @@ describe("public exports", () => {
   })
 
   test("provider barrels expose user-facing facades", async () => {
-    const { OpenAICompatibleResponses } = await import("@opencode/ai/providers")
+    const { OpenAICompatibleResponses } = await import("@pendix/ai/providers")
 
     expect(OpenAI.model).toBeFunction()
     expect(OpenAI.embedding).toBeFunction()

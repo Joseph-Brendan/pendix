@@ -1,7 +1,7 @@
 export * as SessionSearchBuild from "./search-build.js"
 
 import { Cause, Clock, Context, Effect, Exit, Latch, Layer } from "effect"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
 import { Database } from "../database/database.js"
 import { SessionSearchIndex } from "./search-index.js"
 

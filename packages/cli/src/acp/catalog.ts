@@ -1,8 +1,8 @@
-import type { OpenCodeClient, OpenCodeEvent } from "@opencode/client/effect"
-import type { Agent } from "@opencode/schema/agent"
-import type { Command } from "@opencode/schema/command"
-import type { Model } from "@opencode/schema/model"
-import { FSUtil } from "@opencode/util/fs-util"
+import type { OpenCodeClient, OpenCodeEvent } from "@pendix/client/effect"
+import type { Agent } from "@pendix/schema/agent"
+import type { Command } from "@pendix/schema/command"
+import type { Model } from "@pendix/schema/model"
+import { FSUtil } from "@pendix/util/fs-util"
 import { Cause, Deferred, Effect, Exit, Schedule, Semaphore, Stream, SubscriptionRef } from "effect"
 import { ACPError } from "./error"
 

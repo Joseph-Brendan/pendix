@@ -1,7 +1,7 @@
-import { showToast } from "@opencode/ui/toast"
+import { showToast } from "@pendix/ui/toast"
 import { createSignal, lazy, onCleanup, Suspense, untrack } from "solid-js"
-import { MenuItem, Server, Style, type ServerEntry, type ServerState, type Plugin } from "@opencode/plugin/gui"
-import { onIdle } from "@opencode/plugin/gui/builtin"
+import { MenuItem, Server, Style, type ServerEntry, type ServerState, type Plugin } from "@pendix/plugin/gui"
+import { onIdle } from "@pendix/plugin/gui/builtin"
 import {
   initialWslAdd,
   transitionWslAdd,

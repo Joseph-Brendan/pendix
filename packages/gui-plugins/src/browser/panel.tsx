@@ -1,15 +1,15 @@
 import { Popover } from "@kobalte/core/popover"
-import { Button } from "@opencode/ui/button"
-import { Icon } from "@opencode/ui/icon"
-import type { IconName } from "@opencode/ui/icons/catalog"
-import { IconButton } from "@opencode/ui/icon-button"
-import { LineCommentEditor } from "@opencode/ui/line-comment"
-import { Loader } from "@opencode/ui/loader"
-import { Keybind } from "@opencode/ui/keybind"
-import { Menu } from "@opencode/ui/menu"
-import { MenuScroll } from "@opencode/ui/menu-scroll"
-import { showToast } from "@opencode/ui/toast"
-import { Tooltip } from "@opencode/ui/tooltip"
+import { Button } from "@pendix/ui/button"
+import { Icon } from "@pendix/ui/icon"
+import type { IconName } from "@pendix/ui/icons/catalog"
+import { IconButton } from "@pendix/ui/icon-button"
+import { LineCommentEditor } from "@pendix/ui/line-comment"
+import { Loader } from "@pendix/ui/loader"
+import { Keybind } from "@pendix/ui/keybind"
+import { Menu } from "@pendix/ui/menu"
+import { MenuScroll } from "@pendix/ui/menu-scroll"
+import { showToast } from "@pendix/ui/toast"
+import { Tooltip } from "@pendix/ui/tooltip"
 import { createEventListener } from "@solid-primitives/event-listener"
 import { createResizeObserver } from "@solid-primitives/resize-observer"
 import { debounce } from "@solid-primitives/scheduled"
@@ -28,7 +28,7 @@ import {
   type JSX,
   type ParentProps,
 } from "solid-js"
-import type { Browser } from "@opencode/plugin-browser/rpc"
+import type { Browser } from "@pendix/plugin-browser/rpc"
 import {
   createKeyed,
   usePlugin,
@@ -37,7 +37,7 @@ import {
   type PanelTab,
   type MountedSession,
   type SessionScreen,
-} from "@opencode/plugin/gui"
+} from "@pendix/plugin/gui"
 import { addressParts, connection, externalAction, externalPage, loopback } from "./address"
 import { hostDisplay } from "./host-display"
 import { FileSource } from "../file/contract"

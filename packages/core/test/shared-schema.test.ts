@@ -1,32 +1,32 @@
 import { expect, test } from "bun:test"
 import { Schema } from "effect"
-import { Agent } from "@opencode/core/agent"
-import { Session } from "@opencode/core/session"
-import { SessionStore } from "@opencode/core/session/store"
-import { Location } from "@opencode/schema/location"
-import { Model } from "@opencode/schema/model"
-import { Provider } from "@opencode/schema/provider"
-import { Project } from "@opencode/schema/project"
-import { Worktree } from "@opencode/schema/worktree"
-import { Prompt } from "@opencode/schema/prompt"
-import { SessionInbox } from "@opencode/schema/session-inbox"
-import { SessionMessage } from "@opencode/schema/session-message"
-import { Workspace } from "@opencode/schema/workspace"
-import { Command } from "@opencode/schema/command"
-import { Connection } from "@opencode/schema/connection"
-import { Credential } from "@opencode/schema/credential"
-import { FileSystem } from "@opencode/schema/filesystem"
-import { Integration } from "@opencode/schema/integration"
-import { LLM } from "@opencode/schema/llm"
-import { Permission } from "@opencode/schema/permission"
-import { Pty } from "@opencode/schema/pty"
-import { Reference } from "@opencode/schema/reference"
-import { Skill } from "@opencode/schema/skill"
-import { AbsolutePath, optional, statics } from "@opencode/schema/schema"
+import { Agent } from "@pendix/core/agent"
+import { Session } from "@pendix/core/session"
+import { SessionStore } from "@pendix/core/session/store"
+import { Location } from "@pendix/schema/location"
+import { Model } from "@pendix/schema/model"
+import { Provider } from "@pendix/schema/provider"
+import { Project } from "@pendix/schema/project"
+import { Worktree } from "@pendix/schema/worktree"
+import { Prompt } from "@pendix/schema/prompt"
+import { SessionInbox } from "@pendix/schema/session-inbox"
+import { SessionMessage } from "@pendix/schema/session-message"
+import { Workspace } from "@pendix/schema/workspace"
+import { Command } from "@pendix/schema/command"
+import { Connection } from "@pendix/schema/connection"
+import { Credential } from "@pendix/schema/credential"
+import { FileSystem } from "@pendix/schema/filesystem"
+import { Integration } from "@pendix/schema/integration"
+import { LLM } from "@pendix/schema/llm"
+import { Permission } from "@pendix/schema/permission"
+import { Pty } from "@pendix/schema/pty"
+import { Reference } from "@pendix/schema/reference"
+import { Skill } from "@pendix/schema/skill"
+import { AbsolutePath, optional, statics } from "@pendix/schema/schema"
 
 test("Core reuses the canonical shared schemas", async () => {
-  const schemaAgent = await import("@opencode/schema/agent")
-  const schemaSession = await import("@opencode/schema/session")
+  const schemaAgent = await import("@pendix/schema/agent")
+  const schemaSession = await import("@pendix/schema/session")
   const [
     coreCommand,
     coreConnection,
@@ -48,25 +48,25 @@ test("Core reuses the canonical shared schemas", async () => {
     coreSchema,
     coreWorkspace,
   ] = await Promise.all([
-    import("@opencode/core/command"),
-    import("@opencode/core/integration/connection"),
-    import("@opencode/core/credential"),
-    import("@opencode/core/filesystem"),
-    import("@opencode/core/integration"),
-    import("@opencode/core/location"),
-    import("@opencode/ai/effect"),
-    import("@opencode/core/model"),
-    import("@opencode/core/permission"),
-    import("@opencode/core/worktree"),
-    import("@opencode/core/pty"),
-    import("@opencode/core/project/schema"),
-    import("@opencode/core/provider"),
-    import("@opencode/core/reference"),
-    import("@opencode/core/session/inbox"),
-    import("@opencode/core/session/message"),
-    import("@opencode/core/skill"),
-    import("@opencode/core/schema"),
-    import("@opencode/core/workspace"),
+    import("@pendix/core/command"),
+    import("@pendix/core/integration/connection"),
+    import("@pendix/core/credential"),
+    import("@pendix/core/filesystem"),
+    import("@pendix/core/integration"),
+    import("@pendix/core/location"),
+    import("@pendix/ai/effect"),
+    import("@pendix/core/model"),
+    import("@pendix/core/permission"),
+    import("@pendix/core/worktree"),
+    import("@pendix/core/pty"),
+    import("@pendix/core/project/schema"),
+    import("@pendix/core/provider"),
+    import("@pendix/core/reference"),
+    import("@pendix/core/session/inbox"),
+    import("@pendix/core/session/message"),
+    import("@pendix/core/skill"),
+    import("@pendix/core/schema"),
+    import("@pendix/core/workspace"),
   ])
 
   const schemas = [

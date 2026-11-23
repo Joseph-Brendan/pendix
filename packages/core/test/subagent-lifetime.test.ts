@@ -1,23 +1,23 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { LanguageModel } from "@opencode/ai/effect"
-import { OpenAIChat } from "@opencode/ai/protocols"
-import { TestLLM } from "@opencode/ai/testing"
-import { Agent } from "@opencode/core/agent"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { LayerNodePlatform } from "@opencode/core/effect/app-node-platform"
-import { Watcher } from "@opencode/core/filesystem/watcher"
-import { Job } from "@opencode/core/job"
-import { LocationServiceMap } from "@opencode/core/location-service-map"
-import { Model } from "@opencode/core/model"
-import { Plugin } from "@opencode/core/plugin"
-import { Provider } from "@opencode/core/provider"
-import { AbsolutePath } from "@opencode/core/schema"
-import { Session } from "@opencode/core/session"
-import { SessionRunnerModel } from "@opencode/core/session/runner/model"
-import { Tool } from "@opencode/core/tool"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { Global } from "@opencode/util/global"
+import { LanguageModel } from "@pendix/ai/effect"
+import { OpenAIChat } from "@pendix/ai/protocols"
+import { TestLLM } from "@pendix/ai/testing"
+import { Agent } from "@pendix/core/agent"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { LayerNodePlatform } from "@pendix/core/effect/app-node-platform"
+import { Watcher } from "@pendix/core/filesystem/watcher"
+import { Job } from "@pendix/core/job"
+import { LocationServiceMap } from "@pendix/core/location-service-map"
+import { Model } from "@pendix/core/model"
+import { Plugin } from "@pendix/core/plugin"
+import { Provider } from "@pendix/core/provider"
+import { AbsolutePath } from "@pendix/core/schema"
+import { Session } from "@pendix/core/session"
+import { SessionRunnerModel } from "@pendix/core/session/runner/model"
+import { Tool } from "@pendix/core/tool"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { Global } from "@pendix/util/global"
 import { tempGlobalLayer } from "./fixture/global"
 import { offlineModels } from "./fixture/models"
 import { tmpdirScoped } from "./fixture/tmpdir"
@@ -67,7 +67,7 @@ describe("subagent observer lifetime", () => {
           const childDir = yield* tmpdirScoped()
           yield* Effect.promise(() =>
             Bun.write(
-              `${parentDir.path}/opencode.json`,
+              `${parentDir.path}/pendix.json`,
               JSON.stringify({
                 agents: { reviewer: { mode: "subagent" } },
                 permissions: [{ action: "*", resource: "*", effect: "allow" }],
@@ -75,7 +75,7 @@ describe("subagent observer lifetime", () => {
             ),
           )
           yield* Effect.promise(() =>
-            Bun.write(`${childDir.path}/opencode.json`, JSON.stringify({ agents: { reviewer: { mode: "subagent" } } })),
+            Bun.write(`${childDir.path}/pendix.json`, JSON.stringify({ agents: { reviewer: { mode: "subagent" } } })),
           )
           const sessions = yield* Session.Service
           const locations = yield* LocationServiceMap.Service

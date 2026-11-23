@@ -1,16 +1,16 @@
-import type { PluginInfo } from "@opencode/client"
-import { Button } from "@opencode/ui/button"
-import { Dialog, DialogBody, DialogHeader, DialogTitleGroup } from "@opencode/ui/dialog"
-import { ErrorDetails } from "@opencode/ui/error-details"
-import { Icon } from "@opencode/ui/icon"
-import { Loader } from "@opencode/ui/loader"
-import { createMcpSignIn, type McpSignInFailure } from "@opencode/ui/mcp-sign-in"
-import { MenuScroll } from "@opencode/ui/menu-scroll"
-import { RedirectPasteForm } from "@opencode/ui/redirect-paste"
-import { Switch } from "@opencode/ui/switch"
-import { showToast } from "@opencode/ui/toast"
-import { Tooltip } from "@opencode/ui/tooltip"
-import { TruncatedText } from "@opencode/ui/truncated-text"
+import type { PluginInfo } from "@pendix/client"
+import { Button } from "@pendix/ui/button"
+import { Dialog, DialogBody, DialogHeader, DialogTitleGroup } from "@pendix/ui/dialog"
+import { ErrorDetails } from "@pendix/ui/error-details"
+import { Icon } from "@pendix/ui/icon"
+import { Loader } from "@pendix/ui/loader"
+import { createMcpSignIn, type McpSignInFailure } from "@pendix/ui/mcp-sign-in"
+import { MenuScroll } from "@pendix/ui/menu-scroll"
+import { RedirectPasteForm } from "@pendix/ui/redirect-paste"
+import { Switch } from "@pendix/ui/switch"
+import { showToast } from "@pendix/ui/toast"
+import { Tooltip } from "@pendix/ui/tooltip"
+import { TruncatedText } from "@pendix/ui/truncated-text"
 import {
   children,
   createMemo,
@@ -26,9 +26,9 @@ import {
   type JSX,
 } from "solid-js"
 import { createStore } from "solid-js/store"
-import { createKeyed, useDrawer, usePlugin, type MountedSession, type ServerRef } from "@opencode/plugin/gui"
+import { createKeyed, useDrawer, usePlugin, type MountedSession, type ServerRef } from "@pendix/plugin/gui"
 import { globalConfigDirectory, serviceConfigFile } from "./config-file"
-import { builtinContext } from "@opencode/plugin/gui/builtin"
+import { builtinContext } from "@pendix/plugin/gui/builtin"
 import { createFlyoutMotion } from "./flyout-motion"
 import {
   configActionView,

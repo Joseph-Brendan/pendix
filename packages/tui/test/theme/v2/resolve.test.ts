@@ -9,7 +9,7 @@ import {
   type Mode,
   type ResolvedTheme,
   type ThemeDefinition,
-} from "@opencode/theme/tui"
+} from "@pendix/theme/tui"
 import { getOpenCodeTheme, getOpenCodeClassicTheme, parseTheme, type ThemeDocumentSource } from "../../../src/theme"
 
 const opencodeLight = selectTheme(getOpenCodeClassicTheme(), "light")

@@ -1,8 +1,8 @@
 import { execFile } from "node:child_process"
 import { powerSaveBlocker } from "electron"
 import { Schema } from "effect"
-import { builtinMainContext } from "@opencode/plugin/gui/builtin"
-import type { Plugin } from "@opencode/plugin/gui/main"
+import { builtinMainContext } from "@pendix/plugin/gui/builtin"
+import type { Plugin } from "@pendix/plugin/gui/main"
 import { Pairing } from "./contract"
 import { createDispatch } from "./dispatch"
 import {

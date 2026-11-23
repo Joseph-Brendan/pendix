@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test"
 import { fileDiff, fileNode, openSession } from "../utils/workspace"
 import { openFileLauncher, openReviewLauncher, storedStrips } from "../utils/side-panel"
 import { expectSessionTitle } from "../utils/waits"
-import { base64Encode } from "@opencode/util/encode"
+import { base64Encode } from "@pendix/util/encode"
 
 test("review content stays aligned with the side region in both directions", async ({ page }) => {
   await page.setViewportSize({ width: 1400, height: 900 })

@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import type { ModelInfo } from "@opencode/client"
+import type { ModelInfo } from "@pendix/client"
 import { CliRenderEvents, InputRenderable } from "@opentui/core"
 import { once } from "node:events"
 import { DialogSpeed } from "../../src/component/dialog-speed"

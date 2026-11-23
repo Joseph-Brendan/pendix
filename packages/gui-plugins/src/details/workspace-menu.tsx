@@ -1,11 +1,11 @@
-import { Button } from "@opencode/ui/button"
-import { Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitleGroup } from "@opencode/ui/dialog"
-import { ErrorDetails } from "@opencode/ui/error-details"
-import { Icon } from "@opencode/ui/icon"
-import { Loader } from "@opencode/ui/loader"
-import { Menu } from "@opencode/ui/menu"
-import { MenuScroll } from "@opencode/ui/menu-scroll"
-import { getFilename } from "@opencode/util/path"
+import { Button } from "@pendix/ui/button"
+import { Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitleGroup } from "@pendix/ui/dialog"
+import { ErrorDetails } from "@pendix/ui/error-details"
+import { Icon } from "@pendix/ui/icon"
+import { Loader } from "@pendix/ui/loader"
+import { Menu } from "@pendix/ui/menu"
+import { MenuScroll } from "@pendix/ui/menu-scroll"
+import { getFilename } from "@pendix/util/path"
 import {
   createMemo,
   createRoot,
@@ -24,7 +24,7 @@ import {
   type MountedSession,
   type Project,
   type ServerRef,
-} from "@opencode/plugin/gui"
+} from "@pendix/plugin/gui"
 import {
   createWorkspaceMoveState,
   transitionWorkspaceMove,

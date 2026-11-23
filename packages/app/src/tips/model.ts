@@ -1,5 +1,5 @@
 import { createMediaQuery } from "@solid-primitives/media"
-import { showToast, toaster } from "@opencode/ui/toast"
+import { showToast, toaster } from "@pendix/ui/toast"
 import { Schema } from "effect"
 import { createEffect, createMemo, createSignal, onCleanup } from "solid-js"
 import { useLanguage } from "@/runtime/i18n/language"

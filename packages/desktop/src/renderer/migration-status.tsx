@@ -1,7 +1,7 @@
-import { OpenCode } from "@opencode/client/promise"
-import { useLanguage } from "@opencode/app/desktop"
-import { Loader } from "@opencode/ui/loader"
-import { showToast, toaster, Toast } from "@opencode/ui/toast"
+import { OpenCode } from "@pendix/client/promise"
+import { useLanguage } from "@pendix/app/desktop"
+import { Loader } from "@pendix/ui/loader"
+import { showToast, toaster, Toast } from "@pendix/ui/toast"
 import { createEffect, createRoot, createSignal, onCleanup, onMount } from "solid-js"
 import type { ServerReadyData } from "../shared/ipc-contract"
 import {

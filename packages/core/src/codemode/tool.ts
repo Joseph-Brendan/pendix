@@ -1,7 +1,7 @@
 export * as CodeModeTool from "./tool.js"
 
-import { ToolFailure } from "@opencode/ai/effect"
-import { CodeMode, Namespace, Tool } from "@opencode/codemode"
+import { ToolFailure } from "@pendix/ai/effect"
+import { CodeMode, Namespace, Tool } from "@pendix/codemode"
 import type {
   Content,
   Context as ToolContext,
@@ -10,9 +10,9 @@ import type {
   Metadata,
   Namespace as ToolNamespace,
   Result,
-} from "@opencode/schema/tool"
-import { Identifier } from "@opencode/schema/identifier"
-import { CallID } from "@opencode/schema/tool"
+} from "@pendix/schema/tool"
+import { Identifier } from "@pendix/schema/identifier"
+import { CallID } from "@pendix/schema/tool"
 import { Clock, Context, Effect, Ref, Schema, Scope, Semaphore } from "effect"
 import { toSessionError } from "../session/to-session-error.js"
 import { definition, normalizedName } from "../tool/runtime.js"

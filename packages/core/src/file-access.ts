@@ -1,8 +1,8 @@
 export * as FileAccess from "./file-access.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
-import { FSUtil } from "@opencode/util/fs-util"
-import { Global } from "@opencode/util/global"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
+import { FSUtil } from "@pendix/util/fs-util"
+import { Global } from "@pendix/util/global"
 import { Array, Context, Effect, Layer, Schema } from "effect"
 import path from "path"
 import { Environment } from "./environment/index.js"

@@ -1,4 +1,4 @@
-import { VideoID } from "@opencode/schema/generate"
+import { VideoID } from "@pendix/schema/generate"
 import { Schema } from "effect"
 import { SessionSchema } from "../session/schema.js"
 

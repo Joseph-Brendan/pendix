@@ -280,7 +280,7 @@ normalized transcripts differ. Transcripts are kept in `$TMPDIR/opencode-parity/
 `crates/tui/tests/all/plugin_machines.rs`, and `parity/machines/plugins.test.tsx`, which drives the TypeScript TUI.
 `bun run parity:machines` covers each edge once and the seeded walks; `bun run parity:machines:deep` adds every path
 to the file's depth and the fault trials. The package has no `test` script, so the repository's `turbo test` does not
-run this suite on every pull request that touches a package it depends on, such as `@opencode/tui`. The Rust side runs the plugin as its Luau twin, `parity/plugins/life/init.luau`, beside
+run this suite on every pull request that touches a package it depends on, such as `@pendix/tui`. The Rust side runs the plugin as its Luau twin, `parity/plugins/life/init.luau`, beside
 the TypeScript `tui.tsx`.
 
 ## Generated files and drift

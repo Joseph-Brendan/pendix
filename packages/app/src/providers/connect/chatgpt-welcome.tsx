@@ -1,7 +1,7 @@
-import { Button } from "@opencode/ui/button"
-import { useDialog } from "@opencode/ui/context/dialog"
-import { Dialog, DialogTitle } from "@opencode/ui/dialog"
-import { ProviderIcon } from "@opencode/ui/provider-icon"
+import { Button } from "@pendix/ui/button"
+import { useDialog } from "@pendix/ui/context/dialog"
+import { Dialog, DialogTitle } from "@pendix/ui/dialog"
+import { ProviderIcon } from "@pendix/ui/provider-icon"
 import { useLanguage } from "@/runtime/i18n/language"
 import { ExternalLink } from "@/runtime/platform/external-link"
 

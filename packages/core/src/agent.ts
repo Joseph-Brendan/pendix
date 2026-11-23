@@ -1,8 +1,8 @@
 export * as Agent from "./agent.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Array, Context, Effect, Layer, Types } from "effect"
-import { Agent } from "@opencode/schema/agent"
+import { Agent } from "@pendix/schema/agent"
 import { Bus } from "./bus.js"
 import { State } from "./state.js"
 
@@ -17,7 +17,7 @@ export const Color = Agent.Color
 export const Info = Agent.Info
 export type Info = Agent.Info
 
-export { Event } from "@opencode/schema/agent"
+export { Event } from "@pendix/schema/agent"
 
 export interface Selection {
   readonly id: ID

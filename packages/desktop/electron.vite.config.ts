@@ -13,7 +13,7 @@ function resolveChannel() {
   return "dev"
 }
 
-const appPlugin = (await import("@opencode/app/vite")).default
+const appPlugin = (await import("@pendix/app/vite")).default
 
 // Every module the entry reaches through static imports lands in one chunk. Automatic splitting
 // otherwise fragments the initial graph into ~50 files shared with lazy routes, and each file costs

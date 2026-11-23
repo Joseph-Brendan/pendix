@@ -1,34 +1,34 @@
 import { describe, expect } from "bun:test"
-import { ai } from "@opencode/ai/effect"
-import { LLMClient, RequestExecutor } from "@opencode/ai/route"
-import { Document, Event, Info } from "@opencode/schema/config"
-import { ConfigPolicy } from "@opencode/schema/config/policy"
-import { Money } from "@opencode/schema/money"
+import { ai } from "@pendix/ai/effect"
+import { LLMClient, RequestExecutor } from "@pendix/ai/route"
+import { Document, Event, Info } from "@pendix/schema/config"
+import { ConfigPolicy } from "@pendix/schema/config/policy"
+import { Money } from "@pendix/schema/money"
 import { Effect, Fiber, Layer, Schema, Stream } from "effect"
 import { TestClock } from "effect/testing"
 import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect/http"
-import { Agent } from "@opencode/core/agent"
-import { App } from "@opencode/core/app"
-import { Bus } from "@opencode/core/bus"
-import { Config } from "@opencode/core/config"
-import { ConfigIntegration } from "@opencode/core/config/integration"
-import { ConfigPolicyPlugin } from "@opencode/core/config/plugin/policy"
-import { ConfigProviderPlugin } from "@opencode/core/config/plugin/provider"
-import { ConfigWebSearchPlugin } from "@opencode/core/config/plugin/websearch"
-import { Credential } from "@opencode/core/credential"
-import { InstructionDiscovery } from "@opencode/core/instruction-discovery"
-import { Integration } from "@opencode/core/integration"
-import { Model } from "@opencode/core/model"
-import { ModelResolver } from "@opencode/core/model-resolver"
-import { Plugin } from "@opencode/core/plugin"
-import { PluginHooks } from "@opencode/core/plugin/hooks"
-import { PluginHost } from "@opencode/core/plugin/host"
-import { OpenAIPlugin } from "@opencode/core/plugin/provider/openai"
-import { OpencodePlugin } from "@opencode/core/plugin/provider/opencode"
-import { Provider } from "@opencode/core/provider"
-import { Session } from "@opencode/core/session"
-import { Skill } from "@opencode/core/skill"
-import { WebSearch } from "@opencode/core/websearch"
+import { Agent } from "@pendix/core/agent"
+import { App } from "@pendix/core/app"
+import { Bus } from "@pendix/core/bus"
+import { Config } from "@pendix/core/config"
+import { ConfigIntegration } from "@pendix/core/config/integration"
+import { ConfigPolicyPlugin } from "@pendix/core/config/plugin/policy"
+import { ConfigProviderPlugin } from "@pendix/core/config/plugin/provider"
+import { ConfigWebSearchPlugin } from "@pendix/core/config/plugin/websearch"
+import { Credential } from "@pendix/core/credential"
+import { InstructionDiscovery } from "@pendix/core/instruction-discovery"
+import { Integration } from "@pendix/core/integration"
+import { Model } from "@pendix/core/model"
+import { ModelResolver } from "@pendix/core/model-resolver"
+import { Plugin } from "@pendix/core/plugin"
+import { PluginHooks } from "@pendix/core/plugin/hooks"
+import { PluginHost } from "@pendix/core/plugin/host"
+import { OpenAIPlugin } from "@pendix/core/plugin/provider/openai"
+import { OpencodePlugin } from "@pendix/core/plugin/provider/opencode"
+import { Provider } from "@pendix/core/provider"
+import { Session } from "@pendix/core/session"
+import { Skill } from "@pendix/core/skill"
+import { WebSearch } from "@pendix/core/websearch"
 import { withEnv } from "../fixture/env"
 import { drain } from "../lib/clock"
 import { eventually } from "../lib/eventually"
@@ -153,7 +153,7 @@ describe("OpencodePlugin", () => {
           type: "oauth",
           label: "OpenCode account",
           form: [
-            { key: "server", type: "string", format: "uri", hidden: true, default: "https://opencode.ai/console" },
+            { key: "server", type: "string", format: "uri", hidden: true, default: "https://pendix.dev/console" },
           ],
         },
         { type: "key", label: "API key (service account)" },
@@ -368,7 +368,7 @@ describe("OpencodePlugin", () => {
                 ...(scenario.orgID === "org-missing" ? [] : ["/api/v2/instructions", "/api/v2/skills"]),
               ])
               // The refresh and every Console fetch say which OpenCode is asking.
-              expect(agents).toEqual(requests.map(() => "opencode/beta/1.2.3/test"))
+              expect(agents).toEqual(requests.map(() => "pendix/beta/1.2.3/test"))
             }).pipe(Effect.provideService(App.Service, App.make({ name: "test", version: "1.2.3", channel: "beta" }))),
           ({ server }) => Effect.promise(() => server.stop(true)),
         ),
@@ -486,11 +486,11 @@ describe("OpencodePlugin", () => {
           const integrations = yield* Integration.Service
           yield* providers.transform((editor) => {
             editor.update(Provider.ID.openai, (provider) => {
-              provider.package = "@opencode/ai/providers/openai"
+              provider.package = "@pendix/ai/providers/openai"
               provider.integrationID = Integration.ID.make("openai")
             })
             editor.models.update(Provider.ID.openai, Model.ID.make("api-model"), (model) => {
-              model.package = "@opencode/ai/providers/openai"
+              model.package = "@pendix/ai/providers/openai"
               model.settings = { baseURL: "https://upstream.example/v1" }
               model.variants = [
                 {
@@ -522,7 +522,7 @@ describe("OpencodePlugin", () => {
             canonical: "openai",
             name: "Remote",
             integrationID: "opencode",
-            package: "@opencode/ai/providers/openai-compatible",
+            package: "@pendix/ai/providers/openai-compatible",
             settings: { baseURL: `${server.url.origin}/v1`, custom: "value" },
             headers: { "x-org-id": "org" },
           })
@@ -539,7 +539,7 @@ describe("OpencodePlugin", () => {
             capabilities: { tools: true, input: ["text", "image"], output: ["text"] },
             cost: [{ input: 1, output: 2, cache: { read: 0.1, write: 0 } }],
             limit: { context: 1000, output: 100 },
-            package: "@opencode/ai/providers/openai-compatible",
+            package: "@pendix/ai/providers/openai-compatible",
             settings: { baseURL: `${server.url.origin}/v1`, custom: "value", temperature: 0.5 },
             headers: { "x-org-id": "org" },
           })
@@ -550,7 +550,7 @@ describe("OpencodePlugin", () => {
             provider: "openai",
           })
           const override = required(yield* models.get(Provider.ID.make("remote"), Model.ID.make("override")))
-          expect(override.package).toBe("@opencode/ai/providers/anthropic")
+          expect(override.package).toBe("@pendix/ai/providers/anthropic")
           expect(override.settings?.baseURL).toBe(`${server.url.origin}/anthropic`)
           expect(model.variants).toEqual([
             {
@@ -667,16 +667,16 @@ describe("OpencodePlugin", () => {
             },
           ])
           const gpt = required(yield* models.get(Provider.ID.make("remote"), Model.ID.make("gpt")))
-          expect(gpt.package).toBe("@opencode/ai/providers/openai")
+          expect(gpt.package).toBe("@pendix/ai/providers/openai")
           expect(gpt.variants).toEqual(reasoner.variants)
           const claude = required(yield* models.get(Provider.ID.make("remote"), Model.ID.make("claude-sonnet-4-5")))
-          expect(claude.package).toBe("@opencode/ai/providers/anthropic")
+          expect(claude.package).toBe("@pendix/ai/providers/anthropic")
           expect(claude.variants).toEqual([
             { id: Model.VariantID.make("high"), settings: { thinking: { type: "enabled", budgetTokens: 16_000 } } },
             { id: Model.VariantID.make("max"), settings: { thinking: { type: "enabled", budgetTokens: 31_999 } } },
           ])
           const gemini = required(yield* models.get(Provider.ID.make("remote"), Model.ID.make("gemini-3.1-pro")))
-          expect(gemini.package).toBe("@opencode/ai/providers/google")
+          expect(gemini.package).toBe("@pendix/ai/providers/google")
           expect(gemini.variants).toEqual([
             {
               id: Model.VariantID.make("low"),
@@ -688,7 +688,7 @@ describe("OpencodePlugin", () => {
             },
           ])
           const magistral = required(yield* models.get(Provider.ID.make("remote"), Model.ID.make("magistral-medium")))
-          expect(magistral.package).toBe("@opencode/ai/providers/mistral")
+          expect(magistral.package).toBe("@pendix/ai/providers/mistral")
           expect(magistral.variants).toEqual([
             { id: Model.VariantID.make("low"), settings: { reasoningEffort: "low" } },
             { id: Model.VariantID.make("high"), settings: { reasoningEffort: "high" } },
@@ -1067,7 +1067,7 @@ describe("OpencodePlugin", () => {
       yield* addPlugin().pipe(Effect.provideService(HttpClient.HttpClient, http))
       yield* drain
 
-      expect(requests).toEqual(["https://opencode.ai/console/api/v2/config"])
+      expect(requests).toEqual(["https://console.opencode.ai/api/v2/config"])
     }),
   )
 
@@ -1396,8 +1396,8 @@ describe("OpencodePlugin", () => {
             new WebSearch.Response({ providerID: WebSearch.ID.make("opencode"), results: [] }),
           )
           expect(requests).toEqual([
-            "https://opencode.ai/console/api/v2/config",
-            "https://opencode.ai/console/api/websearch",
+            "https://pendix.dev/console/api/v2/config",
+            "https://pendix.dev/console/api/websearch",
           ])
         }),
       (server) => Effect.promise(() => server.stop(true)),

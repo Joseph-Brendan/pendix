@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { Storage } from "@opencode/plugin/gui/main"
+import type { Storage } from "@pendix/plugin/gui/main"
 import {
   clipboardWrite,
   createSitePermissions,

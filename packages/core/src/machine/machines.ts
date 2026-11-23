@@ -1,6 +1,6 @@
 export * as Machines from "./machines.js"
 
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
 import { createHash, randomBytes } from "node:crypto"
 import { eq } from "drizzle-orm"
 import { Clock, Context, Effect, Layer, Schema } from "effect"

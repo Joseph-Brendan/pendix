@@ -1,5 +1,5 @@
-import { Button } from "@opencode/ui/button"
-import { Menu } from "@opencode/ui/menu"
+import { Button } from "@pendix/ui/button"
+import { Menu } from "@pendix/ui/menu"
 import { createEffect, For, on, Show } from "solid-js"
 import { createStore } from "solid-js/store"
 import { useLanguage } from "@/runtime/i18n/language"

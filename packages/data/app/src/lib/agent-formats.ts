@@ -1,4 +1,4 @@
-import type { MarketDay, ModelUsagePoint, UsagePoint } from "@opencode/data-core/domain/home"
+import type { MarketDay, ModelUsagePoint, UsagePoint } from "@pendix/data-core/domain/home"
 import { translate } from "../i18n"
 import {
   catalogModelPath,

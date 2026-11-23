@@ -1,8 +1,8 @@
 export * as SubagentTool from "./subagent.js"
 
-import { ToolFailure } from "@opencode/ai/effect"
-import type { Context } from "@opencode/plugin/effect/plugin"
-import type { SessionHooks } from "@opencode/plugin/effect/session"
+import { ToolFailure } from "@pendix/ai/effect"
+import type { Context } from "@pendix/plugin/effect/plugin"
+import type { SessionHooks } from "@pendix/plugin/effect/session"
 import { Effect, Predicate, Schema } from "effect"
 import { Agent } from "../../agent.js"
 import { Config } from "../../config.js"

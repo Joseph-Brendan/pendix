@@ -3,10 +3,10 @@ import path from "path"
 import { render, useRenderer, useTerminalDimensions } from "@opentui/solid"
 import "./component/spinner-renderable"
 import { Effect, Latch } from "effect"
-import { Service, type Endpoint } from "@opencode/client/effect/service"
-import { OpenCode, type SessionInfo } from "@opencode/client"
-import { Global } from "@opencode/util/global"
-import { noTimeoutFetch } from "@opencode/util/no-timeout-fetch"
+import { Service, type Endpoint } from "@pendix/client/effect/service"
+import { OpenCode, type SessionInfo } from "@pendix/client"
+import { Global } from "@pendix/util/global"
+import { noTimeoutFetch } from "@pendix/util/no-timeout-fetch"
 import { ClipboardProvider, useClipboard } from "./context/clipboard"
 import { LogProvider, type LogSink } from "./context/log"
 import { ExitProvider, useExit } from "./context/exit"
@@ -90,10 +90,10 @@ import { PromptHistoryProvider } from "./prompt/history"
 import { FrecencyProvider } from "./prompt/frecency"
 import { PromptStashProvider } from "./prompt/stash"
 import { Toast, ToastProvider, useToast } from "./ui/toast"
-import { isFallbackTitle } from "@opencode/util/session-title-fallback"
+import { isFallbackTitle } from "@pendix/util/session-title-fallback"
 import * as Model from "./util/model"
 import { ArgsProvider, useArgs, type Args } from "./context/args"
-import { openUrl } from "@opencode/util/open"
+import { openUrl } from "@pendix/util/open"
 import { PromptRefProvider, usePromptRef } from "./context/prompt"
 import { Config, ConfigProvider, useConfig } from "./config"
 import { newSessionLocation } from "./config/new-session-location"
@@ -277,7 +277,7 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
           )
         }
         if (process.env.OPENCODE_DRIVE) {
-          const { Drive } = yield* Effect.promise(() => import("@opencode/simulation/frontend"))
+          const { Drive } = yield* Effect.promise(() => import("@pendix/simulation/frontend"))
           return yield* Drive.create(options, input.app.version)
         }
         return yield* Effect.acquireRelease(
@@ -660,23 +660,23 @@ function App() {
     if (!terminalTitleEnabled()) return
 
     if (route.data.type === "home") {
-      setTerminalTitle(renderer, "OpenCode")
+      setTerminalTitle(renderer, "Pendix")
       return
     }
 
     if (route.data.type === "session") {
       const title = session?.title
       if (!title || isFallbackTitle(title)) {
-        setTerminalTitle(renderer, "OpenCode")
+        setTerminalTitle(renderer, "Pendix")
         return
       }
 
-      setTerminalTitle(renderer, `OC | ${title.length > 40 ? title.slice(0, 37) + "…" : title}`)
+      setTerminalTitle(renderer, `Pendix | ${title.length > 40 ? title.slice(0, 37) + "…" : title}`)
       return
     }
 
     if (route.data.type === "plugin") {
-      setTerminalTitle(renderer, `OC | ${route.data.name}`)
+      setTerminalTitle(renderer, `Pendix | ${route.data.name}`)
     }
   })
 
@@ -1105,7 +1105,7 @@ function App() {
         ? [
             {
               name: "opencode.update",
-              title: "Update OpenCode",
+              title: "Update Pendix",
               slash: { name: "update" },
               run: () => updater.open?.("manual"),
               category: "System",
@@ -1211,7 +1211,7 @@ function App() {
         name: "docs.open",
         title: "Open docs",
         run: () => {
-          openUrl("https://opencode.ai/docs").catch(() => {})
+          openUrl("https://pendix.dev/docs").catch(() => {})
           dialog.clear()
         },
         category: "System",

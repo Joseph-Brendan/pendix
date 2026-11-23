@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@opencode/codemode",
+  "name": "@pendix/codemode",
   "version": "2.4.0",
   "description": "Effect-native confined code execution over schema-described tools",
   "type": "module",

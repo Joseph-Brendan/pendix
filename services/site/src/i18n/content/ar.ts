@@ -100,7 +100,7 @@ export const content = {
         "typescript-client": { title: "عميل TypeScript", body: "طلبات وأحداث مُنمّطة، بنفس قيم @opencode/client." },
         "sessions-from-code": { title: "جلسات من الكود", body: "أنشئ الجلسات وأرسل المطالبات من أي سكربت." },
         "any-model": { title: "أي نموذج", body: "يستخدم النماذج المضبوطة في إعداد OpenCode لديك." },
-        "npm-or-bun": { title: "npm أو bun", body: "ثبّته عبر npm i @opencode/sdk أو bun add @opencode/sdk." },
+        "npm-or-bun": { title: "npm أو bun", body: "ثبّته عبر npm i @pendix/sdk أو bun add @opencode/sdk." },
         "in-process-host": { title: "مضيف داخل العملية", body: "يشغّل OpenCode في الذاكرة، دون المرور بالشبكة." },
         "your-plugins": { title: "ملحقاتك", body: "مرّر ملحقاتك عند إنشاء المضيف داخل العملية." },
         "promise-or-effect": { title: "Promise أو Effect", body: "واجهة Promise API وواجهة Effect API بنفس القيم." },

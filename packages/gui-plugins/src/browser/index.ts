@@ -1,5 +1,5 @@
-import { builtinCatalog } from "@opencode/plugin/gui/builtin"
-import { Plugin, Store } from "@opencode/plugin/gui"
+import { builtinCatalog } from "@pendix/plugin/gui/builtin"
+import { Plugin, Store } from "@pendix/plugin/gui"
 import { Schema } from "effect"
 import { History } from "./history/visits"
 import en from "./i18n/en"

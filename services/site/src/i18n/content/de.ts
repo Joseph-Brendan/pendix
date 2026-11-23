@@ -164,7 +164,7 @@ export const content = {
         "any-model": { title: "Jedes Modell", body: "Nutzt die Modelle, die dein OpenCode-Setup hat." },
         "npm-or-bun": {
           title: "npm oder bun",
-          body: "Installiere es mit npm i @opencode/sdk oder bun add @opencode/sdk.",
+          body: "Installiere es mit npm i @pendix/sdk oder bun add @opencode/sdk.",
         },
         "in-process-host": {
           title: "In-Process-Host",

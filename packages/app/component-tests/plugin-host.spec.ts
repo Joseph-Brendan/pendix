@@ -1,5 +1,5 @@
 import type { Component, Owner } from "solid-js"
-import type { PluginInfo } from "@opencode/client/promise"
+import type { PluginInfo } from "@pendix/client/promise"
 import type {
   CodeBlockProps,
   Context,
@@ -10,9 +10,9 @@ import type {
   SessionRef,
   SessionScreen,
   SetupContext,
-} from "@opencode/plugin/gui"
-import type { BuiltinContext, BuiltinPanelTab } from "@opencode/plugin/gui/builtin"
-import type { Bridge, BridgeMessage, EnableState, Installed } from "@opencode/plugin/gui/host"
+} from "@pendix/plugin/gui"
+import type { BuiltinContext, BuiltinPanelTab } from "@pendix/plugin/gui/builtin"
+import type { Bridge, BridgeMessage, EnableState, Installed } from "@pendix/plugin/gui/host"
 import type { JSHandle } from "@playwright/test"
 import type { mountCodeBlocks, mountThemes } from "./plugin-host.fixture"
 import { expect, sourceURL, story } from "../../stories/playwright/story"

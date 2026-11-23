@@ -1,10 +1,10 @@
 export * as ReadTool from "./read.js"
 
-import type { Context } from "@opencode/plugin/effect/plugin"
+import type { Context } from "@pendix/plugin/effect/plugin"
 import path, { basename, dirname, extname, isAbsolute, join, relative } from "path"
-import { ToolFailure } from "@opencode/ai/effect"
+import { ToolFailure } from "@pendix/ai/effect"
 import { Effect, Schema } from "effect"
-import { FSUtil } from "@opencode/util/fs-util"
+import { FSUtil } from "@pendix/util/fs-util"
 import { Config } from "../../config.js"
 import { ConfigEntryObserver } from "../../config/plugin/entry-observer.js"
 import { Flag } from "../../flag.js"

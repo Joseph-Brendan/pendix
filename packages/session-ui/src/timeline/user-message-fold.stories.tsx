@@ -1,4 +1,4 @@
-import type { SessionMessageAssistant, SessionMessageInfo, SessionMessageUser } from "@opencode/client/promise"
+import type { SessionMessageAssistant, SessionMessageInfo, SessionMessageUser } from "@pendix/client/promise"
 import { createMemo } from "solid-js"
 import type { SessionDocument } from "../document"
 import { SessionTimeline, type SessionUserPresentation } from "./session-timeline"

@@ -1,7 +1,7 @@
-import { Button } from "@opencode/ui/button"
-import { Icon } from "@opencode/ui/icon"
-import { Menu } from "@opencode/ui/menu"
-import { Tabs } from "@opencode/ui/tabs"
+import { Button } from "@pendix/ui/button"
+import { Icon } from "@pendix/ui/icon"
+import { Menu } from "@pendix/ui/menu"
+import { Tabs } from "@pendix/ui/tabs"
 import {
   createEffect,
   ErrorBoundary,

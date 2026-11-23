@@ -7,7 +7,7 @@ import { discoverThemes } from "../src/theme/discovery"
 import { configDirectories } from "../src/util/config-directories"
 import { terminalMode } from "../src/theme/system"
 import opencodeSource from "../src/theme/assets/opencode.json" with { type: "json" }
-import type { ThemeV1Json } from "@opencode/theme/tui/v1"
+import type { ThemeV1Json } from "@pendix/theme/tui/v1"
 import { tmpdir } from "./fixture/fixture"
 
 const opencodeV1 = opencodeSource as ThemeV1Json
@@ -139,9 +139,9 @@ test("theme directories include global config before project directories", async
   const global = path.join(tmp.path, "global")
   const project = path.join(tmp.path, "repo", "package")
   await mkdir(path.join(global, "themes"), { recursive: true })
-  await mkdir(path.join(project, ".opencode", "themes"), { recursive: true })
+  await mkdir(path.join(project, ".pendix", "themes"), { recursive: true })
   await writeFile(path.join(global, "themes", "global.json"), JSON.stringify({ source: "global" }))
-  await writeFile(path.join(project, ".opencode", "themes", "project.json"), JSON.stringify({ source: "project" }))
+  await writeFile(path.join(project, ".pendix", "themes", "project.json"), JSON.stringify({ source: "project" }))
 
   await expect(discoverThemes(configDirectories(global, project))).resolves.toEqual({
     global: { source: "global" },

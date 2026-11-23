@@ -46,7 +46,7 @@ records.
 
 ### The API client
 
-`script/gen/api.ts` generates the client from the server's API definition (`ClientApi` in `@opencode/protocol`):
+`script/gen/api.ts` generates the client from the server's API definition (`ClientApi` in `@pendix/protocol`):
 the types (`crates/api-types/src/types.rs`), one request builder for each endpoint that returns a typed `Call<T>`
 (`crates/api-types/src/client.rs`), and one `async` method on `Client` that sends it
 (`crates/api/src/generated/methods.rs`). A method is named by its path in snake case (`session.message.get` is

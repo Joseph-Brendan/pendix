@@ -11,10 +11,10 @@ import {
   type SessionMessageAssistantTool,
   type SessionMessageIdle,
   type SessionMessageInfo,
-} from "@opencode/client/promise"
-import { SessionMessage } from "@opencode/schema/session-message"
+} from "@pendix/client/promise"
+import { SessionMessage } from "@pendix/schema/session-message"
 import { EOL } from "node:os"
-import { toolOutputText, type MiniToolPart } from "@opencode/tui/mini/tool"
+import { toolOutputText, type MiniToolPart } from "@pendix/tui/mini/tool"
 import { UI } from "./ui"
 
 type Input = {

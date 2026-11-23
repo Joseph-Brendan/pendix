@@ -1,11 +1,11 @@
 # Built-in GUI plugins
 
-Every feature of the desktop and web app that is not the core shell is a built-in GUI plugin: the terminal, review, files, the browser, SSH, WSL, the updater and more. Each one builds only on the GUI plugin SDK in [`packages/plugin/src/gui`](../plugin/src/gui), the same `@opencode/plugin/gui` that third-party plugins use. The SDK is typed so that the common bugs fail to compile or fail the lint, and every declaration has TSDoc, so editor hovers answer most questions. This guide shows how the parts fit, with code from the plugins that ship. [Build your first plugin](#build-your-first-plugin) walks through [`src/pairing`](src/pairing), a small built-in that uses both processes. `bun run lint` checks every code block marked with its source against that source.
+Every feature of the desktop and web app that is not the core shell is a built-in GUI plugin: the terminal, review, files, the browser, SSH, WSL, the updater and more. Each one builds only on the GUI plugin SDK in [`packages/plugin/src/gui`](../plugin/src/gui), the same `@pendix/plugin/gui` that third-party plugins use. The SDK is typed so that the common bugs fail to compile or fail the lint, and every declaration has TSDoc, so editor hovers answer most questions. This guide shows how the parts fit, with code from the plugins that ship. [Build your first plugin](#build-your-first-plugin) walks through [`src/pairing`](src/pairing), a small built-in that uses both processes. `bun run lint` checks every code block marked with its source against that source.
 
-- Window SDK: `@opencode/plugin/gui` ([`index.ts`](../plugin/src/gui/index.ts))
-- Main-process SDK: `@opencode/plugin/gui/main` ([`main.ts`](../plugin/src/gui/main.ts))
-- Host-only, never published: `@opencode/plugin/gui/host` ([`host.ts`](../plugin/src/gui/host.ts)): `compose`, the bridge protocol and the plugin bundle evaluator
-- Built-ins only, never published: `@opencode/plugin/gui/builtin` ([`builtin.ts`](../plugin/src/gui/builtin.ts)): `onIdle`, store migrations, lazily loaded locales (`builtinCatalog`), and the registry fields and host abilities no third-party plugin needs (see [Built-in only](#built-in-only))
+- Window SDK: `@pendix/plugin/gui` ([`index.ts`](../plugin/src/gui/index.ts))
+- Main-process SDK: `@pendix/plugin/gui/main` ([`main.ts`](../plugin/src/gui/main.ts))
+- Host-only, never published: `@pendix/plugin/gui/host` ([`host.ts`](../plugin/src/gui/host.ts)): `compose`, the bridge protocol and the plugin bundle evaluator
+- Built-ins only, never published: `@pendix/plugin/gui/builtin` ([`builtin.ts`](../plugin/src/gui/builtin.ts)): `onIdle`, store migrations, lazily loaded locales (`builtinCatalog`), and the registry fields and host abilities no third-party plugin needs (see [Built-in only](#built-in-only))
 - Rules for agents: [`AGENTS.md`](AGENTS.md)
 
 ```mermaid
@@ -47,7 +47,7 @@ Unit tests of logic that carries a contract sit beside the code as `*.test.ts`, 
 
 Contracts are not declared: a plugin provides its own with `ctx.provide` and reads others' with `ctx.use` at runtime.
 
-- [`src/renderer.ts`](src/renderer.ts) and [`src/main.ts`](src/main.ts) list the built-ins, each through `compose` from `@opencode/plugin/gui/host`. These are the only files that name built-ins. "Built-in" is the host's flag for what these lists load, as the TUI marks its built-ins; the definitions themselves are ordinary `Plugin.define` calls.
+- [`src/renderer.ts`](src/renderer.ts) and [`src/main.ts`](src/main.ts) list the built-ins, each through `compose` from `@pendix/plugin/gui/host`. These are the only files that name built-ins. "Built-in" is the host's flag for what these lists load, as the TUI marks its built-ins; the definitions themselves are ordinary `Plugin.define` calls.
 - Another plugin imports only your `contract.ts`.
 - A window entry loads with the app. Keep it small and put heavy UI behind `lazy()`.
 
@@ -211,7 +211,7 @@ It then falls back to the quote's composer tile without closing the editor or di
 // Forget a selection when the user goes Home and back.
 const [selected, setSelected] = createVisitState<string | undefined>(undefined)
 
-// Compile the settings page while the app idles, not when settings opens. Import `onIdle` from `@opencode/plugin/gui/builtin`.
+// Compile the settings page while the app idles, not when settings opens. Import `onIdle` from `@pendix/plugin/gui/builtin`.
 const Page = lazy(() => import("./page"))
 onCleanup(onIdle(() => void Page.preload()))
 ```
@@ -251,7 +251,7 @@ const runScreen = (effect: Extract<PairingEffect, { type: "read-screen" | "set-s
 
 Each line links to the file whose TSDoc covers every field.
 
-A plugin bundle cannot require `@opencode/ui`, so it renders the app's buttons, menus, menu rows, dialog frame, fields, selects, settings pages and rows, Markdown, code and icons with the `ctx.ui` components. Built-ins use them too where they need nothing more, such as the settings rows of pairing, updates and review.
+A plugin bundle cannot require `@pendix/ui`, so it renders the app's buttons, menus, menu rows, dialog frame, fields, selects, settings pages and rows, Markdown, code and icons with the `ctx.ui` components. Built-ins use them too where they need nothing more, such as the settings rows of pairing, updates and review.
 
 ### Icons
 
@@ -262,19 +262,19 @@ Every SDK icon field (`SettingsPage.icon`, `ComposerPillView.icon`, `ComposerNot
 | `AppIconName`    | One of the app's own icons, such as `"folder"`                          | The app's icon catalog                            |
 | `PluginIconName` | One of your plugin's own icons, stored and sent as `<plugin id>:<name>` | `ctx.icons.name`, for an icon the plugin declared |
 
-- **The app's icons.** `AppIconName` lists the names of the app's icon catalog (`@opencode/ui/icons/catalog`), which `bun run generate` in `packages/plugin` copies into `packages/plugin/src/gui/icon-name.ts`. `src/icon-name.typecheck.ts` fails the typecheck when the two drift.
+- **The app's icons.** `AppIconName` lists the names of the app's icon catalog (`@pendix/ui/icons/catalog`), which `bun run generate` in `packages/plugin` copies into `packages/plugin/src/gui/icon-name.ts`. `src/icon-name.typecheck.ts` fails the typecheck when the two drift.
 - **Your own icons.** Artwork that only your plugin shows stays out of the app's catalog. Keep each SVG file in the plugin's folder, declare it in `Plugin.define({ icons })` with a `?raw` import, and read its name from `ctx.icons`. The host registers the artwork before setup and withdraws it with the plugin. A value that is not an SVG document fails the plugin when it starts.
 - **Draw for the host.** The document's `viewBox` frames the drawing, and the host scales it to the place that shows it: draw on the app's 16px grid. Draw with `currentColor`, so the icon takes the color of that place, such as a pill's `tone` or a menu row's muted icon color.
 - **Motion.** A drawing may move with SVG animation elements (`animate`, `animateTransform`). Every place that shows the icon moves in step, and the animation goes on while the host renders that place again, for example when a pill's `show` runs again. Under the user's reduced motion setting the host holds every icon on its first frame, so make that frame the resting drawing. An icon that no place shows costs nothing.
 - **Stored names.** A name is a plain string. A composer note or quote keeps it with the draft and the sent message, and a closed tab keeps it in the session's layout. While the plugin that declared the icon is not active, the icon draws nothing and keeps its size.
-- **In the app.** `Icon` from `@opencode/ui/icon` draws a plugin's icon by the same name, so every part of the app that takes an icon name shows it. App code with artwork of its own registers it with `registerIcons` from `@opencode/ui/icons/registry`.
+- **In the app.** `Icon` from `@pendix/ui/icon` draws a plugin's icon by the same name, so every part of the app that takes an icon name shows it. App code with artwork of its own registers it with `registerIcons` from `@pendix/ui/icons/registry`.
 
 The goal plugin declares the glyphs of its composer pill, one for each goal status. The active one moves:
 
 <!-- source: src/goal/index.ts -->
 
 ```ts
-import { Plugin } from "@opencode/plugin/gui"
+import { Plugin } from "@pendix/plugin/gui"
 import en from "./i18n/en"
 import active from "./icons/active.svg?raw"
 import complete from "./icons/complete.svg?raw"
@@ -375,9 +375,9 @@ to the displayed repository or worktree instead of adding a second menu item.
 
 ### Contracts
 
-The contracts `file`, `review` and `browser` publish with the SDK as `@opencode/plugin/gui/<name>`. Read one with `ctx.use`.
+The contracts `file`, `review` and `browser` publish with the SDK as `@pendix/plugin/gui/<name>`. Read one with `ctx.use`.
 
-The desktop `Browser` contract (`@opencode/plugin/gui/browser`) can return a handle to a new tab in the session on screen:
+The desktop `Browser` contract (`@pendix/plugin/gui/browser`) can return a handle to a new tab in the session on screen:
 `const id = await browser.experimental.open(session, url)`, then `await browser.experimental.close(id)` from the same
 plugin instance. Experimental: may change without compatibility guarantees. `experimental.open` resolves once the tab
 exists, also while its page still loads or after its load failed, which the tab itself shows; it rejects, and leaves no
@@ -388,7 +388,7 @@ when the agent uses the tab. `close` returns true only for a tab closed now; a p
 
 ### Built-in only
 
-`@opencode/plugin/gui/builtin` holds what only the built-ins use. It is never published and is not in the modules a plugin bundle may require; a public SDK module never imports it.
+`@pendix/plugin/gui/builtin` holds what only the built-ins use. It is never published and is not in the modules a plugin bundle may require; a public SDK module never imports it.
 
 | Export                                                  | What it adds                                                                                   |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -484,7 +484,7 @@ Desktop windows load storage over IPC; the web reads it synchronously. A read be
 | `ctx.storage.store(key, options)`       | window `value`: undefined until loaded                          | When opened; for runtime keys |
 | main `ctx.storage.store(key, options)`  | `value`: always defined                                         | Synchronously                 |
 
-A public `from` names older keys of the same storage. Built-ins also import parts of the app's own keys, which they replaced: `BuiltinStore.global` and `BuiltinStore.session` from `@opencode/plugin/gui/builtin` take `{ key, sessions?, pick }`, and `builtinMainContext(ctx).storage` takes main's older homes.
+A public `from` names older keys of the same storage. Built-ins also import parts of the app's own keys, which they replaced: `BuiltinStore.global` and `BuiltinStore.session` from `@pendix/plugin/gui/builtin` take `{ key, sessions?, pick }`, and `builtinMainContext(ctx).storage` takes main's older homes.
 
 Review imports one session's slice of an app key that holds every session:
 
@@ -564,7 +564,7 @@ Pairing connects another device to this machine's server from anywhere, and keep
 
 ```ts
 import { Schema } from "effect"
-import { Ipc } from "@opencode/plugin/gui"
+import { Ipc } from "@pendix/plugin/gui"
 
 /**
  * Turns on remote access and keeps this machine's display awake while another device uses it. The window asks the
@@ -594,7 +594,7 @@ export const Pairing = Ipc.define({
 <!-- source: src/pairing/index.ts -->
 
 ```ts
-import { Plugin } from "@opencode/plugin/gui"
+import { Plugin } from "@pendix/plugin/gui"
 import en from "./i18n/en"
 import pair from "./icons/pair.svg?raw"
 
@@ -609,8 +609,8 @@ export default Plugin.define({ icons: { pair }, i18n: { en } })
 import { execFile } from "node:child_process"
 import { powerSaveBlocker } from "electron"
 import { Schema } from "effect"
-import { builtinMainContext } from "@opencode/plugin/gui/builtin"
-import type { Plugin } from "@opencode/plugin/gui/main"
+import { builtinMainContext } from "@pendix/plugin/gui/builtin"
+import type { Plugin } from "@pendix/plugin/gui/main"
 import { Pairing } from "./contract"
 import { createDispatch } from "./dispatch"
 import {
@@ -744,8 +744,8 @@ export default setup
 
 ```tsx
 import { lazy, onCleanup, Suspense } from "solid-js"
-import { Command, SettingsPage, type Plugin } from "@opencode/plugin/gui"
-import { onIdle } from "@opencode/plugin/gui/builtin"
+import { Command, SettingsPage, type Plugin } from "@pendix/plugin/gui"
+import { onIdle } from "@pendix/plugin/gui/builtin"
 import { Pairing } from "./contract"
 import type definition from "./index"
 

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, jest, test } from "bun:test"
-import { Registry, type SessionRef } from "@opencode/plugin/gui"
-import { BuiltinPromptGate } from "@opencode/plugin/gui/builtin"
+import { Registry, type SessionRef } from "@pendix/plugin/gui"
+import { BuiltinPromptGate } from "@pendix/plugin/gui/builtin"
 import { PROMPT_GATE_TIMEOUT_MS, settlePromptGates } from "./prompt-gate"
 
 // SAFETY: the gates under test receive the ref and never read it.

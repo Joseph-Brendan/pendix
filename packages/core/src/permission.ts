@@ -1,9 +1,9 @@
 export * as Permission from "./permission.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Context, Deferred, Effect, Layer, Schema, Scope } from "effect"
-import { Permission } from "@opencode/schema/permission"
-import type { Tool } from "@opencode/schema/tool"
+import { Permission } from "@pendix/schema/permission"
+import type { Tool } from "@pendix/schema/tool"
 import { Bus } from "./bus.js"
 import { Location } from "./location.js"
 import { Agent } from "./agent.js"
@@ -16,7 +16,7 @@ import { PluginHooks } from "./plugin/hooks.js"
 
 const PermissionEffect = Permission.Effect
 export { PermissionEffect as Effect }
-export { Rule, Ruleset } from "@opencode/schema/permission"
+export { Rule, Ruleset } from "@pendix/schema/permission"
 const missingAgentPermissions: Permission.Ruleset = [{ action: "*", resource: "*", effect: "deny" }]
 
 export const ID = Permission.ID
@@ -54,7 +54,7 @@ export interface AskResult {
   readonly effect: Permission.Effect
 }
 
-export { Event } from "@opencode/schema/permission"
+export { Event } from "@pendix/schema/permission"
 
 /**
  * Rules that settle a request which would otherwise ask, for work nobody is present to answer, such as a schedule's

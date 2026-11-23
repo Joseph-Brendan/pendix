@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
 
 import { $ } from "bun"
-import { OpenCode } from "@opencode/client"
-import { Service } from "@opencode/client/service"
-import { parse } from "@opencode/script/highlights"
+import { OpenCode } from "@pendix/client"
+import { Service } from "@pendix/client/service"
+import { parse } from "@pendix/script/highlights"
 import { rm } from "fs/promises"
 import path from "path"
 import { parseArgs } from "util"
@@ -188,7 +188,7 @@ between the endpoints, which includes V1 history merged into dev. Do not compare
 outside that range. Do not rely only on commit titles. Write a user-facing changelog with sections for Core, TUI,
 Desktop, SDK, and Extensions, omitting empty sections and changes that are entirely internal. Group bug fixes separately
 from improvements. Preserve community contributor attribution when it is available from merged pull requests, but never
-thank authors listed in .github/TEAM_MEMBERS. Leave out changes to the @opencode/ai package in packages/ai unless they
+thank authors listed in .github/TEAM_MEMBERS. Leave out changes to the @pendix/ai package in packages/ai unless they
 change how OpenCode itself behaves for users; then describe only that OpenCode behavior.
 
 Start the changelog with a "### Highlights" section: the few changes worth telling people about, written for humans.

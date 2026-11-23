@@ -1,4 +1,4 @@
-import { debugBuild } from "@opencode/gui-plugins/debug/options"
+import { debugBuild } from "@pendix/gui-plugins/debug/options"
 
 export function debuggingSwitches(build: { packaged: boolean; channel: string }, env: string | undefined, port: string | undefined, pipe: boolean) {
   if (!debugBuild(build)) return { port: undefined, pipe: false }

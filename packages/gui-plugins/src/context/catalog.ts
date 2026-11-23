@@ -1,6 +1,6 @@
 import { onCleanup, type Accessor } from "solid-js"
-import { isServiceUnavailableError } from "@opencode/client/promise"
-import { createKeyed, type MountedSession } from "@opencode/plugin/gui"
+import { isServiceUnavailableError } from "@pendix/client/promise"
+import { createKeyed, type MountedSession } from "@pendix/plugin/gui"
 import {
   CATALOG_LOAD_TIMEOUT_MS,
   createCatalogState,

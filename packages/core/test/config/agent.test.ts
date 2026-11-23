@@ -2,21 +2,21 @@ import { describe, expect, test } from "bun:test"
 import fs from "fs/promises"
 import path from "path"
 import { Effect, Fiber, Schema, Stream } from "effect"
-import { Agent } from "@opencode/core/agent"
-import { Bus } from "@opencode/core/bus"
-import { Config } from "@opencode/core/config"
-import { Directory, Document, Event, Info } from "@opencode/schema/config"
-import { Model } from "@opencode/schema/model"
-import { ConfigAgentPlugin } from "@opencode/core/config/plugin/agent"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { FSUtil } from "@opencode/util/fs-util"
-import { Global } from "@opencode/util/global"
-import { Permission } from "@opencode/core/permission"
-import { AgentPlugin } from "@opencode/core/plugin/agent"
-import { AbsolutePath } from "@opencode/core/schema"
-import { ConfigNormalize } from "@opencode/core/config/normalize"
-import { ConfigAgentV1 } from "@opencode/core/v1/config/agent"
+import { Agent } from "@pendix/core/agent"
+import { Bus } from "@pendix/core/bus"
+import { Config } from "@pendix/core/config"
+import { Directory, Document, Event, Info } from "@pendix/schema/config"
+import { Model } from "@pendix/schema/model"
+import { ConfigAgentPlugin } from "@pendix/core/config/plugin/agent"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { FSUtil } from "@pendix/util/fs-util"
+import { Global } from "@pendix/util/global"
+import { Permission } from "@pendix/core/permission"
+import { AgentPlugin } from "@pendix/core/plugin/agent"
+import { AbsolutePath } from "@pendix/core/schema"
+import { ConfigNormalize } from "@pendix/core/config/normalize"
+import { ConfigAgentV1 } from "@pendix/core/v1/config/agent"
 import { advance, drain } from "../lib/clock"
 import { tmpdir, tmpdirScoped } from "../fixture/tmpdir"
 import { testEffect } from "../lib/effect"
@@ -456,9 +456,9 @@ permissions: [{ action: edit, resource: "*", effect: deny }]`,
           yield* Effect.promise(async () => {
             await fs.mkdir(path.join(tmp.path, "agents", "team"), { recursive: true })
             await fs.mkdir(path.join(tmp.path, "modes"), { recursive: true })
-            await fs.mkdir(path.join(tmp.path, "agents", ".opencode", "node_modules", "probe"), { recursive: true })
+            await fs.mkdir(path.join(tmp.path, "agents", ".pendix", "node_modules", "probe"), { recursive: true })
             await fs.writeFile(
-              path.join(tmp.path, "agents", ".opencode", "node_modules", "probe", "README.md"),
+              path.join(tmp.path, "agents", ".pendix", "node_modules", "probe", "README.md"),
               "# Dependency README",
             )
             await fs.writeFile(
@@ -705,7 +705,7 @@ Mixed fields.`,
           )
 
           yield* configTest.emitChange({ type: "create", path: path.join(tmp.path, "commands", "review.md") })
-          yield* configTest.emitChange({ type: "update", path: path.join(tmp.path, "opencode.json") })
+          yield* configTest.emitChange({ type: "update", path: path.join(tmp.path, "pendix.json") })
           yield* drain
           expect(reloads).toBe(0)
 

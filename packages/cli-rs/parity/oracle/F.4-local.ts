@@ -43,7 +43,7 @@ if (command === "lock-try") {
 
 if (command === "oracle") {
   const { ServiceConfig } = await load("./services/service-config")
-  const { Service } = await load("@opencode/client/effect/service")
+  const { Service } = await load("@pendix/client/effect/service")
   const { Schema, Option } = await load("effect")
   const decode = Schema.decodeUnknownOption(Schema.fromJsonString(Service.Info))
   const channels = ["latest", "dev", "beta", "next", "local", "oc-opentui-next", "feat/a b", "x", "ünï"]
@@ -89,7 +89,7 @@ if (command === "oracle") {
 
 if (command === "config") {
   const { ServiceConfig } = await load("./services/service-config")
-  const { Global } = await load("@opencode/util/global")
+  const { Global } = await load("@pendix/util/global")
   const { Effect } = await load("effect")
   const { NodeServices } = await load("@effect/platform-node")
   const [op, ...rest] = args

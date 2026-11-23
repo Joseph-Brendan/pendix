@@ -21,7 +21,7 @@ const reply = [
   "The runner sets `NODE_OPTIONS` before install, so the type check runs out of memory. Reproduce it with:",
   "",
   "```sh",
-  'NODE_OPTIONS="--max-old-space-size=4096 --enable-source-maps" bun install --frozen-lockfile --filter "@opencode/session-ui" && bun run --cwd packages/session-ui typecheck:tsc',
+  'NODE_OPTIONS="--max-old-space-size=4096 --enable-source-maps" bun install --frozen-lockfile --filter "@pendix/session-ui" && bun run --cwd packages/session-ui typecheck:tsc',
   "```",
   "",
   "The failing line reads the setting before the override:",

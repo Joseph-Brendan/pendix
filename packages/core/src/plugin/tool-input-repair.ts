@@ -1,10 +1,10 @@
 export * as ToolInputRepairPlugin from "./tool-input-repair.js"
 
-import { ToolFailure } from "@opencode/ai/effect"
-import { define } from "@opencode/plugin/effect/plugin"
+import { ToolFailure } from "@pendix/ai/effect"
+import { define } from "@pendix/plugin/effect/plugin"
 import { Effect, JsonSchema, Option, Predicate, Schema } from "effect"
-import { toolExpression } from "@opencode/codemode"
-import { isRecord } from "@opencode/util/record"
+import { toolExpression } from "@pendix/codemode"
+import { isRecord } from "@pendix/util/record"
 import { CodeModeTool } from "../codemode/tool.js"
 import { definition, normalizeContent } from "../tool/runtime.js"
 

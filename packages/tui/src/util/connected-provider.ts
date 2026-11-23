@@ -1,4 +1,4 @@
-import type { IntegrationInfo, ModelInfo, ProviderInfo } from "@opencode/client"
+import type { IntegrationInfo, ModelInfo, ProviderInfo } from "@pendix/client"
 
 // Any stored or detected connection, or a listed provider with models beyond the keyless OpenCode catalog, such as
 // one declared only in config. Matches `anyConnection` in packages/app/src/providers/catalog/providers.ts.

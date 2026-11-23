@@ -1,13 +1,13 @@
 export * as PluginHooks from "./hooks.js"
 
-import type { AISDKHooks } from "@opencode/plugin/effect/aisdk"
-import type { SessionHooks } from "@opencode/plugin/effect/session"
-import type { ShellHooks } from "@opencode/plugin/effect/shell"
-import type { ToolFailures, ToolHooks } from "@opencode/plugin/effect/tool"
-import type { ModelHookOptions } from "@opencode/plugin/effect/registration"
-import type { PermissionHooks } from "@opencode/plugin/effect/permission"
+import type { AISDKHooks } from "@pendix/plugin/effect/aisdk"
+import type { SessionHooks } from "@pendix/plugin/effect/session"
+import type { ShellHooks } from "@pendix/plugin/effect/shell"
+import type { ToolFailures, ToolHooks } from "@pendix/plugin/effect/tool"
+import type { ModelHookOptions } from "@pendix/plugin/effect/registration"
+import type { PermissionHooks } from "@pendix/plugin/effect/permission"
 import { Context, Effect, Layer, Scope } from "effect"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { State } from "../state.js"
 
 export interface Domains {

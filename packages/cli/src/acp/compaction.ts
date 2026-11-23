@@ -1,7 +1,7 @@
 import type { SessionUpdate } from "@agentclientprotocol/sdk"
-import type { OpenCodeEvent } from "@opencode/client/effect"
-import type { SessionError } from "@opencode/schema/session-error"
-import { SessionMessage } from "@opencode/schema/session-message"
+import type { OpenCodeEvent } from "@pendix/client/effect"
+import type { SessionError } from "@pendix/schema/session-error"
+import { SessionMessage } from "@pendix/schema/session-message"
 
 const MarkerMeta = "opencode/compaction"
 

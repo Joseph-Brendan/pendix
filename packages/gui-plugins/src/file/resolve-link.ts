@@ -1,5 +1,5 @@
-import { parsePathLineSuffix } from "@opencode/util/path"
-import type { Files, LineRange } from "@opencode/plugin/gui"
+import { parsePathLineSuffix } from "@pendix/util/path"
+import type { Files, LineRange } from "@pendix/plugin/gui"
 
 export type ParsedFileLink = {
   /** The normalized path: absolute, or relative with any leading `../` kept. */

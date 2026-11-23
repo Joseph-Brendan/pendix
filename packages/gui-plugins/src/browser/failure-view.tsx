@@ -1,7 +1,7 @@
-import { usePlugin } from "@opencode/plugin/gui"
-import { Button } from "@opencode/ui/button"
-import { Icon } from "@opencode/ui/icon"
-import { IconButton } from "@opencode/ui/icon-button"
+import { usePlugin } from "@pendix/plugin/gui"
+import { Button } from "@pendix/ui/button"
+import { Icon } from "@pendix/ui/icon"
+import { IconButton } from "@pendix/ui/icon-button"
 import { For, Show } from "solid-js"
 import type definition from "./index"
 

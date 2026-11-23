@@ -1,4 +1,4 @@
-import type { Model } from "@opencode/schema/model"
+import type { Model } from "@pendix/schema/model"
 
 const fullCodeModeHidden = ["glob", "grep", "webfetch"] as const
 

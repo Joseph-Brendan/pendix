@@ -4,17 +4,17 @@
 import { docsUrl } from "~/lib/docs"
 import { isMobile, requestPlatform } from "~/lib/platform"
 
-/** Where the SDK's "Read docs" action leads: the @opencode/sdk docs (the in-process host). */
+/** Where the SDK's "Read docs" action leads: the @pendix/sdk docs (the in-process host). */
 export const sdkDocs = docsUrl("/build/sdk/")
 
 export { installs } from "~/lib/install-commands"
 
-// The real v2 @opencode/sdk API (packages/sdk README, opencode.ai/docs/build/sdk), trimmed from
+// The real v2 @pendix/sdk API (packages/sdk README, opencode.ai/docs/build/sdk), trimmed from
 // the script in the SDK video. `sessions.create()` without a location uses the working directory.
 // Lines stay within 32 characters so the card sizes code to its width.
 export const sdkSnippet = [
   `<span data-k>import</span> <span data-p>{</span> <span data-v>OpenCode</span> <span data-p>}</span>`,
-  `  <span data-k>from</span> <span data-s>"@opencode/sdk"</span>`,
+  `  <span data-k>from</span> <span data-s>"@pendix/sdk"</span>`,
   ``,
   `<span data-k>await using</span> <span data-v>oc</span> <span data-o>=</span>`,
   `  <span data-k>await</span> OpenCode<span data-p>.</span><span data-f>create</span><span data-p>()</span>`,

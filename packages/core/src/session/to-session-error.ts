@@ -1,8 +1,8 @@
-import { AIError, ToolFailure, type FinishReasonDetails } from "@opencode/ai/effect"
-import { Tool } from "@opencode/schema/tool"
-import { SessionError } from "@opencode/schema/session-error"
+import { AIError, ToolFailure, type FinishReasonDetails } from "@pendix/ai/effect"
+import { Tool } from "@pendix/schema/tool"
+import { SessionError } from "@pendix/schema/session-error"
 import { PlatformError } from "effect"
-import { AppProcess } from "@opencode/util/process"
+import { AppProcess } from "@pendix/util/process"
 import { Environment } from "../environment/index.js"
 import { Machine } from "../machine/index.js"
 import { Machines } from "../machine/machines.js"
@@ -35,7 +35,7 @@ const tokenSharingMessages = {
 }
 
 const FREE_USAGE_LIMIT_MESSAGE =
-  "Free usage limit reached. Connect a provider or subscribe to OpenCode Go to keep going, or switch models."
+  "Free usage limit reached. Connect a provider or switch models to keep going."
 const BUDGET_LIMIT_MESSAGE = "Workspace usage limit reached. Model use is paused until the limit resets."
 const MODEL_BUDGET_LIMIT_MESSAGE = "You've reached the spend limit for this model. Switch models to keep going."
 
@@ -131,7 +131,7 @@ function goLimit(reason: AIError["reason"]): SessionError.Error {
   const name = /"limitName"\s*:\s*"([^"]+)"/.exec(reason.body ?? "")?.[1]
   return {
     ...providerError("provider.go-limit", reason),
-    message: `OpenCode Go ${name ? `${name} ` : ""}usage limit reached. Switch to a free model, or turn on Extra Usage on the Go page in OpenCode Console to keep going.`,
+    message: `Provider ${name ? `${name} ` : ""}usage limit reached. Switch to another model or provider to keep going.`,
   }
 }
 

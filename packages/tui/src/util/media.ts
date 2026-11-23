@@ -1,4 +1,4 @@
-import { mediaHashFromUri, type OpenCodeClient } from "@opencode/client"
+import { mediaHashFromUri, type OpenCodeClient } from "@pendix/client"
 
 export type MediaCache = ReturnType<typeof createMediaCache>
 

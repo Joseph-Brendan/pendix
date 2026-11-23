@@ -1,6 +1,6 @@
 import { expect } from "bun:test"
-import { Generate } from "@opencode/core/generate"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { Generate } from "@pendix/core/generate"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Effect, Layer } from "effect"
 import { tmpdirScoped } from "../../core/test/fixture/tmpdir"
 import { it } from "../../core/test/lib/effect"

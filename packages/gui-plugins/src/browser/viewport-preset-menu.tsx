@@ -1,6 +1,6 @@
-import { usePlugin } from "@opencode/plugin/gui"
-import { Button } from "@opencode/ui/button"
-import { Menu } from "@opencode/ui/menu"
+import { usePlugin } from "@pendix/plugin/gui"
+import { Button } from "@pendix/ui/button"
+import { Menu } from "@pendix/ui/menu"
 import { For, Show } from "solid-js"
 import { moreDevices, quickPresets, type Device } from "./viewport-presets"
 

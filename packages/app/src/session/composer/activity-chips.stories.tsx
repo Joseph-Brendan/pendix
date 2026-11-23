@@ -1,5 +1,5 @@
-import type { SessionMessageAssistantTool, SessionMessageInfo } from "@opencode/client/promise"
-import type { SessionDocument } from "@opencode/session-ui/document"
+import type { SessionMessageAssistantTool, SessionMessageInfo } from "@pendix/client/promise"
+import type { SessionDocument } from "@pendix/session-ui/document"
 import {
   CURRENT_SESSION_ID,
   STORY_MODEL,
@@ -7,8 +7,8 @@ import {
   editThenTestDocument,
   largeCompletedDocument,
   subagentReport,
-} from "@opencode/session-ui/storybook"
-import { timelinePresets } from "@opencode/session-ui/timeline/detail"
+} from "@pendix/session-ui/storybook"
+import { timelinePresets } from "@pendix/session-ui/timeline/detail"
 import { createEffect, createMemo, createSignal, on, onCleanup, onMount } from "solid-js"
 import { SessionPreview } from "@/session/story-model"
 import type { SessionActivityItem } from "./activity-chips"

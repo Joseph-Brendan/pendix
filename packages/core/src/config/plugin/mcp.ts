@@ -1,8 +1,8 @@
 export * as ConfigMcpPlugin from "./mcp.js"
 
-import { define } from "@opencode/plugin/effect/plugin"
-import { Document, type Entry } from "@opencode/schema/config"
-import type { ServerConfig } from "@opencode/schema/mcp"
+import { define } from "@pendix/plugin/effect/plugin"
+import { Document, type Entry } from "@pendix/schema/config"
+import type { ServerConfig } from "@pendix/schema/mcp"
 import { Effect, Stream } from "effect"
 import { Config } from "../../config.js"
 import { Mcp } from "../../mcp/index.js"

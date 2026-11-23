@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
 
 import { NodeFileSystem } from "@effect/platform-node"
-import { Service } from "@opencode/client/effect/service"
-import { MCP_CLIENT_PATH } from "@opencode/protocol/groups/mcp"
-import { ServerInfo } from "@opencode/protocol/groups/server"
+import { Service } from "@pendix/client/effect/service"
+import { MCP_CLIENT_PATH } from "@pendix/protocol/groups/mcp"
+import { ServerInfo } from "@pendix/protocol/groups/server"
 import { Effect, Schema } from "effect"
 import fs from "node:fs/promises"
 import os from "node:os"

@@ -44,7 +44,7 @@ import {
   type SessionMessageUser,
   type SessionInfo,
   type ModelInfo,
-} from "@opencode/client"
+} from "@pendix/client"
 import { useLocal } from "../../context/local"
 import { Locale } from "../../util/locale"
 import { FilePath } from "../../ui/file-path"
@@ -119,9 +119,9 @@ import { switchLabel } from "../../util/model"
 import { findMessageBoundary, messageNavigationSlack } from "./message-navigation"
 import { stringWidth } from "../../util/string-width"
 import { useArgs } from "../../context/args"
-import { withTimestampedFallback } from "@opencode/util/session-title-fallback"
-import { SessionTurn } from "@opencode/util/session-turn"
-import { TextBoundary } from "@opencode/util/text-boundary"
+import { withTimestampedFallback } from "@pendix/util/session-title-fallback"
+import { SessionTurn } from "@pendix/util/session-turn"
+import { TextBoundary } from "@pendix/util/text-boundary"
 import { useSessionTabs, type ScrollAnchor } from "../../context/session-tabs"
 import { createSingleFlight } from "../../util/single-flight"
 import { createDelayedPresence } from "../../util/delayed-presence"
@@ -2551,7 +2551,7 @@ function FreeLimitNotice(props: { message: Pick<SessionMessageAssistant, "error"
     <box paddingLeft={3} flexDirection="column">
       <text fg={theme.text.muted}>You've used today's free messages.{reset() ? ` They reset at ${reset()}.` : ""}</text>
       <text fg={theme.text.muted}>
-        Upgrade to OpenCode Go → <span style={{ fg: theme.text.base }}>/connect</span> · Switch model →{" "}
+        Connect a provider → <span style={{ fg: theme.text.base }}>/connect</span> · Switch model →{" "}
         <span style={{ fg: theme.text.base }}>/models</span>
       </text>
     </box>

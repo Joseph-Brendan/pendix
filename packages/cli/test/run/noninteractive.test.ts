@@ -8,7 +8,7 @@ import {
   type SessionInboxListOutput,
   type SessionMessageAssistantTool,
   type SessionMessageInfo,
-} from "@opencode/client/promise"
+} from "@pendix/client/promise"
 import { runNonInteractivePrompt } from "../../src/run/noninteractive"
 
 type V2Event = EventSubscribeOutput

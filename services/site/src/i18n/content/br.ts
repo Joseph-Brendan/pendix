@@ -215,7 +215,7 @@ export const content = {
         },
         "npm-or-bun": {
           title: "npm ou bun",
-          body: "Instale com npm i @opencode/sdk ou bun add @opencode/sdk.",
+          body: "Instale com npm i @pendix/sdk ou bun add @opencode/sdk.",
         },
         "in-process-host": {
           title: "Host no processo",

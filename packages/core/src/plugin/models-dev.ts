@@ -1,7 +1,7 @@
-import { define } from "@opencode/plugin/effect/plugin"
-import { Event } from "@opencode/schema/config"
-import { Integration } from "@opencode/schema/integration"
-import { Provider } from "@opencode/schema/provider"
+import { define } from "@pendix/plugin/effect/plugin"
+import { Event } from "@pendix/schema/config"
+import { Integration } from "@pendix/schema/integration"
+import { Provider } from "@pendix/schema/provider"
 import { Effect, Stream } from "effect"
 import { Bus } from "../bus.js"
 import { Config } from "../config.js"
@@ -98,8 +98,12 @@ function snapshots(data: readonly ModelsDev.Snapshot[]) {
   if (cached) return cached
   const result = data
     .filter(
-      // These deprecated aliases are replaced by the canonical Azure and Google Vertex providers.
-      (provider) => provider.info.id !== "azure-cognitive-services" && provider.info.id !== "google-vertex-anthropic",
+      // Exclude deprecated aliases and OpenCode's hosted gateways (Zen, Go).
+      (provider) =>
+        provider.info.id !== "azure-cognitive-services" &&
+        provider.info.id !== "google-vertex-anthropic" &&
+        provider.info.id !== "opencode" &&
+        provider.info.id !== "opencode-go",
     )
     .map((provider) => ({
       ...provider,

@@ -1,4 +1,4 @@
-import type { SessionRef } from "@opencode/plugin/gui"
+import type { SessionRef } from "@pendix/plugin/gui"
 
 /**
  * Whether a prompt to the session could gain anything by waiting for this desktop to attach to it. It could not when

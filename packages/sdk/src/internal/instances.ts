@@ -1,12 +1,12 @@
 export * as SdkInstances from "./instances"
 
-import { Instance } from "@opencode/core/instance"
-import { LocationServiceMap } from "@opencode/core/location-service-map"
-import { Plugin } from "@opencode/core/plugin"
-import type { InstancePlugins } from "@opencode/core/plugin/instance"
-import type { Session } from "@opencode/schema/session"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
-import type { LayerNode } from "@opencode/util/effect/layer-node"
+import { Instance } from "@pendix/core/instance"
+import { LocationServiceMap } from "@pendix/core/location-service-map"
+import { Plugin } from "@pendix/core/plugin"
+import type { InstancePlugins } from "@pendix/core/plugin/instance"
+import type { Session } from "@pendix/schema/session"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
+import type { LayerNode } from "@pendix/util/effect/layer-node"
 import { Context, Duration, Effect, Layer, LayerMap, RcMap, Scope } from "effect"
 
 export interface Configuration {

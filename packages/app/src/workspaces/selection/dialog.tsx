@@ -1,28 +1,28 @@
 import "@pierre/trees/web-components"
 import { FileTree } from "@pierre/trees"
-import { Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitle } from "@opencode/ui/dialog"
-import { Button } from "@opencode/ui/button"
-import { Divider } from "@opencode/ui/divider"
-import { Icon } from "@opencode/ui/icon"
-import { Menu } from "@opencode/ui/menu"
-import { MenuScroll } from "@opencode/ui/menu-scroll"
+import { Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitle } from "@pendix/ui/dialog"
+import { Button } from "@pendix/ui/button"
+import { Divider } from "@pendix/ui/divider"
+import { Icon } from "@pendix/ui/icon"
+import { Menu } from "@pendix/ui/menu"
+import { MenuScroll } from "@pendix/ui/menu-scroll"
 import {
   displayName,
   getProjectAvatarGenerated,
   getProjectAvatarSource,
   getProjectAvatarVariant,
   ProjectAvatar,
-} from "@opencode/ui/project-avatar"
-import { TextInput } from "@opencode/ui/text-input"
-import { Tooltip } from "@opencode/ui/tooltip"
-import { useDialog } from "@opencode/ui/context/dialog"
+} from "@pendix/ui/project-avatar"
+import { TextInput } from "@pendix/ui/text-input"
+import { Tooltip } from "@pendix/ui/tooltip"
+import { useDialog } from "@pendix/ui/context/dialog"
 import { createEffect, createMemo, createSignal, For, on, onCleanup, onMount, Show, untrack } from "solid-js"
 import { useServer } from "@/runtime/server/current"
 import { inferHomeDirectory } from "@/runtime/server/global-sync/bootstrap"
 import { useLanguage } from "@/runtime/i18n/language"
 import { ServerConnection, serverName, useServers } from "@/runtime/server/registry"
 import { pathKey } from "@/workspaces/path-key"
-import type { LocationRef } from "@opencode/client/promise"
+import type { LocationRef } from "@pendix/client/promise"
 import {
   absoluteTreePath,
   canonicalPickerPath,

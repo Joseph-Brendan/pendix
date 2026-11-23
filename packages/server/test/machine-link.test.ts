@@ -1,14 +1,14 @@
 import { expect } from "bun:test"
 import { NodeHttpServer } from "@effect/platform-node"
 import { NodeWS } from "@effect/platform-node-shared"
-import { Environment } from "@opencode/core/environment/index"
-import { Frames } from "@opencode/core/machine/frames"
-import { Identity } from "@opencode/core/machine/identity"
-import { Join } from "@opencode/core/machine/join"
-import { Link } from "@opencode/core/machine/link"
-import { Machines } from "@opencode/core/machine/machines"
-import { MACHINE_LINK_PATH } from "@opencode/protocol/groups/machine"
-import { Global } from "@opencode/util/global"
+import { Environment } from "@pendix/core/environment/index"
+import { Frames } from "@pendix/core/machine/frames"
+import { Identity } from "@pendix/core/machine/identity"
+import { Join } from "@pendix/core/machine/join"
+import { Link } from "@pendix/core/machine/link"
+import { Machines } from "@pendix/core/machine/machines"
+import { MACHINE_LINK_PATH } from "@pendix/protocol/groups/machine"
+import { Global } from "@pendix/util/global"
 import {
   Cause,
   Clock,

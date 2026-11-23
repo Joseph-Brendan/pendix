@@ -1,8 +1,8 @@
 import { net, session, type WebContents } from "electron"
-import type { RpcClient } from "@opencode/client/effect/api"
-import type { Session } from "@opencode/schema/session"
-import { Browser } from "@opencode/plugin-browser/rpc"
-import { BrowserProxy } from "@opencode/plugin-browser/proxy"
+import type { RpcClient } from "@pendix/client/effect/api"
+import type { Session } from "@pendix/schema/session"
+import { Browser } from "@pendix/plugin-browser/rpc"
+import { BrowserProxy } from "@pendix/plugin-browser/proxy"
 import { Effect } from "effect"
 import { Base64 } from "effect/encoding"
 

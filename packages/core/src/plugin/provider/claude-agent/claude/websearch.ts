@@ -1,7 +1,7 @@
 export * as ClaudeWebSearch from "./websearch.js"
 
 import type { SDKMessage } from "@anthropic-ai/claude-agent-sdk"
-import type { WebSearch } from "@opencode/plugin/effect"
+import type { WebSearch } from "@pendix/plugin/effect"
 import { Effect, Option, Schema } from "effect"
 import os from "node:os"
 import { ClaudeAgentError } from "../language-model/claude-agent-error.js"

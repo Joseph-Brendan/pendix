@@ -1,19 +1,19 @@
 import { expect } from "bun:test"
-import { Agent } from "@opencode/core/agent"
-import { App } from "@opencode/core/app"
-import { Database } from "@opencode/core/database/database"
-import { llmClient } from "@opencode/core/effect/app-node-platform"
-import { Flag } from "@opencode/core/flag"
-import { Image } from "@opencode/core/image"
-import { LocationServiceMap } from "@opencode/core/location-service-map"
-import { Session } from "@opencode/core/session"
-import { SessionBlob } from "@opencode/core/session/blob"
-import { SessionRunnerModel } from "@opencode/core/session/runner/model"
-import { BlobTable, SessionMessageTable } from "@opencode/core/session/sql"
-import { SessionStored } from "@opencode/core/session/stored"
-import { Location } from "@opencode/schema/location"
-import { AbsolutePath } from "@opencode/schema/schema"
-import { Global } from "@opencode/util/global"
+import { Agent } from "@pendix/core/agent"
+import { App } from "@pendix/core/app"
+import { Database } from "@pendix/core/database/database"
+import { llmClient } from "@pendix/core/effect/app-node-platform"
+import { Flag } from "@pendix/core/flag"
+import { Image } from "@pendix/core/image"
+import { LocationServiceMap } from "@pendix/core/location-service-map"
+import { Session } from "@pendix/core/session"
+import { SessionBlob } from "@pendix/core/session/blob"
+import { SessionRunnerModel } from "@pendix/core/session/runner/model"
+import { BlobTable, SessionMessageTable } from "@pendix/core/session/sql"
+import { SessionStored } from "@pendix/core/session/stored"
+import { Location } from "@pendix/schema/location"
+import { AbsolutePath } from "@pendix/schema/schema"
+import { Global } from "@pendix/util/global"
 import { Context, Effect, Layer } from "effect"
 import { HttpServer } from "effect/http"
 import { LanguageModel, LLMClient } from "../../ai/src/effect"
@@ -65,7 +65,7 @@ const runChannel = (channel: "dev" | "latest") =>
     const sessions = Context.get(context, Session.Service)
     const locations = Context.get(context, LocationServiceMap.Service)
     const { db } = Context.get(context, Database.Service)
-    expect(Context.get(context, App.Service)).toEqual({ name: "opencode", version: "test", channel })
+    expect(Context.get(context, App.Service)).toEqual({ name: "pendix", version: "test", channel })
 
     const session = yield* sessions.create({
       title: `channel-${channel}`,
@@ -75,7 +75,7 @@ const runChannel = (channel: "dev" | "latest") =>
     })
 
     expect(yield* App.Service.pipe(Effect.provide(locations.get(session.location)))).toEqual({
-      name: "opencode",
+      name: "pendix",
       version: "test",
       channel,
     })

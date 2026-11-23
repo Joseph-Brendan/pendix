@@ -1,4 +1,4 @@
-import { observeReducedMotion, prefersReducedMotion } from "@opencode/ui/motion"
+import { observeReducedMotion, prefersReducedMotion } from "@pendix/ui/motion"
 import { createEffect, createSignal, onCleanup, untrack, type Accessor } from "solid-js"
 import {
   createPresenceState,

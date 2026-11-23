@@ -1,6 +1,6 @@
-import { Browser } from "@opencode/plugin-browser/rpc"
+import { Browser } from "@pendix/plugin-browser/rpc"
 import { Schema } from "effect"
-import type { BuiltinMainStorage, MainStoreFrom } from "@opencode/plugin/gui/builtin"
+import type { BuiltinMainStorage, MainStoreFrom } from "@pendix/plugin/gui/builtin"
 import type { TabActivity } from "./policy"
 
 const Stored = Schema.Struct({

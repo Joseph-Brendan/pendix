@@ -1,5 +1,5 @@
 // Writes crates/plugin/src/luau/opencode/plugin.luau: the types of a Luau plugin, as a stub of the module
-// `@opencode/plugin` that luau-analyze and luau-lsp resolve through a `.luaurc` alias (a definitions file cannot type a
+// `@pendix/plugin` that luau-analyze and luau-lsp resolve through a `.luaurc` alias (a definitions file cannot type a
 // `require`). Every definition of contract 2.0's schema (crates/plugin-abi/schema/v2.json, which plugin-schema.ts
 // writes first) becomes an `export type`, so a Luau plugin's tables are the contract's own shapes; the module and the
 // `setup`, `read`, `host` and `view` objects are written here by hand, as crates/plugin/src/luau/bind.rs binds them.
@@ -463,7 +463,7 @@ export type BoxProps = ${props(schema.$defs.Node, ["type", "row", "children"], "
 --- and the error. Only a task can call one.
 export type Client = ${client("")}
 
---- \`require("@opencode/plugin")\`.
+--- \`require("@pendix/plugin")\`.
 export type Plugin = {
     contract: string,
     client: Client,

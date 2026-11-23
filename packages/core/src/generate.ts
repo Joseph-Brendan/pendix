@@ -11,19 +11,19 @@ import {
   type VideoAspectRatio,
   type VideoModel,
   type VideoStatus,
-} from "@opencode/ai/effect"
+} from "@pendix/ai/effect"
 import type {
   DecisionRequest,
   DecisionResult,
   ImageRequest,
   ImageResult,
   VideoRequest,
-} from "@opencode/schema/generate"
-import { Money } from "@opencode/schema/money"
-import { SessionID } from "@opencode/schema/session-id"
+} from "@pendix/schema/generate"
+import { Money } from "@pendix/schema/money"
+import { SessionID } from "@pendix/schema/session-id"
 import { Context, Effect, Layer, Schema, Stream } from "effect"
-import { RequestExecutor } from "@opencode/ai/route"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { RequestExecutor } from "@pendix/ai/route"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { llmClient, requestExecutor } from "./effect/app-node-platform.js"
 import { Integration } from "./integration.js"
 import { ModelResolver } from "./model-resolver.js"

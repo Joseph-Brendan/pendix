@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, setSystemTime, test } from "bu
 import { mkdtemp, readFile, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import path from "node:path"
-import type { BuiltinMainStorage, MainStoreFrom } from "@opencode/plugin/gui/builtin"
+import type { BuiltinMainStorage, MainStoreFrom } from "@pendix/plugin/gui/builtin"
 import { earlierVisits } from "./earlier"
 import { MAX_PAGES, type PageVisit } from "./page"
 import { createHistoryStore, type HistoryStore } from "./store"

@@ -1,7 +1,7 @@
 export * as ClaudeProvider from "./provider.js"
 
 import type { AccountInfo } from "@anthropic-ai/claude-agent-sdk"
-import type { Context } from "@opencode/plugin/effect/plugin"
+import type { Context } from "@pendix/plugin/effect/plugin"
 import { Effect, Option, Schema, Stream, SubscriptionRef } from "effect"
 import { Model } from "../../../model.js"
 import { Provider } from "../../../provider.js"

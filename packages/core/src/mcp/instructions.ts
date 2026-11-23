@@ -1,6 +1,6 @@
 export * as McpInstructions from "./instructions.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Context, Effect, Layer, Schema } from "effect"
 import type { CodeModeCatalog } from "../codemode/catalog.js"
 import type { Tool } from "../tool.js"

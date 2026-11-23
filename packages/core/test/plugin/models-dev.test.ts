@@ -1,24 +1,24 @@
 import path from "path"
 import { describe, expect } from "bun:test"
-import { Document, Event, Info } from "@opencode/schema/config"
-import { Money } from "@opencode/schema/money"
+import { Document, Event, Info } from "@pendix/schema/config"
+import { Money } from "@pendix/schema/money"
 import { Context, Effect, Exit, Layer, Scope } from "effect"
 import { TestClock } from "effect/testing"
-import { Integration } from "@opencode/core/integration"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { Bus } from "@opencode/core/bus"
-import { Config } from "@opencode/core/config"
-import { Flag } from "@opencode/core/flag"
-import { Location } from "@opencode/core/location"
-import { Model } from "@opencode/core/model"
-import { ModelsDev } from "@opencode/core/models-dev"
-import { ModelsDevPlugin } from "@opencode/core/plugin/models-dev"
-import { Plugin } from "@opencode/core/plugin"
-import { PluginHost } from "@opencode/core/plugin/host"
-import { ProviderPlugins } from "@opencode/core/plugin/provider"
-import { Provider } from "@opencode/core/provider"
-import { AbsolutePath } from "@opencode/core/schema"
+import { Integration } from "@pendix/core/integration"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { Bus } from "@pendix/core/bus"
+import { Config } from "@pendix/core/config"
+import { Flag } from "@pendix/core/flag"
+import { Location } from "@pendix/core/location"
+import { Model } from "@pendix/core/model"
+import { ModelsDev } from "@pendix/core/models-dev"
+import { ModelsDevPlugin } from "@pendix/core/plugin/models-dev"
+import { Plugin } from "@pendix/core/plugin"
+import { PluginHost } from "@pendix/core/plugin/host"
+import { ProviderPlugins } from "@pendix/core/plugin/provider"
+import { Provider } from "@pendix/core/provider"
+import { AbsolutePath } from "@pendix/core/schema"
 import { withEnv } from "../fixture/env"
 import { location } from "../fixture/location"
 import { drain } from "../lib/clock"
@@ -79,7 +79,7 @@ const richSnapshot = (name = "Acme") => {
         id: providerID,
         name,
         activation: "auto",
-        package: "@opencode/ai/providers/openai-compatible",
+        package: "@pendix/ai/providers/openai-compatible",
         settings: { baseURL: "https://api.acme.test/v1", thinking: { type: "adaptive", display: "summarized" } },
         headers: { "x-acme": "provider" },
         body: { service_tier: "default", tags: ["stable"] },
@@ -154,7 +154,7 @@ describe("ModelsDevPlugin", () => {
         }
         const model = required(yield* location.models.get(providerID, modelID))
         expect(model.package).toBe(
-          enabled ? "@opencode/ai/providers/google/interactions" : "@opencode/ai/providers/google",
+          enabled ? "@pendix/ai/providers/google/interactions" : "@pendix/ai/providers/google",
         )
         expect(model.settings?.baseURL).toBe(`https://api.acme.test/${enabled ? "v1beta" : "v1"}`)
         expect(model.variants.find((variant) => variant.id === "low")?.settings).toEqual(
@@ -378,7 +378,7 @@ describe("ModelsDevPlugin", () => {
                 id: providerID,
                 name: "Acme",
                 activation: "auto",
-                package: "@opencode/ai/providers/openai-compatible",
+                package: "@pendix/ai/providers/openai-compatible",
               },
               environment: [],
               models: [
@@ -435,7 +435,7 @@ describe("ModelsDevPlugin", () => {
             id: providerID,
             name: "Acme",
             activation: "auto",
-            package: "@opencode/ai/providers/openai-compatible",
+            package: "@pendix/ai/providers/openai-compatible",
             settings: { baseURL: "https://api.acme.test/v1" },
             headers: { "x-acme": "provider" },
           },
@@ -514,7 +514,7 @@ describe("ModelsDevPlugin", () => {
                 id: providerID,
                 name: "Acme",
                 activation: "auto",
-                package: "@opencode/ai/providers/openai-compatible",
+                package: "@pendix/ai/providers/openai-compatible",
                 settings: { baseURL: "https://api.acme.test/v1" },
               },
               environment: [],
@@ -566,7 +566,7 @@ describe("ModelsDevPlugin", () => {
                   providerID,
                   name: "GPT-5.4 Fast",
                   family: Model.Family.make("gpt"),
-                  package: "@opencode/ai/providers/openai-compatible",
+                  package: "@pendix/ai/providers/openai-compatible",
                   settings: { baseURL: "https://api.acme.test/v1" },
                   headers: { "x-mode": "fast" },
                   body: { service_tier: "priority" },
@@ -629,7 +629,7 @@ describe("ModelsDevPlugin", () => {
         modelID: "gpt-5.4",
         providerID: "acme",
         name: "GPT-5.4 Fast",
-        package: "@opencode/ai/providers/openai-compatible",
+        package: "@pendix/ai/providers/openai-compatible",
         settings: { baseURL: "https://api.acme.test/v1" },
         headers: { "x-mode": "fast" },
         body: { service_tier: "priority" },
@@ -694,7 +694,7 @@ describe("ModelsDevPlugin", () => {
             id: providerID,
             name: "Acme",
             activation: "auto",
-            package: "@opencode/ai/providers/openai-compatible",
+            package: "@pendix/ai/providers/openai-compatible",
           },
           environment: [],
           models: [
@@ -771,7 +771,7 @@ describe("ModelsDevPlugin", () => {
           id: providerID,
           name: "Acme",
           activation: "auto",
-          package: "@opencode/ai/providers/openai-compatible",
+          package: "@pendix/ai/providers/openai-compatible",
         },
         environment: [],
         models: Object.entries(types).map(([id, type]) => ({
@@ -866,7 +866,7 @@ describe("ModelsDevPlugin", () => {
                         id: providerID,
                         name: "Acme",
                         activation: "auto",
-                        package: "@opencode/ai/providers/openai-compatible",
+                        package: "@pendix/ai/providers/openai-compatible",
                         settings: { baseURL: "https://${ACME_HOST}/${UNDECLARED_HOST}/v1" },
                       },
                       environment: ["ACME_HOST", "ACME_MODEL_PATH", "ACME_API_KEY"],
@@ -918,7 +918,7 @@ describe("ModelsDevPlugin", () => {
           id: providerID,
           name: "Acme",
           activation: "auto",
-          package: "@opencode/ai/providers/openai-compatible",
+          package: "@pendix/ai/providers/openai-compatible",
         },
         environment: [],
         models: [
@@ -1037,7 +1037,7 @@ describe("ModelsDevPlugin", () => {
                     id: Provider.ID.make("cloudflare-workers-ai"),
                     name: "Cloudflare Workers AI",
                     activation: "auto",
-                    package: "@opencode/ai/providers/cloudflare-workers-ai",
+                    package: "@pendix/ai/providers/cloudflare-workers-ai",
                   },
                   environment: ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_KEY"],
                   models: [],
@@ -1047,7 +1047,7 @@ describe("ModelsDevPlugin", () => {
                     id: Provider.ID.make("google-vertex"),
                     name: "Google Vertex",
                     activation: "auto",
-                    package: "@opencode/ai/providers/google-vertex",
+                    package: "@pendix/ai/providers/google-vertex",
                   },
                   environment: ["GOOGLE_VERTEX_PROJECT", "GOOGLE_VERTEX_LOCATION", "GOOGLE_APPLICATION_CREDENTIALS"],
                   models: [],
@@ -1171,14 +1171,9 @@ describe("ModelsDevPlugin", () => {
         })),
       )
 
+      // Pendix excludes opencode-go (OpenCode's hosted gateway) from the provider catalog.
       const minimax = yield* modelState.get(Provider.ID.make("opencode-go"), Model.ID.make("minimax-m3"))
-      expect(minimax?.variants).toEqual([
-        { id: Model.VariantID.make("none"), settings: { thinking: { type: "disabled" } } },
-        {
-          id: Model.VariantID.make("thinking"),
-          settings: { thinking: { type: "adaptive", display: "summarized" } },
-        },
-      ])
+      expect(minimax).toBeUndefined()
 
       const toggle = yield* modelState.get(Provider.ID.make("alibaba"), Model.ID.make("toggle-only"))
       expect(toggle?.variants).toEqual([

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { createCipheriv, createHmac, createPrivateKey, createPublicKey, diffieHellman } from "node:crypto"
-import { Noise } from "@opencode/core/machine/noise"
+import { Noise } from "@pendix/core/machine/noise"
 import { Result } from "effect"
 import vectors from "./fixture/noise-xx-vectors.json"
 

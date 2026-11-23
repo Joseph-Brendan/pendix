@@ -1,18 +1,18 @@
 export * as Config from "./config.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import path from "path"
 import { isDeepStrictEqual } from "node:util"
 import { applyEdits, modify, type ParseError, parse } from "jsonc-parser"
 import { Context, Effect, FiberMap, Layer, Option, PubSub, Ref, Schema, Semaphore, Stream } from "effect"
-import { Directory, Document, Info, type Patch, type Entry, Event } from "@opencode/schema/config"
+import { Directory, Document, Info, type Patch, type Entry, Event } from "@pendix/schema/config"
 import { App } from "./app.js"
 import { Credential } from "./credential.js"
 import { FlagResolve } from "./flag/resolve.js"
 import { Bus } from "./bus.js"
 import { Watcher } from "./filesystem/watcher.js"
-import { FSUtil } from "@opencode/util/fs-util"
-import { Global } from "@opencode/util/global"
+import { FSUtil } from "@pendix/util/fs-util"
+import { Global } from "@pendix/util/global"
 import { Location } from "./location.js"
 import { AbsolutePath } from "./schema.js"
 import { ConfigVariable } from "./config/variable.js"
@@ -22,9 +22,9 @@ import { ConfigWatch } from "./config/watch.js"
 import { ConfigIntegration } from "./config/integration.js"
 import { ConfigManaged } from "./config/managed.js"
 import { ManagedPolicy } from "./managed-policy.js"
-import { Connection } from "@opencode/schema/connection"
+import { Connection } from "@pendix/schema/connection"
 import { WellKnown } from "./wellknown.js"
-import { AppProcess } from "@opencode/util/process"
+import { AppProcess } from "@pendix/util/process"
 import { ChildProcess } from "effect/process"
 
 export function latest<K extends keyof Info>(entries: readonly Entry[], key: K): Info[K] | undefined {
@@ -511,7 +511,7 @@ export const layer = (options?: Options) =>
           const directory = initial.global ?? AbsolutePath.make(globalService.config)
           const candidates = ConfigDiscovery.names.map((name) => path.join(directory, name))
           const filepath =
-            (yield* Effect.filter(candidates, fs.isFile)).at(-1) ?? path.join(directory, "opencode.jsonc")
+            (yield* Effect.filter(candidates, fs.isFile)).at(-1) ?? path.join(directory, "pendix.jsonc")
           const text = (yield* fs.readFileStringSafe(filepath)) ?? "{}\n"
           const updated = yield* Effect.try({
             try: () =>

@@ -1,5 +1,4 @@
-import { Effect, Layer, Scope } from "effect"
-import { OtlpLogger } from "effect/observability"
+import { Effect, Layer } from "effect"
 import { runID } from "./shared.js"
 
 export interface Options {
@@ -11,19 +10,6 @@ export interface App {
   readonly client: string
   readonly version: string
   readonly channel: string
-}
-
-function parseHeaders(value?: string) {
-  return value
-    ? value.split(",").reduce(
-        (acc, entry) => {
-          const [key, ...value] = entry.split("=")
-          acc[key] = value.join("=")
-          return acc
-        },
-        {} as Record<string, string>,
-      )
-    : undefined
 }
 
 function resourceAttributes() {
@@ -42,68 +28,32 @@ function resourceAttributes() {
   }
 }
 
-export function resource(app: App = { client: "opencode", version: "unknown", channel: "local" }): {
+export function resource(app: App = { client: "pendix", version: "unknown", channel: "local" }): {
   serviceName: string
   serviceVersion: string
   attributes: Record<string, string>
 } {
   return {
-    serviceName: "opencode",
+    serviceName: "pendix",
     serviceVersion: app.version,
     attributes: {
       ...resourceAttributes(),
       "deployment.environment.name": app.channel,
-      "opencode.client": app.client,
-      "opencode.run": runID(),
+      "pendix.client": app.client,
+      "pendix.run": runID(),
       "service.instance.id": runID(),
     },
   }
 }
 
-export function loggers(options: Options | undefined, app: App) {
-  if (!options?.endpoint) return []
-  return [
-    OtlpLogger.make({
-      url: `${options.endpoint}/v1/logs`,
-      resource: resource(app),
-      headers: parseHeaders(options.headers),
-    }),
-  ]
+export function loggers(_options: Options | undefined, _app: App) {
+  // Telemetry export is disabled in Pendix.
+  return []
 }
 
-export const tracingLayer = Effect.fnUntraced(function* (options: Options | undefined, app: App) {
-  if (!options?.endpoint) return Layer.empty
-  const [{ layer }, { OTLPTraceExporter }, { BatchSpanProcessor }, { AsyncLocalStorageContextManager }, { context }] =
-    yield* Effect.all(
-      [
-        Effect.promise(() => import("@effect/opentelemetry/NodeSdk")),
-        Effect.promise(() => import("@opentelemetry/exporter-trace-otlp-http")),
-        Effect.promise(() => import("@opentelemetry/sdk-trace-base")),
-        Effect.promise(() => import("@opentelemetry/context-async-hooks")),
-        Effect.promise(() => import("@opentelemetry/api")),
-      ],
-      { concurrency: "unbounded" },
-    )
-
-  // The Effect Node SDK does not register a global context manager, but the AI SDK uses it to parent spans.
-  const manager = new AsyncLocalStorageContextManager()
-  manager.enable()
-  context.setGlobalContextManager(manager)
-
-  const tracing = layer(() => ({
-    resource: resource(app),
-    spanProcessor: new BatchSpanProcessor(
-      new OTLPTraceExporter({
-        url: `${options.endpoint}/v1/traces`,
-        headers: parseHeaders(options.headers),
-      }),
-    ),
-  }))
-  return Layer.effectContext(
-    Effect.acquireRelease(Scope.make(), (scope, exit) => Scope.close(scope, exit).pipe(Effect.ignoreCause)).pipe(
-      Effect.flatMap((scope) => Layer.buildWithScope(tracing, scope)),
-    ),
-  )
+export const tracingLayer = Effect.fnUntraced(function* (_options: Options | undefined, _app: App) {
+  // Telemetry export is disabled in Pendix.
+  return Layer.empty
 })
 
 export * as Otlp from "./otlp.js"

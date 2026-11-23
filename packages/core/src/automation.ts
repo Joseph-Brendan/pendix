@@ -23,9 +23,9 @@ import {
   Semaphore,
   Stream,
 } from "effect"
-import { Node, makeGlobalNode } from "@opencode/util/effect/app-node"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { FSUtil } from "@opencode/util/fs-util"
+import { Node, makeGlobalNode } from "@pendix/util/effect/app-node"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { FSUtil } from "@pendix/util/fs-util"
 import {
   Action,
   ActionInput,
@@ -39,9 +39,9 @@ import {
   Status,
   Target,
   Trigger,
-} from "@opencode/schema/automation"
-import type { ProjectID } from "@opencode/schema/project-id"
-import { AbsolutePath } from "@opencode/schema/schema"
+} from "@pendix/schema/automation"
+import type { ProjectID } from "@pendix/schema/project-id"
+import { AbsolutePath } from "@pendix/schema/schema"
 import { Agent } from "./agent.js"
 import { type Invocation, matchesAuthor } from "./automation/author.js"
 import { AutomationCode } from "./automation/code.js"

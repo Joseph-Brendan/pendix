@@ -1,6 +1,6 @@
 import type { CancelNotification, PromptRequest, PromptResponse, RequestError } from "@agentclientprotocol/sdk"
-import type { OpenCodeClient, OpenCodeEvent } from "@opencode/client/effect"
-import { TokenUsage } from "@opencode/schema/token-usage"
+import type { OpenCodeClient, OpenCodeEvent } from "@pendix/client/effect"
+import { TokenUsage } from "@pendix/schema/token-usage"
 import {
   Cause,
   Context,
@@ -44,7 +44,7 @@ export interface Interface {
 }
 
 /** Core acknowledges an interrupt before its cleanup settles, and its shell tool waits 3s before SIGKILL. */
-export const CancelDrainTimeout = Context.Reference<Duration.Input>("@opencode/cli/acp/Turn/CancelDrainTimeout", {
+export const CancelDrainTimeout = Context.Reference<Duration.Input>("pendix/acp/Turn/CancelDrainTimeout", {
   defaultValue: () => "5 seconds",
 })
 

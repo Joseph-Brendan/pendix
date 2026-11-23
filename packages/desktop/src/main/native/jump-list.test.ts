@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from "bun:test"
-import { DESKTOP_NATIVE_ENGLISH } from "@opencode/app/i18n/desktop-native"
+import { DESKTOP_NATIVE_ENGLISH } from "@pendix/app/i18n/desktop-native"
 import { jumpList, jumpTask } from "./jump-list"
 import { setNativeTranslations } from "./translations"
 

@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
-import type { SessionMessageInfo } from "@opencode/client/promise"
-import { DataContext, useData, type TurnDiffSource } from "@opencode/session-ui/context"
-import { MarkdownContext, useMarkdown, type ReadMarkdownImage } from "@opencode/session-ui/context/markdown"
+import type { SessionMessageInfo } from "@pendix/client/promise"
+import { DataContext, useData, type TurnDiffSource } from "@pendix/session-ui/context"
+import { MarkdownContext, useMarkdown, type ReadMarkdownImage } from "@pendix/session-ui/context/markdown"
 import {
   batch,
   createComponent,

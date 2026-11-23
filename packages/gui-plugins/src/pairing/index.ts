@@ -1,4 +1,4 @@
-import { Plugin } from "@opencode/plugin/gui"
+import { Plugin } from "@pendix/plugin/gui"
 import en from "./i18n/en"
 import pair from "./icons/pair.svg?raw"
 

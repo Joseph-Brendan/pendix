@@ -1,9 +1,9 @@
 export * as PluginUpdate from "./update.js"
 
 import { Context, Effect, Exit, Layer, Option, PubSub, Stream } from "effect"
-import { Npm } from "@opencode/util/npm"
-import { EffectFlock } from "@opencode/util/effect-flock"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
+import { Npm } from "@pendix/util/npm"
+import { EffectFlock } from "@pendix/util/effect-flock"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
 import { KeyedMutex } from "../effect/keyed-mutex.js"
 
 /** How often package plugins are checked for newer versions. */

@@ -1,6 +1,6 @@
 import { confirm, intro, log, outro, spinner } from "@clack/prompts"
-import { Service } from "@opencode/client/effect/service"
-import { Global } from "@opencode/util/global"
+import { Service } from "@pendix/client/effect/service"
+import { Global } from "@pendix/util/global"
 import { Effect, FileSystem, Schedule } from "effect"
 import path from "node:path"
 import { Commands } from "../commands"
@@ -14,7 +14,7 @@ import { errorMessage } from "../../util/error"
 export default Runtime.handler(
   Commands.commands.uninstall,
   Effect.fn("cli.uninstall")(function* (input) {
-    intro("Uninstall OpenCode")
+    intro("Uninstall Pendix")
     const fs = yield* FileSystem.FileSystem
     const global = yield* Global.Service
     const updater = yield* Updater.Service
@@ -29,7 +29,7 @@ export default Runtime.handler(
     const shell = method === "curl" ? yield* shellConfigs(global.home) : []
 
     log.info(`Installation method: ${method ?? "unknown"}`)
-    log.message("The following global files will be removed (shared by OpenCode versions and channels):")
+    log.message("The following global files will be removed (shared by Pendix versions and channels):")
     if (yield* fs.exists(global.cache)) log.info(`  Cache: ${global.cache}`)
     services.forEach((name) =>
       log.info(`  Stop background service and persistent terminals: ${path.join(global.state, name)}`),
@@ -154,8 +154,8 @@ const shellConfigs = Effect.fnUntraced(function* (home: string) {
 function cleanShellConfig(content: string) {
   const lines = content.split("\n")
   const entry = (line: string) =>
-    /^(?:export PATH=|fish_add_path\s)/.test(line.trim()) && line.includes(".opencode/bin")
+    /^(?:export PATH=|fish_add_path\s)/.test(line.trim()) && line.includes(".pendix/bin")
   return lines
-    .filter((line, index) => !entry(line) && !(line.trim() === "# opencode" && entry(lines[index + 1] ?? "")))
+    .filter((line, index) => !entry(line) && !(line.trim() === "# pendix" && entry(lines[index + 1] ?? "")))
     .join("\n")
 }

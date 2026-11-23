@@ -1,8 +1,8 @@
-import type { SessionInfo } from "@opencode/client/promise"
-import { useDialog } from "@opencode/ui/context/dialog"
-import { Button } from "@opencode/ui/button"
-import { DialogFooter, DialogHeader, DialogTitleGroup, Dialog } from "@opencode/ui/dialog"
-import { prefersReducedMotion } from "@opencode/ui/motion"
+import type { SessionInfo } from "@pendix/client/promise"
+import { useDialog } from "@pendix/ui/context/dialog"
+import { Button } from "@pendix/ui/button"
+import { DialogFooter, DialogHeader, DialogTitleGroup, Dialog } from "@pendix/ui/dialog"
+import { prefersReducedMotion } from "@pendix/ui/motion"
 import { hashKey, onlineManager, useQuery, useQueryClient } from "@tanstack/solid-query"
 import {
   type Accessor,

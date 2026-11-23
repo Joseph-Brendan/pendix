@@ -1,7 +1,7 @@
 export * as GrepTool from "./grep.js"
 
-import type { Context } from "@opencode/plugin/effect/plugin"
-import { ToolFailure } from "@opencode/ai/effect"
+import type { Context } from "@pendix/plugin/effect/plugin"
+import { ToolFailure } from "@pendix/ai/effect"
 import { Effect, Schema } from "effect"
 import path from "path"
 import { FileSystem } from "../../filesystem.js"

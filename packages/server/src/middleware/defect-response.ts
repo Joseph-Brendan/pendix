@@ -1,5 +1,5 @@
-import { StorageFailure } from "@opencode/core/database/storage-failure"
-import { UnknownError } from "@opencode/protocol/errors"
+import { StorageFailure } from "@pendix/core/database/storage-failure"
+import { UnknownError } from "@pendix/protocol/errors"
 import { Cause, Effect } from "effect"
 import { HttpRouter, HttpServerError, HttpServerRequest, HttpServerResponse } from "effect/http"
 

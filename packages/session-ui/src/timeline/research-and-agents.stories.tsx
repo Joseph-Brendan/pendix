@@ -1,4 +1,4 @@
-import type { SessionMessageAssistant, SessionMessageAssistantTool } from "@opencode/client/promise"
+import type { SessionMessageAssistant, SessionMessageAssistantTool } from "@pendix/client/promise"
 import { createMemo } from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { createStore } from "solid-js/store"

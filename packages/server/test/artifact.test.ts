@@ -1,7 +1,7 @@
 import fs from "node:fs/promises"
 import path from "node:path"
 import { expect } from "bun:test"
-import { OpenCode } from "@opencode/client"
+import { OpenCode } from "@pendix/client"
 import { Effect } from "effect"
 import { tmpdirScoped } from "../../core/test/fixture/tmpdir"
 import { it } from "../../core/test/lib/effect"
@@ -67,14 +67,14 @@ export default {
 `,
       )
       await fs.writeFile(
-        path.join(enabled, "opencode.json"),
+        path.join(enabled, "pendix.json"),
         JSON.stringify({
           plugins: [{ package: pluginDir }],
           experimental: { artifacts: true },
         }),
       )
       await fs.writeFile(
-        path.join(enabledOther, "opencode.json"),
+        path.join(enabledOther, "pendix.json"),
         JSON.stringify({
           experimental: { artifacts: true },
         }),

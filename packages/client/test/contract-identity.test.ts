@@ -1,12 +1,12 @@
 import { expect, test } from "bun:test"
 import { Schema } from "effect"
-import { Agent } from "@opencode/schema/agent"
-import { Config } from "@opencode/schema/config"
-import { Model } from "@opencode/schema/model"
-import { Prompt } from "@opencode/schema/prompt"
-import { Session } from "@opencode/schema/session"
-import { SessionMessage } from "@opencode/schema/session-message"
-import { Vcs } from "@opencode/schema/vcs"
+import { Agent } from "@pendix/schema/agent"
+import { Config } from "@pendix/schema/config"
+import { Model } from "@pendix/schema/model"
+import { Prompt } from "@pendix/schema/prompt"
+import { Session } from "@pendix/schema/session"
+import { SessionMessage } from "@pendix/schema/session-message"
+import { Vcs } from "@pendix/schema/vcs"
 
 const Client = await import("../src/effect")
 

@@ -76,7 +76,7 @@ it. The built-ins are the same contract in Rust (`abi::Plugin { id, setup }`), l
 ```lua
 --!strict
 -- The quick start: a command in the palette and as `/hello`, and a line in the home footer that runs it.
-local plugin = require("@opencode/plugin")
+local plugin = require("@pendix/plugin")
 
 return plugin.define(function(setup)
     -- A command in the palette and as `/hello`.
@@ -103,7 +103,7 @@ description = "A command in the palette, and a line in the home footer that runs
 ```
 
 Copy the directory to `~/.config/opencode/plugins/hello/`. There is no build, and the files run on every platform.
-`crates/plugin/src/luau/opencode/plugin.luau` is a typed stub of `@opencode/plugin`; a `.luaurc` that aliases
+`crates/plugin/src/luau/opencode/plugin.luau` is a typed stub of `@pendix/plugin`; a `.luaurc` that aliases
 `opencode` to its directory (as `crates/plugin/examples/luau/.luaurc` does) lets `luau-analyze` and luau-lsp check a
 plugin, and `bun run check:luau-types` checks every Luau plugin in the repository.
 
@@ -114,7 +114,7 @@ plugin, and `bun run check:luau-types` checks every Luau plugin in the repositor
 ```tsx
 /** @jsxImportSource @opentui/solid */
 // The quick start as a TypeScript TUI plugin, which the JS host runs.
-import { Plugin } from "@opencode/plugin/tui"
+import { Plugin } from "@pendix/plugin/tui"
 
 export default Plugin.define({
   id: "example.ts-hello",

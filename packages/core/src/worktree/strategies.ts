@@ -2,15 +2,15 @@ export * as WorktreeStrategies from "./strategies.js"
 
 import { Context, Effect, Layer } from "effect"
 import path from "path"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
-import { Global } from "@opencode/util/global"
-import { Worktree } from "@opencode/schema/worktree"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
+import { Global } from "@pendix/util/global"
+import { Worktree } from "@pendix/schema/worktree"
 import { AbsolutePath } from "../schema.js"
 import { Git } from "../git.js"
 import { Location } from "../location.js"
 import { State } from "../state.js"
 import { WorktreeGit } from "./git.js"
-import { FSUtil } from "@opencode/util/fs-util"
+import { FSUtil } from "@pendix/util/fs-util"
 
 export interface Strategy {
   readonly id: Worktree.StrategyID

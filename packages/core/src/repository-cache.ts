@@ -7,13 +7,13 @@
  */
 import path from "path"
 import { Clock, Context, Duration, Effect, Layer, Option, Schema } from "effect"
-import { FSUtil } from "@opencode/util/fs-util"
+import { FSUtil } from "@pendix/util/fs-util"
 import { Git } from "./git.js"
-import { Global } from "@opencode/util/global"
+import { Global } from "@pendix/util/global"
 import { Repository } from "./repository.js"
 import { AbsolutePath } from "./schema.js"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
-import { EffectFlock } from "@opencode/util/effect-flock"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
+import { EffectFlock } from "@pendix/util/effect-flock"
 import { KV } from "./kv.js"
 
 const Refresh = Schema.Struct({

@@ -1,7 +1,7 @@
 import { For, Show, createEffect, createMemo, on, onCleanup, onMount } from "solid-js"
 import { createStore } from "solid-js/store"
 import type { ModelSelection } from "@/providers/models/selection"
-import { STORY_MODEL } from "@opencode/session-ui/storybook"
+import { STORY_MODEL } from "@pendix/session-ui/storybook"
 import { Composer } from "./composer"
 import type { ComposerModel } from "./model"
 import { createComposerEditor } from "./editor/interaction"

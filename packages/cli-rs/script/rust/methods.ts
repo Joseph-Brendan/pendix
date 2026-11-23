@@ -2,7 +2,7 @@
 // its output, with no transport), the `Client` method that sends it, the endpoint's row of the operations table the
 // Luau prelude's `plugin.client` builds requests from, and a probe that builds the request from JSON, for the table
 // test (`typed-client`).
-import type { Endpoint, Group } from "@opencode/httpapi-codegen"
+import type { Endpoint, Group } from "@pendix/httpapi-codegen"
 import type { SchemaRepresentation } from "effect"
 import { example, luauType } from "./example.ts"
 import { pascal, snake, type Types } from "./types.ts"

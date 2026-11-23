@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import type { OpenCodeEvent, SessionInfo } from "@opencode/client/promise"
+import type { OpenCodeEvent, SessionInfo } from "@pendix/client/promise"
 import { resolveServerList, ServerConnection } from "@/runtime/server/registry"
 import {
   addPin,

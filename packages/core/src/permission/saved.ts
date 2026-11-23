@@ -4,11 +4,11 @@ import { eq } from "drizzle-orm"
 import { Cause, Context, DateTime, Effect, Layer, Schema } from "effect"
 import { isSqlError } from "effect/sql/SqlError"
 import type { EffectDrizzleQueryError } from "drizzle-orm/effect-core/errors"
-import type { Project } from "@opencode/schema/project"
+import type { Project } from "@pendix/schema/project"
 import { Database } from "../database/database.js"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
 import { PermissionTable } from "./sql.js"
-import { PermissionSaved } from "@opencode/schema/permission-saved"
+import { PermissionSaved } from "@pendix/schema/permission-saved"
 
 export const ID = PermissionSaved.ID
 export type ID = typeof ID.Type

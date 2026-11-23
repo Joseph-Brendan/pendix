@@ -4,8 +4,8 @@ import { Effect, Layer, Logger } from "effect"
 import fs from "fs/promises"
 import os from "os"
 import path from "path"
-import { fileLogger } from "@opencode/util/observability/logging"
-import { resource } from "@opencode/util/observability/otlp"
+import { fileLogger } from "@pendix/util/observability/logging"
+import { resource } from "@pendix/util/observability/otlp"
 
 const otelResourceAttributes = process.env.OTEL_RESOURCE_ATTRIBUTES
 
@@ -31,20 +31,20 @@ describe("resource", () => {
     process.env.OTEL_RESOURCE_ATTRIBUTES = "service.namespace=anomalyco,broken"
 
     expect(resource().attributes["service.namespace"]).toBeUndefined()
-    expect(resource().attributes["opencode.client"]).toBeDefined()
+    expect(resource().attributes["pendix.client"]).toBeDefined()
   })
 
   test("keeps built-in attributes when env values conflict", () => {
     process.env.OTEL_RESOURCE_ATTRIBUTES =
-      "opencode.client=web,service.instance.id=override,service.namespace=anomalyco"
+      "pendix.client=web,service.instance.id=override,service.namespace=anomalyco"
 
     const app = { client: "cli", version: "1.2.3", channel: "beta" }
     expect(resource(app).attributes).toMatchObject({
-      "opencode.client": "cli",
+      "pendix.client": "cli",
       "service.namespace": "anomalyco",
     })
     expect(resource(app).attributes["service.instance.id"]).not.toBe("override")
-    expect(resource(app).attributes["opencode.run"]).toMatch(/^[0-9a-f]{8}$/)
+    expect(resource(app).attributes["pendix.run"]).toMatch(/^[0-9a-f]{8}$/)
   })
 })
 
@@ -61,7 +61,7 @@ test("falls back to local logging when OTLP initialization fails", async () => {
       "--eval",
       `
         import { Effect } from "effect"
-        import { Observability } from "@opencode/util/observability"
+        import { Observability } from "@pendix/util/observability"
         await Effect.void.pipe(Effect.provide(Observability.layer()), Effect.scoped, Effect.runPromise)
       `,
     ],

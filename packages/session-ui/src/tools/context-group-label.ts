@@ -1,4 +1,4 @@
-import type { UiI18n } from "@opencode/ui/context/i18n"
+import type { UiI18n } from "@pendix/ui/context/i18n"
 import { factsOf, summarize, type FactPart, type Summary } from "../timeline/facts"
 import type { ContextGroupPart } from "./tool-renderer"
 

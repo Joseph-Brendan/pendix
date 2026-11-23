@@ -1,6 +1,6 @@
 export * as ConfigSessionSearchPlugin from "./session-search.js"
 
-import { define } from "@opencode/plugin/effect/plugin"
+import { define } from "@pendix/plugin/effect/plugin"
 import { Effect, Stream } from "effect"
 import { Flag } from "../../flag.js"
 import { SessionSearchBuild } from "../../session/search-build.js"

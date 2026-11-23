@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@opencode/protocol",
+  "name": "@pendix/protocol",
   "version": "2.4.0",
   "type": "module",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "typecheck:tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@opencode/schema": "workspace:*",
+    "@pendix/schema": "workspace:*",
     "effect": "catalog:"
   },
   "devDependencies": {

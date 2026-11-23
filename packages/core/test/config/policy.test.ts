@@ -1,21 +1,21 @@
 import { describe, expect } from "bun:test"
-import { Document, Event, Info, type Entry } from "@opencode/schema/config"
-import { ConfigPolicy } from "@opencode/schema/config/policy"
-import { Permission } from "@opencode/schema/permission"
-import { Config } from "@opencode/core/config"
-import { Integration } from "@opencode/core/integration"
-import { ConfigPolicyPlugin } from "@opencode/core/config/plugin/policy"
-import { Bus } from "@opencode/core/bus"
-import { Plugin } from "@opencode/core/plugin"
-import { PluginHooks } from "@opencode/core/plugin/hooks"
-import { PluginHost } from "@opencode/core/plugin/host"
-import { Provider } from "@opencode/core/provider"
-import { Session } from "@opencode/core/session"
-import { Credential } from "@opencode/core/credential"
-import { ConfigIntegration } from "@opencode/core/config/integration"
-import { WebSearch } from "@opencode/core/websearch"
-import { WebSearchExa } from "@opencode/core/plugin/websearch/exa"
-import { WebSearchTinyFish } from "@opencode/core/plugin/websearch/tinyfish"
+import { Document, Event, Info, type Entry } from "@pendix/schema/config"
+import { ConfigPolicy } from "@pendix/schema/config/policy"
+import { Permission } from "@pendix/schema/permission"
+import { Config } from "@pendix/core/config"
+import { Integration } from "@pendix/core/integration"
+import { ConfigPolicyPlugin } from "@pendix/core/config/plugin/policy"
+import { Bus } from "@pendix/core/bus"
+import { Plugin } from "@pendix/core/plugin"
+import { PluginHooks } from "@pendix/core/plugin/hooks"
+import { PluginHost } from "@pendix/core/plugin/host"
+import { Provider } from "@pendix/core/provider"
+import { Session } from "@pendix/core/session"
+import { Credential } from "@pendix/core/credential"
+import { ConfigIntegration } from "@pendix/core/config/integration"
+import { WebSearch } from "@pendix/core/websearch"
+import { WebSearchExa } from "@pendix/core/plugin/websearch/exa"
+import { WebSearchTinyFish } from "@pendix/core/plugin/websearch/tinyfish"
 import { Effect, Schema } from "effect"
 import { FetchHttpClient } from "effect/http"
 import { waitUntil } from "../lib/eventually"
@@ -293,7 +293,7 @@ describe("integration policy", () => {
         catalog.update(Provider.ID.anthropic, (provider) => {
           provider.activation = "enabled"
         })
-        // A provider authored in opencode.json.
+        // A provider authored in pendix.json.
         catalog.update(Provider.ID.make("my-llm"), (provider) => {
           provider.activation = "enabled"
         })
@@ -383,13 +383,13 @@ describe("integration policy", () => {
             type: "document",
             integrationID: origin,
             info: decode({
-              providers: { "acme-gateway": { package: "@opencode/ai/providers/openai-compatible", models: {} } },
+              providers: { "acme-gateway": { package: "@pendix/ai/providers/openai-compatible", models: {} } },
             }),
           }),
           new Document({
             type: "document",
             info: decode({
-              providers: { "my-llm": { package: "@opencode/ai/providers/openai-compatible", models: {} } },
+              providers: { "my-llm": { package: "@pendix/ai/providers/openai-compatible", models: {} } },
             }),
           }),
         ])

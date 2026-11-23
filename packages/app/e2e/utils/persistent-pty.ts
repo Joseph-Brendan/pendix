@@ -1,6 +1,6 @@
 import type { WebSocketRoute } from "@playwright/test"
-import type { OpenCodeEvent } from "@opencode/client/promise"
-import type { PersistentPty } from "@opencode/schema/persistent-pty"
+import type { OpenCodeEvent } from "@pendix/client/promise"
+import type { PersistentPty } from "@pendix/schema/persistent-pty"
 import { Predicate } from "effect"
 
 // Serves the session-scoped persistent PTY routes (`/api/experimental/.../terminal`, `/api/experimental/persistent-pty`)

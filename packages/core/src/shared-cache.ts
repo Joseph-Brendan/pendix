@@ -2,8 +2,8 @@ export * as SharedCache from "./shared-cache.js"
 
 import { Cause, Clock, Context, Duration, Effect, Exit, Fiber, FiberSet, Layer, Schedule } from "effect"
 import { HttpClientError } from "effect/http"
-import { Hash } from "@opencode/util/hash"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
+import { Hash } from "@pendix/util/hash"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
 
 /** How long a result stays fresh, and how often callers refresh, unless a caller passes its own. */
 export const interval = Duration.minutes(10)

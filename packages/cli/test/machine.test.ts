@@ -1,5 +1,5 @@
 import { NodeServices } from "@effect/platform-node"
-import type { MachineInfo, MachineInvite } from "@opencode/client/promise"
+import type { MachineInfo, MachineInvite } from "@pendix/client/promise"
 import { describe, expect, test } from "bun:test"
 import { Console, Effect, Option, Stdio } from "effect"
 import { EOL } from "node:os"

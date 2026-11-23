@@ -2,7 +2,7 @@
 import { CliRenderEvents, RGBA, type TerminalColors } from "@opentui/core"
 import { testRender } from "@opentui/solid"
 import { expect, test } from "bun:test"
-import { resolveThemeDocument } from "@opencode/theme/tui"
+import { resolveThemeDocument } from "@pendix/theme/tui"
 import { ConfigProvider, useConfig, type Info } from "../../src/config"
 import { ThemeProvider, useTheme, useThemes } from "../../src/context/theme"
 import { getOpenCodeTheme, getOpenCodeClassicTheme } from "../../src/theme"

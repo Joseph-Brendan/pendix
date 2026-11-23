@@ -1,5 +1,5 @@
-import { Icon } from "@opencode/ui/icon"
-import "@opencode/ui/text-input.css"
+import { Icon } from "@pendix/ui/icon"
+import "@pendix/ui/text-input.css"
 import { For, Show } from "solid-js"
 import type { TimelineSearchController } from "./search-controller"
 import "./search-bar.css"

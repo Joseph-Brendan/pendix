@@ -1,8 +1,8 @@
-import { Database } from "@opencode/core/database/database"
-import { ModelsDev } from "@opencode/core/models-dev"
-import { PersistentPty } from "@opencode/core/persistent-pty"
+import { Database } from "@pendix/core/database/database"
+import { ModelsDev } from "@pendix/core/models-dev"
+import { PersistentPty } from "@pendix/core/persistent-pty"
 import { Schema } from "effect"
-import type { LayerNodePlatform } from "@opencode/util/effect/app-node-platform"
+import type { LayerNodePlatform } from "@pendix/util/effect/app-node-platform"
 
 export const ServerOptions = Schema.Struct({
   app: Schema.optional(

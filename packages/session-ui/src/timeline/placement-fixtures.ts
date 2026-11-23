@@ -1,4 +1,4 @@
-import type { JsonValue, SessionMessageAssistant, SessionMessageInfo } from "@opencode/client/promise"
+import type { JsonValue, SessionMessageAssistant, SessionMessageInfo } from "@pendix/client/promise"
 import { storyTool } from "../storybook/current-session-scenarios"
 import { timelinePresets, type TimelineDetail } from "./detail"
 

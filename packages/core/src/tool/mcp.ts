@@ -1,9 +1,9 @@
 export * as McpTool from "./mcp.js"
 
-import { ToolFailure } from "@opencode/ai/effect"
-import { McpEvent } from "@opencode/schema/mcp-event"
+import { ToolFailure } from "@pendix/ai/effect"
+import { McpEvent } from "@pendix/schema/mcp-event"
 import { Context, Effect, Fiber, type JsonSchema, Layer, Option, PubSub, Schema, Semaphore, Stream } from "effect"
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { extension } from "mime-types"
 import { Bus } from "../bus.js"
 

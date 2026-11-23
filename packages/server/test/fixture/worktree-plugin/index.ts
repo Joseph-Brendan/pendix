@@ -1,4 +1,4 @@
-import { Plugin, Worktree } from "@opencode/plugin"
+import { Plugin, Worktree } from "@pendix/plugin"
 
 export default Plugin.define({
   id: "test.worktree",

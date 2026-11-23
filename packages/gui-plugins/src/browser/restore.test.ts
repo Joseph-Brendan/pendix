@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test"
-import { Browser } from "@opencode/plugin-browser/rpc"
-import type { BuiltinMainStorage } from "@opencode/plugin/gui/builtin"
+import { Browser } from "@pendix/plugin-browser/rpc"
+import type { BuiltinMainStorage } from "@pendix/plugin/gui/builtin"
 import { activityOwner, agentDriven } from "./policy"
 import { createBrowserRestoreStore, restoredActivity } from "./restore"
 

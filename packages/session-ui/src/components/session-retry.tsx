@@ -1,10 +1,10 @@
 import { createEffect, createMemo, createSignal, on, onCleanup, Show } from "solid-js"
-import type { SessionStatus } from "@opencode/client/promise"
-import { useI18n } from "@opencode/ui/context/i18n"
-import { Card } from "@opencode/ui/card"
-import { Icon } from "@opencode/ui/icon"
-import { TextShimmer } from "@opencode/ui/text-shimmer"
-import { Tooltip } from "@opencode/ui/tooltip"
+import type { SessionStatus } from "@pendix/client/promise"
+import { useI18n } from "@pendix/ui/context/i18n"
+import { Card } from "@pendix/ui/card"
+import { Icon } from "@pendix/ui/icon"
+import { TextShimmer } from "@pendix/ui/text-shimmer"
+import { Tooltip } from "@pendix/ui/tooltip"
 import { SessionErrorMessage } from "./session-error"
 
 export function SessionRetry(props: { status: SessionStatus; show?: boolean }) {

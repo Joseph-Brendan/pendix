@@ -1,16 +1,16 @@
 import { Cause, Context, Duration, Effect, Layer, Option, Result, Schedule, Schema, Semaphore } from "effect"
 import { HttpClient, HttpClientError, HttpClientRequest, HttpClientResponse } from "effect/http"
-import { ConfigProvider } from "@opencode/schema/config/provider"
-import { MaxTokensField, MediaInput } from "@opencode/schema/model-compatibility"
-import { ModelsDev } from "@opencode/schema/models-dev"
-import { Money } from "@opencode/schema/money"
-import { FreeformFormat } from "@opencode/schema/tool"
+import { ConfigProvider } from "@pendix/schema/config/provider"
+import { MaxTokensField, MediaInput } from "@pendix/schema/model-compatibility"
+import { ModelsDev } from "@pendix/schema/models-dev"
+import { Money } from "@pendix/schema/money"
+import { FreeformFormat } from "@pendix/schema/tool"
 import { App } from "./app.js"
-import { Hash } from "@opencode/util/hash"
-import { FSUtil } from "@opencode/util/fs-util"
+import { Hash } from "@pendix/util/hash"
+import { FSUtil } from "@pendix/util/fs-util"
 import { Bus } from "./bus.js"
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
-import { httpClient } from "@opencode/util/effect/app-node-platform"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
+import { httpClient } from "@pendix/util/effect/app-node-platform"
 import { Model } from "./model.js"
 import { AISDKNative } from "./aisdk-native.js"
 import { Provider } from "./provider.js"
@@ -196,19 +196,19 @@ type Route = {
 // These packages build their URL from provider settings (region, resource, account, project…), which
 // only happens when no baseURL is set. The catalog's URL for them is a template or SDK default.
 const BUILDS_OWN_URL = new Set([
-  "@opencode/ai/providers/amazon-bedrock",
-  "@opencode/ai/providers/azure/chat",
-  "@opencode/ai/providers/azure/images",
-  "@opencode/ai/providers/azure/messages",
-  "@opencode/ai/providers/azure/responses",
-  "@opencode/ai/providers/cloudflare-ai-gateway",
-  "@opencode/ai/providers/cloudflare-ai-gateway/decisions",
-  "@opencode/ai/providers/cloudflare-workers-ai",
-  "@opencode/ai/providers/cloudflare-workers-ai/decisions",
-  "@opencode/ai/providers/cloudflare-workers-ai/images",
-  "@opencode/ai/providers/google-vertex/gemini",
-  "@opencode/ai/providers/google-vertex/images",
-  "@opencode/ai/providers/google-vertex/messages",
+  "@pendix/ai/providers/amazon-bedrock",
+  "@pendix/ai/providers/azure/chat",
+  "@pendix/ai/providers/azure/images",
+  "@pendix/ai/providers/azure/messages",
+  "@pendix/ai/providers/azure/responses",
+  "@pendix/ai/providers/cloudflare-ai-gateway",
+  "@pendix/ai/providers/cloudflare-ai-gateway/decisions",
+  "@pendix/ai/providers/cloudflare-workers-ai",
+  "@pendix/ai/providers/cloudflare-workers-ai/decisions",
+  "@pendix/ai/providers/cloudflare-workers-ai/images",
+  "@pendix/ai/providers/google-vertex/gemini",
+  "@pendix/ai/providers/google-vertex/images",
+  "@pendix/ai/providers/google-vertex/messages",
   "aisdk:@jerome-benoit/sap-ai-provider-v2",
   "aisdk:watsonx-ai-provider",
 ])
@@ -277,7 +277,7 @@ const normalize = Effect.fnUntraced(function* (
       )
       const modes = entries(source.model.experimental?.modes, decodeMode)
       // Each service tier is a model of its own ("gpt-5.5-fast"), marked as a speed of this one. Only the request
-      // code of an @opencode/ai package knows where a tier goes in the request.
+      // code of an @pendix/ai package knows where a tier goes in the request.
       const tiers =
         speeds && !Provider.isAISDK(source.route.package)
           ? [...(source.model.capabilities.service_tier ?? [])].sort((a, b) => tierRank(a) - tierRank(b))
@@ -404,10 +404,11 @@ function route(providerID: Provider.ID, model: SourceModel, unknown: Set<string>
   }
 }
 
-// Newer catalogs may name @opencode/ai entrypoints that older builds don't ship, so those count as no package.
+// Newer catalogs may name @pendix/ai entrypoints that older builds don't ship, so those count as no package.
 function loadable(opencodeai: string | undefined, unknown: Set<string>) {
-  const name = Provider.packageName(opencodeai)
-  if (!name?.startsWith("@opencode/ai/") || Provider.builtinPackages.has(name)) return opencodeai
+  const normalized = opencodeai?.replace(/^@opencode\/ai\//, "@pendix/ai/")
+  const name = Provider.packageName(normalized)
+  if (!name?.startsWith("@pendix/ai/") || Provider.builtinPackages.has(name)) return normalized
   unknown.add(name)
   return undefined
 }
@@ -426,7 +427,7 @@ function released(date: string) {
   return Number.isFinite(time) ? time : 0
 }
 
-const COMPATIBLE = new Set(["@opencode/ai/providers/openai-compatible", "@opencode/ai/providers/anthropic-compatible"])
+const COMPATIBLE = new Set(["@pendix/ai/providers/openai-compatible", "@pendix/ai/providers/anthropic-compatible"])
 
 const zero = Money.USDPerMillionTokens.zero
 
@@ -613,7 +614,7 @@ function modelInfo(
   }
 }
 
-export { Event } from "@opencode/schema/models-dev"
+export { Event } from "@pendix/schema/models-dev"
 
 export interface Interface {
   /** `speeds` also lists each of a model's service tiers as a model of its own, marked as a speed of it. */
@@ -645,7 +646,7 @@ const CacheMeta = Schema.Struct({
   digest: Schema.optional(Schema.String),
   etag: Schema.optional(Schema.String),
 })
-const defaultSource = "https://models.opencode.ai"
+const defaultSource = "https://models.dev"
 
 // The experimental v2 API, limited to the model types opencode keeps, with the hidden OpenAI subscription lists included.
 export const catalogPath = `/experimental/v2.0/api.json?type=${TYPES.join(",")}&include=${OPENAI_SUBSCRIPTIONS.join(",")}`
@@ -743,10 +744,9 @@ export const layer = (options?: Options) =>
 
       const fetchApi = Effect.fn("ModelsDev.fetchApi")(function* (etag?: string) {
         return yield* fetchPath(catalogPath, etag).pipe(
-          // A custom mirror may only serve the v1 catalog, which is converted when decoded.
+          // A mirror or models.dev may only serve the v1 catalog, which is converted when decoded.
           Effect.catchIf(
-            (error) =>
-              source !== defaultSource && HttpClientError.isHttpClientError(error) && error.response?.status === 404,
+            (error) => HttpClientError.isHttpClientError(error) && error.response?.status === 404,
             () => fetchPath("/api.json", etag),
           ),
         )

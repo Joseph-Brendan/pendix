@@ -1,6 +1,6 @@
 export * as CodeModeJob from "./job.js"
 
-import { Identifier } from "@opencode/schema/identifier"
+import { Identifier } from "@pendix/schema/identifier"
 import { Cause, Context, Deferred, Duration, Effect, Exit, Option, type Scope, Semaphore } from "effect"
 import { extension } from "mime-types"
 import { Flag } from "../flag.js"

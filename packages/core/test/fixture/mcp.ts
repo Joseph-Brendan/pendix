@@ -1,8 +1,8 @@
 import { Effect, Layer, Stream } from "effect"
-import { Config } from "@opencode/core/config"
-import { Location } from "@opencode/core/location"
-import { Mcp } from "@opencode/core/mcp/index"
-import { AbsolutePath } from "@opencode/core/schema"
+import { Config } from "@pendix/core/config"
+import { Location } from "@pendix/core/location"
+import { Mcp } from "@pendix/core/mcp/index"
+import { AbsolutePath } from "@pendix/core/schema"
 import { location } from "./location"
 
 // Plugins may register MCP transforms at startup; with no servers there is nothing to rebuild.

@@ -8,6 +8,7 @@ import { go, logo } from "../logo"
 export function Logo() {
   const theme = useTheme()
   const dimensions = useTerminalDimensions()
+  const brandDot = RGBA.fromHex("#FF5A1F")
 
   const renderLine = (line: string, fg: RGBA, bold: boolean): JSX.Element[] => {
     const shadow = tint(theme.background.base, fg, 0.25)
@@ -68,7 +69,10 @@ export function Logo() {
         <For each={logo.left}>
           {(line, index) => (
             <box flexDirection="row" gap={1}>
-              <box flexDirection="row">{renderLine(line, theme.text.muted, false)}</box>
+              <text fg={brandDot} attributes={TextAttributes.BOLD} selectable={false}>
+                {index() === 2 ? "●" : " "}
+              </text>
+              <box flexDirection="row">{renderLine(line, theme.text.base, true)}</box>
               <box flexDirection="row">{renderLine(logo.right[index()], theme.text.base, true)}</box>
             </box>
           )}

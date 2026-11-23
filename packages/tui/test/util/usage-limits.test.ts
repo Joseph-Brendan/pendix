@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, setSystemTime, test } from "bun:test"
-import type { UsageLimitsBudget, UsageLimitsInfo } from "@opencode/client"
+import type { UsageLimitsBudget, UsageLimitsInfo } from "@pendix/client"
 import {
   formatDollars,
   formatReset,
@@ -139,12 +139,12 @@ describe("util.usage-limits", () => {
     expect(refusalReset({ response: { body: "{}" } })).toBeUndefined()
   })
 
-  test("a Go limit links to its workspace's Go page for new and migrated workspaces", () => {
+  test("a Go limit links to Pendix without pointing to OpenCode Console", () => {
     const body = (workspace: string) => ({ response: { body: JSON.stringify({ metadata: { workspace } }) } })
-    expect(goLimitLink(body("org_01JXYZ7Q2M"))).toBe("https://opencode.ai/console/org_01JXYZ7Q2M/go")
-    expect(goLimitLink(body("wrk_legacy"))).toBe("https://opencode.ai/console/wrk_legacy/go")
-    expect(goLimitLink(body("acct_other"))).toBe("https://opencode.ai/console")
-    expect(goLimitLink({ response: { body: "{}" } })).toBe("https://opencode.ai/console")
+    expect(goLimitLink(body("org_01JXYZ7Q2M"))).toBe("https://pendix.dev")
+    expect(goLimitLink(body("wrk_legacy"))).toBe("https://pendix.dev")
+    expect(goLimitLink(body("acct_other"))).toBe("https://pendix.dev")
+    expect(goLimitLink({ response: { body: "{}" } })).toBe("https://pendix.dev")
   })
 
   test("a monthly Go limit keeps its reset weeks out", () => {

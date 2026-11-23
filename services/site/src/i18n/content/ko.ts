@@ -127,7 +127,7 @@ export const content = {
           body: "어떤 스크립트에서든 세션을 만들고 프롬프트를 보내세요.",
         },
         "any-model": { title: "모든 모델", body: "OpenCode 설정에 있는 모델을 그대로 사용합니다." },
-        "npm-or-bun": { title: "npm 또는 bun", body: "npm i @opencode/sdk 또는 bun add @opencode/sdk로 설치하세요." },
+        "npm-or-bun": { title: "npm 또는 bun", body: "npm i @pendix/sdk 또는 bun add @opencode/sdk로 설치하세요." },
         "in-process-host": {
           title: "인프로세스 호스트",
           body: "네트워크를 거치지 않고 메모리에서 OpenCode를 실행합니다.",

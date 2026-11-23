@@ -1,4 +1,4 @@
-import type { SessionMessageAssistant } from "@opencode/client/promise"
+import type { SessionMessageAssistant } from "@pendix/client/promise"
 import type { TimelineDetail } from "../timeline/detail"
 import { liveThinkingShows, toolRule } from "./rules"
 

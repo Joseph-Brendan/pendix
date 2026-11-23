@@ -1,21 +1,21 @@
-import { Badge } from "@opencode/ui/badge"
-import { Dialog, DialogBody } from "@opencode/ui/dialog"
-import { useDialog } from "@opencode/ui/context/dialog"
-import { Icon } from "@opencode/ui/icon"
-import { Keybind } from "@opencode/ui/keybind"
-import { MenuScroll } from "@opencode/ui/menu-scroll"
+import { Badge } from "@pendix/ui/badge"
+import { Dialog, DialogBody } from "@pendix/ui/dialog"
+import { useDialog } from "@pendix/ui/context/dialog"
+import { Icon } from "@pendix/ui/icon"
+import { Keybind } from "@pendix/ui/keybind"
+import { MenuScroll } from "@pendix/ui/menu-scroll"
 import {
   displayName,
   getProjectAvatarGenerated,
   getProjectAvatarSource,
   getProjectAvatarVariant,
   ProjectAvatar,
-} from "@opencode/ui/project-avatar"
-import { TextInput } from "@opencode/ui/text-input"
-import { Tooltip } from "@opencode/ui/tooltip"
-import { createTypeahead } from "@opencode/ui/typeahead"
+} from "@pendix/ui/project-avatar"
+import { TextInput } from "@pendix/ui/text-input"
+import { Tooltip } from "@pendix/ui/tooltip"
+import { createTypeahead } from "@pendix/ui/typeahead"
 import { createEventListener } from "@solid-primitives/event-listener"
-import { getFilename, sameDirectory } from "@opencode/util/path"
+import { getFilename, sameDirectory } from "@pendix/util/path"
 import { createEffect, createMemo, createResource, createSignal, For, Match, onCleanup, Show, Switch } from "solid-js"
 import type { PromptProject, PromptProjectController, PromptServer } from "@/new-session/project/selector"
 import type { NewSessionWorkspaceController } from "@/new-session/workspace/controller"

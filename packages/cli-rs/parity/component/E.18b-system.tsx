@@ -3,7 +3,7 @@
 // TUI with the same responses (keep `SERVERS` and the other data below in step with it) and compares the dialog
 // panel.
 import { onMount, type JSX } from "solid-js"
-import type { Context } from "@opencode/plugin/tui/context"
+import type { Context } from "@pendix/plugin/tui/context"
 // The plugin context registers every builtin, and the plugins dialog imports the context back, so the context
 // loads first, as in the app.
 import type { usePlugin } from "../../../tui/src/plugin/context"

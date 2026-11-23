@@ -1,6 +1,6 @@
 export * as CodeModeApi from "./api.js"
 
-import { makeGlobalNode } from "@opencode/util/effect/app-node"
+import { makeGlobalNode } from "@pendix/util/effect/app-node"
 import { Context, Effect, Layer } from "effect"
 
 export interface Interface {

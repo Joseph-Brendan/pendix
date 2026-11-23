@@ -1,4 +1,4 @@
-import type { UsageLimitsBudget, UsageLimitsInfo } from "@opencode/client"
+import type { UsageLimitsBudget, UsageLimitsInfo } from "@pendix/client"
 
 /** A model as the usage limits read it: its OpenCode IDs, its price and context window, and its provider. */
 export type LimitedModel = {
@@ -110,10 +110,9 @@ export function goLimitName(error: { readonly response?: { readonly body: string
   return /"limitName"\s*:\s*"([^"]+)"/.exec(error?.response?.body ?? "")?.[1]
 }
 
-/** The OpenCode Console Go page for the workspace a Go usage limit names, where it can turn on Extra Usage. */
-export function goLimitLink(error: { readonly response?: { readonly body: string } } | undefined) {
-  const workspace = /"workspace"\s*:\s*"((?:org|wrk)_[\w-]+)"/.exec(error?.response?.body ?? "")?.[1]
-  return workspace ? `https://opencode.ai/console/${workspace}/go` : "https://opencode.ai/console"
+/** The console link for a workspace usage limit. */
+export function goLimitLink(_error: { readonly response?: { readonly body: string } } | undefined) {
+  return "https://pendix.dev"
 }
 
 /**

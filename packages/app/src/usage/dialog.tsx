@@ -1,8 +1,8 @@
-import type { LocationRef, UsageLimitsInfo } from "@opencode/client/promise"
-import { Button } from "@opencode/ui/button"
-import { useDialog } from "@opencode/ui/context/dialog"
-import { Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitleGroup } from "@opencode/ui/dialog"
-import { Loader } from "@opencode/ui/loader"
+import type { LocationRef, UsageLimitsInfo } from "@pendix/client/promise"
+import { Button } from "@pendix/ui/button"
+import { useDialog } from "@pendix/ui/context/dialog"
+import { Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitleGroup } from "@pendix/ui/dialog"
+import { Loader } from "@pendix/ui/loader"
 import {
   createEffect,
   createMemo,

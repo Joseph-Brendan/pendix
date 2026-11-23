@@ -1,8 +1,8 @@
-import type { SessionMessageShell } from "@opencode/client/promise"
+import type { SessionMessageShell } from "@pendix/client/promise"
 import { Predicate } from "effect"
-import { type UiI18n, useI18n } from "@opencode/ui/context/i18n"
-import { Badge } from "@opencode/ui/badge"
-import { TextShimmer } from "@opencode/ui/text-shimmer"
+import { type UiI18n, useI18n } from "@pendix/ui/context/i18n"
+import { Badge } from "@pendix/ui/badge"
+import { TextShimmer } from "@pendix/ui/text-shimmer"
 import { createComputed, createEffect, createMemo, createSignal, on, onCleanup, Show, untrack } from "solid-js"
 import { useData } from "../../context"
 import {

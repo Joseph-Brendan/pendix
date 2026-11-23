@@ -1,6 +1,6 @@
 export * as MachineInstructions from "./instructions.js"
 
-import { makeLocationNode } from "@opencode/util/effect/app-node"
+import { makeLocationNode } from "@pendix/util/effect/app-node"
 import { Context, Effect, Layer, Schema } from "effect"
 import { Flag } from "../flag.js"
 import { Instructions } from "../instructions/index.js"

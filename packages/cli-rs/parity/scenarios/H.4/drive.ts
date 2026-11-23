@@ -10,7 +10,7 @@
 import { mkdir, writeFile } from "node:fs/promises"
 import path from "node:path"
 import { Schema } from "effect"
-import { Frontend, Handshake } from "@opencode/protocol/simulation"
+import { Frontend, Handshake } from "@pendix/protocol/simulation"
 import { buildRust, command, parityRoot, sandbox, type Side } from "../../cli/client"
 import { connectDrive } from "../../sim/drive"
 

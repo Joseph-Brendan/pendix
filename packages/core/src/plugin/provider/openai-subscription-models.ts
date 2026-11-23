@@ -1,6 +1,6 @@
 export * as OpenAISubscriptionModels from "./openai-subscription-models.js"
 
-import { Event } from "@opencode/schema/config"
+import { Event } from "@pendix/schema/config"
 import { Effect, Stream } from "effect"
 import { Bus } from "../../bus.js"
 import { Config } from "../../config.js"

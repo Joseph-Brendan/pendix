@@ -1,4 +1,4 @@
-import type { Session } from "@opencode/schema/session"
+import type { Session } from "@pendix/schema/session"
 
 type McpStates = Readonly<Record<string, boolean>>
 

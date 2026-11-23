@@ -1,13 +1,13 @@
 import { createMemo, createSignal, onCleanup, Show, untrack } from "solid-js"
-import { Icon } from "@opencode/ui/icon"
-import { IconButton } from "@opencode/ui/icon-button"
-import { showToast } from "@opencode/ui/toast"
-import { Tooltip } from "@opencode/ui/tooltip"
-import { usePlugin } from "@opencode/plugin/gui"
-import { motionGlobals, motionTuning } from "@opencode/ui/motion-tuning"
-import { duration } from "@opencode/util/duration"
-import { SessionTurn } from "@opencode/util/session-turn"
-import { builtinContext } from "@opencode/plugin/gui/builtin"
+import { Icon } from "@pendix/ui/icon"
+import { IconButton } from "@pendix/ui/icon-button"
+import { showToast } from "@pendix/ui/toast"
+import { Tooltip } from "@pendix/ui/tooltip"
+import { usePlugin } from "@pendix/plugin/gui"
+import { motionGlobals, motionTuning } from "@pendix/ui/motion-tuning"
+import { duration } from "@pendix/util/duration"
+import { SessionTurn } from "@pendix/util/session-turn"
+import { builtinContext } from "@pendix/plugin/gui/builtin"
 import {
   initialFocusToggleState,
   isFocusToggleActive,

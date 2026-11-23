@@ -1,9 +1,9 @@
-import { Instance } from "@opencode/core/instance/service"
-import { Session } from "@opencode/core/session"
+import { Instance } from "@pendix/core/instance/service"
+import { Session } from "@pendix/core/session"
 import { Effect, Layer } from "effect"
 import { HttpRouter } from "effect/http"
 import { HttpApiMiddleware } from "effect/http-api"
-import { LocationNotFoundError, InvalidRequestError, SessionNotFoundError } from "@opencode/protocol/errors"
+import { LocationNotFoundError, InvalidRequestError, SessionNotFoundError } from "@pendix/protocol/errors"
 import { locationErrors, sessionInfo, type LocationServices } from "../location"
 
 export class SessionLocationMiddleware extends HttpApiMiddleware.Service<

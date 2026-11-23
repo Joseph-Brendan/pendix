@@ -1,5 +1,5 @@
-import type { ConfigEntry, SkillInfo } from "@opencode/client/promise"
-import type { ServerConfig } from "@opencode/schema/mcp"
+import type { ConfigEntry, SkillInfo } from "@pendix/client/promise"
+import type { ServerConfig } from "@pendix/schema/mcp"
 import { Option, Result, Schema } from "effect"
 import { Base64Url } from "effect/encoding"
 

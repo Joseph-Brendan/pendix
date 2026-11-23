@@ -1,5 +1,5 @@
-import { Icon } from "@opencode/ui/icon"
-import type { SkillInfo } from "@opencode/client/promise"
+import { Icon } from "@pendix/ui/icon"
+import type { SkillInfo } from "@pendix/client/promise"
 import { createEffect, onCleanup } from "solid-js"
 import { useLanguage } from "@/runtime/i18n/language"
 import { usePlatform } from "@/runtime/platform/platform"

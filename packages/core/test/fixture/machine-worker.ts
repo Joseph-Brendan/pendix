@@ -1,5 +1,5 @@
-import { Environment } from "@opencode/core/environment/index"
-import { Machine } from "@opencode/core/machine/index"
+import { Environment } from "@pendix/core/environment/index"
+import { Machine } from "@pendix/core/machine/index"
 import { Cause, Deferred, Effect, Fiber, Queue, Stream } from "effect"
 
 /** A process the fake worker ran. The test decides what it prints and when it exits. */

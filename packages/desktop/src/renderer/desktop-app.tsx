@@ -16,8 +16,8 @@ import {
   useWindowTabActivity,
   type LayoutRoute,
   type Platform,
-} from "@opencode/app/desktop"
-import { useTheme } from "@opencode/ui/theme/context"
+} from "@pendix/app/desktop"
+import { useTheme } from "@pendix/ui/theme/context"
 import type { BaseRouterProps } from "@solidjs/router"
 import { createEffect, createMemo, createSignal, lazy, onCleanup, Show, Suspense, untrack } from "solid-js"
 import type { ElectronAPI } from "./api-types"

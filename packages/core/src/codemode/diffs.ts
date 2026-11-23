@@ -1,7 +1,7 @@
 export * as CodeModeDiffs from "./diffs.js"
 
 import { Context, Effect, Option, Schema } from "effect"
-import type { Result } from "@opencode/schema/tool"
+import type { Result } from "@pendix/schema/tool"
 import type { FileAccess } from "../file-access.js"
 import { fileDiff } from "../tool/plugin/file-diff.js"
 

@@ -1,1 +1,1 @@
-export { remotePath, workspacePrefix } from "@opencode/plugin-browser/preview-path"
+export { remotePath, workspacePrefix } from "@pendix/plugin-browser/preview-path"

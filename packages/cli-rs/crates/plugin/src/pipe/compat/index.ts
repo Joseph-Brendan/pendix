@@ -91,9 +91,9 @@ export const modules: Record<string, Record<string, unknown>> = {
     InputRenderable,
     isRenderable: (value: unknown) => value instanceof render.VNode,
   }),
-  "@opencode/plugin/tui": plugin,
-  "@opencode/plugin/rpc": { Rpc },
-  "@opencode/plugin/effect": {
+  "@pendix/plugin/tui": plugin,
+  "@pendix/plugin/rpc": { Rpc },
+  "@pendix/plugin/effect": {
     Rpc,
     ...Object.fromEntries(
       [

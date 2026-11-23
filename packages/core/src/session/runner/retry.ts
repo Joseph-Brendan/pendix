@@ -1,9 +1,9 @@
 export * as SessionRunnerRetry from "./retry.js"
 
-import { AIError, isRetryable } from "@opencode/ai/effect"
-import { Agent } from "@opencode/schema/agent"
-import { Model } from "@opencode/schema/model"
-import { SessionError } from "@opencode/schema/session-error"
+import { AIError, isRetryable } from "@pendix/ai/effect"
+import { Agent } from "@pendix/schema/agent"
+import { Model } from "@pendix/schema/model"
+import { SessionError } from "@pendix/schema/session-error"
 import { Clock, Duration, Effect } from "effect"
 import { Bus } from "../../bus.js"
 import { ModelRetry } from "../../model-retry.js"

@@ -4,7 +4,7 @@ import {
   parseThemeDocument,
   type ThemeDocument,
   type ModeDefinition,
-} from "@opencode/theme/tui"
+} from "@pendix/theme/tui"
 import { resolveThemeColors } from "./resolve"
 import { DEFAULT_THEMES, type Theme, type ThemeV1Json } from "./v1"
 import opencodeClassic from "./assets/v2/opencode-classic.json" with { type: "json" }

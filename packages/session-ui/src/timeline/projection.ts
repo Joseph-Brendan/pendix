@@ -6,7 +6,7 @@ import type {
   SessionMessageShell,
   SessionMessageUser,
   SessionStatus,
-} from "@opencode/client/promise"
+} from "@pendix/client/promise"
 import { Effect, Option, Predicate, Schema } from "effect"
 import { createComputed, createMemo, createSignal, mapArray, untrack, type Accessor } from "solid-js"
 import { currentContentDefaultOpen, currentToolHasLoadedFiles } from "../message/current-tool-state"

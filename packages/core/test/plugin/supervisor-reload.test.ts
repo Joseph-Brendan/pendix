@@ -3,25 +3,25 @@ import fs from "fs/promises"
 import path from "path"
 import { Deferred, Duration, Effect, Fiber, Layer, LayerMap, Schedule } from "effect"
 import { TestClock } from "effect/testing"
-import { define } from "@opencode/plugin/effect/plugin"
-import { Event } from "@opencode/schema/config"
-import { AppNodeBuilder } from "@opencode/core/effect/app-node-builder"
-import { LayerNode } from "@opencode/util/effect/layer-node"
-import { Config } from "@opencode/core/config"
-import { Integration } from "@opencode/core/integration"
-import { Global } from "@opencode/util/global"
-import { Npm } from "@opencode/util/npm"
-import { Bus } from "@opencode/core/bus"
-import { Command } from "@opencode/core/command"
-import { Database } from "@opencode/core/database/database"
-import { Watcher } from "@opencode/core/filesystem/watcher"
-import { Instance } from "@opencode/core/instance"
-import { LocationServiceMap } from "@opencode/core/location-services"
-import { Location } from "@opencode/core/location"
-import { Plugin } from "@opencode/core/plugin"
-import { Rpc } from "@opencode/core/rpc"
-import { SdkPlugins } from "@opencode/core/plugin/sdk"
-import { AbsolutePath } from "@opencode/core/schema"
+import { define } from "@pendix/plugin/effect/plugin"
+import { Event } from "@pendix/schema/config"
+import { AppNodeBuilder } from "@pendix/core/effect/app-node-builder"
+import { LayerNode } from "@pendix/util/effect/layer-node"
+import { Config } from "@pendix/core/config"
+import { Integration } from "@pendix/core/integration"
+import { Global } from "@pendix/util/global"
+import { Npm } from "@pendix/util/npm"
+import { Bus } from "@pendix/core/bus"
+import { Command } from "@pendix/core/command"
+import { Database } from "@pendix/core/database/database"
+import { Watcher } from "@pendix/core/filesystem/watcher"
+import { Instance } from "@pendix/core/instance"
+import { LocationServiceMap } from "@pendix/core/location-services"
+import { Location } from "@pendix/core/location"
+import { Plugin } from "@pendix/core/plugin"
+import { Rpc } from "@pendix/core/rpc"
+import { SdkPlugins } from "@pendix/core/plugin/sdk"
+import { AbsolutePath } from "@pendix/core/schema"
 import { tempGlobalLayer } from "../fixture/global"
 import { organizationPolicy } from "../fixture/policy"
 import { offlineModels } from "../fixture/models"
@@ -147,7 +147,7 @@ describe("PluginSupervisor reload", () => {
         yield* Effect.promise(async () => {
           await Bun.write(file, entry)
           await Bun.write(helper, source(1))
-          await Bun.write(path.join(directory.path, ".opencode/opencode.json"), JSON.stringify({ plugins: [root] }))
+          await Bun.write(path.join(directory.path, ".pendix/pendix.json"), JSON.stringify({ plugins: [root] }))
         })
         const watcher = yield* Watcher.Test
         const locations = yield* LocationServiceMap.Service
@@ -202,14 +202,14 @@ describe("PluginSupervisor reload", () => {
         const directory = yield* tmpdirScoped()
         const file = path.join(
           directory.path,
-          mode === "discovered" ? ".opencode/plugins/greeter.ts" : "external/greeter/index.ts",
+          mode === "discovered" ? ".pendix/plugins/greeter.ts" : "external/greeter/index.ts",
         )
         yield* Effect.promise(async () => {
           await Bun.write(file, greeter("greet-v1"))
           await fs.utimes(file, new Date(0), new Date(0))
           if (mode === "configured") {
             await Bun.write(
-              path.join(directory.path, ".opencode/opencode.json"),
+              path.join(directory.path, ".pendix/pendix.json"),
               JSON.stringify({ plugins: [path.dirname(file)] }),
             )
           }
@@ -254,7 +254,7 @@ describe("PluginSupervisor reload", () => {
   it.live("keeps the running generation when an updated local plugin fails to import", () =>
     Effect.gen(function* () {
       const directory = yield* tmpdirScoped()
-      const file = path.join(directory.path, ".opencode/plugins/greeter.ts")
+      const file = path.join(directory.path, ".pendix/plugins/greeter.ts")
       // Local plugin revisions key on mtime, so give each rewrite a distinct timestamp.
       const write = (content: string, mtime: Date) =>
         Effect.promise(async () => {
@@ -305,7 +305,7 @@ describe("PluginSupervisor reload", () => {
       )
       yield* Effect.promise(() => Bun.write(path.join(npm.directory, "server.ts"), greeter("greet-pkg")))
       yield* Effect.promise(() =>
-        Bun.write(path.join(directory.path, ".opencode/opencode.json"), JSON.stringify({ plugins: ["fixture-pkg"] })),
+        Bun.write(path.join(directory.path, ".pendix/pendix.json"), JSON.stringify({ plugins: ["fixture-pkg"] })),
       )
       const bus = yield* Bus.Service
       const locations = yield* LocationServiceMap.Service
@@ -348,7 +348,7 @@ it.live("applies organization integration changes to running external plugins", 
     const directory = yield* tmpdirScoped()
     const root = path.join(directory.path, "external/policy-fixture")
     const entered = path.join(directory.path, "entered")
-    const configuration = path.join(directory.path, ".opencode/opencode.json")
+    const configuration = path.join(directory.path, ".pendix/pendix.json")
     yield* Effect.promise(async () => {
       await Bun.write(
         path.join(root, "index.ts"),

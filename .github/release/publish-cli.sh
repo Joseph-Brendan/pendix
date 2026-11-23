@@ -10,7 +10,7 @@ for target in darwin-arm64 darwin-x64 darwin-x64-baseline; do cli+=("$macos/open
 for target in windows-arm64 windows-x64 windows-x64-baseline; do cli+=("$windows/opencode-$target.zip"); done
 
 files=$(upload_files "${cli[@]}")
-publish_update cli npm '{"package": "@opencode/cli"}'
+publish_update cli npm '{"package": "pendix"}'
 publish_update cli opencode "$(jq -n --argjson files "$files" '{files: $files}')"
 
 if [ "$OPENCODE_CHANNEL" != latest ]; then

@@ -1,7 +1,7 @@
 // The backend driver: answers the simulated provider's model calls (`llm.request`) over the server's drive backend
 // endpoint (packages/simulation/src/backend/simulated-provider.ts).
 import { Schema } from "effect"
-import { Backend, JsonRpc } from "@opencode/protocol/simulation"
+import { Backend, JsonRpc } from "@pendix/protocol/simulation"
 
 // The items stream in order. At `{ hold: name }` the reply waits, its step still running, until the scenario's
 // `{ release: name }` step; the items before it are sent first. `finish: false` sends no `llm.finish`, for a reply

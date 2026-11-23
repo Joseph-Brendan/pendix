@@ -1,14 +1,14 @@
-import { Bus } from "@opencode/core/bus"
-import { Config } from "@opencode/core/config"
-import { Credential } from "@opencode/core/credential"
-import { Integration } from "@opencode/core/integration"
-import { Model } from "@opencode/core/model"
-import { Plugin } from "@opencode/core/plugin"
-import { PluginHost } from "@opencode/core/plugin/host"
-import { LMStudioPlugin, make } from "@opencode/core/plugin/provider/lmstudio"
-import { ProviderPlugins } from "@opencode/core/plugin/provider"
-import { Provider } from "@opencode/core/provider"
-import { Document, Event, Info } from "@opencode/schema/config"
+import { Bus } from "@pendix/core/bus"
+import { Config } from "@pendix/core/config"
+import { Credential } from "@pendix/core/credential"
+import { Integration } from "@pendix/core/integration"
+import { Model } from "@pendix/core/model"
+import { Plugin } from "@pendix/core/plugin"
+import { PluginHost } from "@pendix/core/plugin/host"
+import { LMStudioPlugin, make } from "@pendix/core/plugin/provider/lmstudio"
+import { ProviderPlugins } from "@pendix/core/plugin/provider"
+import { Provider } from "@pendix/core/provider"
+import { Document, Event, Info } from "@pendix/schema/config"
 import { describe, expect, test } from "bun:test"
 import { Duration, Effect, Layer, Schema } from "effect"
 import { eventually } from "../lib/eventually"
@@ -97,7 +97,7 @@ describe("LMStudioPlugin", () => {
             id: providerID,
             name: "LM Studio",
             activation: "enabled",
-            package: "@opencode/ai/providers/openai-compatible",
+            package: "@pendix/ai/providers/openai-compatible",
             settings: { baseURL: `${server.url.origin}/v1`, provider: "lmstudio", apiKey: "" },
           })
           expect((yield* providers.available()).map((provider) => provider.id)).toContain(providerID)
@@ -122,7 +122,7 @@ describe("LMStudioPlugin", () => {
             id: "clef-flash",
             type: "decision",
             name: "Clef Flash",
-            package: "@opencode/ai/providers/openai-compatible/decisions",
+            package: "@pendix/ai/providers/openai-compatible/decisions",
             capabilities: { tools: false, input: ["text", "image"], output: ["decision"] },
             limit: { context: 200_000 },
           })
@@ -438,7 +438,7 @@ describe("LMStudioPlugin", () => {
           yield* providers.transform((editor) => {
             editor.update(providerID, (provider) => {
               provider.name = "LMStudio"
-              provider.package = "@opencode/ai/providers/openai-compatible"
+              provider.package = "@pendix/ai/providers/openai-compatible"
               provider.integrationID = Integration.ID.make("lmstudio")
             })
             editor.models.update(providerID, Model.ID.make("static-model"), () => {})

@@ -2,8 +2,8 @@ import { Option, Schema } from "effect"
 import { createSignal, onCleanup, Show, untrack } from "solid-js"
 import { makeEventListener } from "@solid-primitives/event-listener"
 import { createResizeObserver } from "@solid-primitives/resize-observer"
-import { createKeyed, type FileContent } from "@opencode/plugin/gui"
-import { FileSearchBar } from "@opencode/session-ui/file-search"
+import { createKeyed, type FileContent } from "@pendix/plugin/gui"
+import { FileSearchBar } from "@pendix/session-ui/file-search"
 
 const HIT = "file-preview-find"
 

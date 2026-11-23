@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test"
-import { Agent } from "@opencode/core/agent"
-import { Model } from "@opencode/core/model"
-import { Provider } from "@opencode/core/provider"
-import { SessionMessage } from "@opencode/core/session/message"
-import { LiveToolMetadata } from "@opencode/core/session/runner/live-tool-metadata"
+import { Agent } from "@pendix/core/agent"
+import { Model } from "@pendix/core/model"
+import { Provider } from "@pendix/core/provider"
+import { SessionMessage } from "@pendix/core/session/message"
+import { LiveToolMetadata } from "@pendix/core/session/runner/live-tool-metadata"
 import { DateTime } from "effect"
 
 const id = SessionMessage.ID.create()

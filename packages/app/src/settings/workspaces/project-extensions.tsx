@@ -1,8 +1,8 @@
-import { Button } from "@opencode/ui/button"
-import { Icon } from "@opencode/ui/icon"
-import { Switch } from "@opencode/ui/switch"
-import { Tabs } from "@opencode/ui/tabs"
-import { isLocationNotFoundError } from "@opencode/client/promise"
+import { Button } from "@pendix/ui/button"
+import { Icon } from "@pendix/ui/icon"
+import { Switch } from "@pendix/ui/switch"
+import { Tabs } from "@pendix/ui/tabs"
+import { isLocationNotFoundError } from "@pendix/client/promise"
 import {
   type Component,
   For,
