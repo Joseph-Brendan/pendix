@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pendix
+      POSTGRES_PASSWORD: pendix
+      POSTGRES_DB: pendix
+    ports:
+      - "5433:5432"
+    volumes:
+      - pendix_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pendix -d pendix"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  postgres_test:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pendix
+      POSTGRES_PASSWORD: pendix
+      POSTGRES_DB: pendix_test
+    ports:
+      - "5434:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pendix -d pendix_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  pendix_pgdata:
