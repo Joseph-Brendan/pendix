@@ -9,8 +9,11 @@ import { resolveThemeColors } from "./resolve"
 import { DEFAULT_THEMES, type Theme, type ThemeV1Json } from "./v1"
 import opencodeClassic from "./assets/v2/opencode-classic.json" with { type: "json" }
 import opencode from "./assets/v2/opencode.json" with { type: "json" }
+import pendix from "./assets/v2/pendix.json" with { type: "json" }
 
 export { DEFAULT_THEMES, type Theme, type ThemeV1Json } from "./v1"
+
+export const DEFAULT_THEME_NAME = "pendix"
 
 export type ThemeDocumentSource = Record<string, unknown>
 
@@ -22,10 +25,17 @@ type BothModes = ThemeDocument & {
   readonly light: ModeDefinition
   readonly dark: ModeDefinition
 }
+let pendixTheme: BothModes | undefined
 let opencodeTheme: BothModes | undefined
 let opencodeClassicTheme: BothModes | undefined
 
-/** The default "opencode" theme. */
+/** The default "pendix" theme. */
+export function getPendixTheme() {
+  pendixTheme ??= parseThemeDocument(pendix, "pendix") as BothModes
+  return pendixTheme
+}
+
+/** The upstream "opencode" theme. */
 export function getOpenCodeTheme() {
   opencodeTheme ??= parseThemeDocument(opencode, "opencode") as BothModes
   return opencodeTheme
@@ -41,13 +51,14 @@ function listThemes(): Record<string, ThemeDocumentSource> {
   // Priority: defaults < custom files < generated system.
   const themes: Record<string, ThemeDocumentSource> = {
     ...DEFAULT_THEMES,
+    pendix: getPendixTheme(),
     opencode: getOpenCodeTheme(),
     "opencode-classic": getOpenCodeClassicTheme(),
     ...customThemes,
   }
   return {
     ...themes,
-    system: systemTheme ?? themes.system ?? themes.opencode,
+    system: systemTheme ?? themes.system ?? themes.pendix,
   }
 }
 

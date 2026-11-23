@@ -94,6 +94,7 @@ function tokens(definition: ThemeTokensDefinition): ThemeTokensDefinition {
     diff: definition.diff,
     syntax: definition.syntax,
     markdown: definition.markdown,
+    pendix: definition.pendix,
   }
 }
 

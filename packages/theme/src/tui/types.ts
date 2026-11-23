@@ -47,7 +47,7 @@ export type ResolvedThemeTokens = {
     readonly formfield: FormfieldColor
     readonly feedback: Readonly<Record<FeedbackKind, { readonly base: RGBA }>>
   }
-  readonly border: { readonly base: RGBA }
+  readonly border: { readonly base: RGBA; readonly focused: RGBA }
   readonly scrollbar: { readonly base: RGBA }
   readonly diff: {
     readonly text: {
@@ -65,6 +65,12 @@ export type ResolvedThemeTokens = {
   }
   readonly syntax: Readonly<Record<SyntaxToken, RGBA>>
   readonly markdown: Readonly<Record<MarkdownToken, RGBA>>
+  readonly pendix: {
+    readonly logoDot: RGBA
+    readonly scoreBadge: RGBA
+    readonly teachModeTag: RGBA
+    readonly mainActionHint: RGBA
+  }
 }
 
 export type ResolvedTheme = ResolvedThemeTokens & {

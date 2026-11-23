@@ -1591,6 +1591,7 @@ export function Prompt(props: PromptProps) {
   })
   const highlight = createMemo(() => {
     if (muted()) return theme.border.base
+    if (!theme.border.focused.equals(theme.border.base)) return theme.border.focused
     if (store.mode === "shell")
       // The new designs' interactive color matches the first agent's, so shell takes the second categorical color.
       return newDesigns() ? (theme.categorical[1] ?? theme.categorical[0])[400] : theme.text.action.primary.selected

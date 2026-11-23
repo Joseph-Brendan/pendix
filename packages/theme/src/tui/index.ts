@@ -23,6 +23,7 @@ export {
   type FormfieldColorDefinition,
   type HueDefinition,
   type Mode,
+  type PendixTokensDefinition,
   type SemanticHue,
   type StatefulColorDefinition,
   type TextDefinition,

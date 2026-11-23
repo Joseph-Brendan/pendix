@@ -9,6 +9,7 @@ import {
 } from "@pendix/theme/tui"
 import {
   allThemes,
+  DEFAULT_THEME_NAME,
   hasTheme,
   parseTheme,
   setCustomThemes,
@@ -112,7 +113,7 @@ type ThemeContextValue = {
 const [store, setStore] = createStore<State>({
   mode: "dark",
   lock: undefined,
-  active: "opencode",
+  active: DEFAULT_THEME_NAME,
   ready: false,
 })
 const [themeSources, setThemeSources] = createSignal(allThemes())
@@ -135,7 +136,7 @@ const themeContext = createSimpleContext({
         const mode = lock ?? renderer.themeMode ?? props.mode
         draft.mode = mode
         draft.lock = lock
-        draft.active = config.theme?.name ?? "opencode"
+        draft.active = config.theme?.name ?? DEFAULT_THEME_NAME
         draft.ready = false
       }),
     )
@@ -162,7 +163,7 @@ const themeContext = createSimpleContext({
         .then((themes) => {
           setCustomThemes(themes)
         })
-        .catch(() => setStore("active", "opencode"))
+        .catch(() => setStore("active", DEFAULT_THEME_NAME))
     }
 
     onMount(() => {
@@ -300,14 +301,14 @@ const themeContext = createSimpleContext({
     const selected = createMemo(() => {
       const sources = available()
       const active = alias(store.active)
-      const name = sources[active] ? active : "opencode"
+      const name = sources[active] ? active : DEFAULT_THEME_NAME
       try {
         return loadTheme(sources[name], name, store.mode, newDesigns())
       } catch (error) {
-        if (name === "opencode") throw error
+        if (name === DEFAULT_THEME_NAME) throw error
         themeErrors.emit(name, error)
-        setStore("active", "opencode")
-        return loadTheme(sources.opencode, "opencode", store.mode, newDesigns())
+        setStore("active", DEFAULT_THEME_NAME)
+        return loadTheme(sources[DEFAULT_THEME_NAME], DEFAULT_THEME_NAME, store.mode, newDesigns())
       }
     })
     const modes = () => selected().modes

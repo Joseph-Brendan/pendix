@@ -190,14 +190,28 @@ const DiffDefinition = Schema.Struct({
 })
 export type DiffDefinition = Schema.Schema.Type<typeof DiffDefinition>
 
+const BorderDefinition = Schema.Struct({
+  base: Schema.optional(ColorValue),
+  focused: Schema.optional(ColorValue),
+})
+
+const PendixTokensDefinition = Schema.Struct({
+  logoDot: Schema.optional(ColorValue),
+  scoreBadge: Schema.optional(ColorValue),
+  teachModeTag: Schema.optional(ColorValue),
+  mainActionHint: Schema.optional(ColorValue),
+})
+export type PendixTokensDefinition = Schema.Schema.Type<typeof PendixTokensDefinition>
+
 const ThemeTokensDefinition = Schema.Struct({
   text: Schema.optional(TextDefinition),
   background: Schema.optional(BackgroundDefinition),
-  border: Schema.optional(Schema.Struct({ base: Schema.optional(ColorValue) })),
+  border: Schema.optional(BorderDefinition),
   scrollbar: Schema.optional(Schema.Struct({ base: Schema.optional(ColorValue) })),
   diff: Schema.optional(DiffDefinition),
   syntax: Schema.optional(SyntaxDefinition),
   markdown: Schema.optional(MarkdownDefinition),
+  pendix: Schema.optional(PendixTokensDefinition),
 })
 export type ThemeTokensDefinition = Schema.Schema.Type<typeof ThemeTokensDefinition>
 
@@ -251,7 +265,7 @@ const CompleteThemeTokensDefinition = Schema.Struct({
       info: CompleteBackgroundFeedbackDefinition,
     }),
   }),
-  border: Schema.Struct({ base: ColorValue }),
+  border: Schema.Struct({ base: ColorValue, focused: Schema.optional(ColorValue) }),
   scrollbar: Schema.Struct({ base: ColorValue }),
   diff: Schema.Struct({
     text: Schema.Struct({ added: ColorValue, removed: ColorValue, context: ColorValue, hunkHeader: ColorValue }),
@@ -264,6 +278,7 @@ const CompleteThemeTokensDefinition = Schema.Struct({
   }),
   syntax: Schema.Record(SyntaxToken, HueColorValue),
   markdown: Schema.Record(MarkdownToken, HueColorValue),
+  pendix: Schema.optional(PendixTokensDefinition),
 })
 
 const ThemeDefinitionFields = Schema.Struct({

@@ -12,6 +12,8 @@ export function expandTheme<Definition extends ModeDefinition>(definition: Defin
   return {
     ...definition,
     ...expandTokens(definition),
+    border: expandBorder(definition.border),
+    pendix: expandPendix(definition.pendix),
     ...(definition["@dialog"] ? { "@dialog": expandDialog(definition["@dialog"]) } : {}),
   }
 }
@@ -106,6 +108,23 @@ function expandActions<Definition extends Partial<Record<string, StatefulColorDe
       ]
     }),
   ) as Definition
+}
+
+function expandBorder(definition: ThemeTokensDefinition["border"]) {
+  if (!definition?.base) return definition
+  return {
+    ...definition,
+    focused: definition.focused ?? "$border.base",
+  }
+}
+
+function expandPendix(definition: ThemeTokensDefinition["pendix"]) {
+  return {
+    logoDot: definition?.logoDot ?? "$hue.accent.400",
+    scoreBadge: definition?.scoreBadge ?? "$hue.accent.400",
+    teachModeTag: definition?.teachModeTag ?? "$hue.accent.400",
+    mainActionHint: definition?.mainActionHint ?? "$hue.accent.400",
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
