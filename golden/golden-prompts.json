@@ -1,0 +1,642 @@
+[
+    {
+        "id": "g01",
+        "prompt": "make the login work",
+        "context_note": "Next.js app. A login form exists on the page but nothing is connected to it. No backend yet.",
+        "scores": {
+            "goal": 0,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 0,
+        "reason": "No outcome, no stack or file, no limits, no way to check, one vague ask.",
+        "worked_example": true,
+        "mentor_test": false
+    },
+    {
+        "id": "g02",
+        "prompt": "fix it",
+        "context_note": "The agent's last change broke the build. The learner did not paste the error.",
+        "scores": {
+            "goal": 0,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 0,
+        "reason": "'It' points at nothing the agent can see. No error, no file, no expected result.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g03",
+        "prompt": "build me an app like chowdeck",
+        "context_note": "Empty folder. Learner wants a food ordering app.",
+        "scores": {
+            "goal": 1,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 1,
+        "reason": "Names a reference product, so there is a rough outcome, but nothing else.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g04",
+        "prompt": "why is my page not showing anything",
+        "context_note": "React and Vite project. The home page renders a blank white screen.",
+        "scores": {
+            "goal": 1,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 1,
+        "reason": "Asks for a diagnosis but gives no file, error or console output.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g05",
+        "prompt": "add dark mode",
+        "context_note": "Notebound frontend, React with Tailwind. No theme system yet.",
+        "scores": {
+            "goal": 1,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 1,
+        "reason": "Outcome is clear in spirit but vague: which pages, toggle or system setting, where to store it.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g06",
+        "prompt": "the button is not working when i click it nothing happens pls check",
+        "context_note": "Signup page with a submit button that does nothing on click.",
+        "scores": {
+            "goal": 1,
+            "context": 1,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 2,
+        "reason": "Describes the symptom, which is some context, but not which button, which file, or any console error.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g07",
+        "prompt": "make it look better, more modern and premium, like apple website",
+        "context_note": "Landing page for a skincare brand, plain HTML and CSS.",
+        "scores": {
+            "goal": 1,
+            "context": 0,
+            "constraints": 1,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 2,
+        "reason": "A style reference is a loose constraint. 'Better' is not a checkable outcome and no file is named.",
+        "worked_example": true,
+        "mentor_test": false
+    },
+    {
+        "id": "g08",
+        "prompt": "connect paystack",
+        "context_note": "Next.js online shop with a cart page. No payment code yet.",
+        "scores": {
+            "goal": 1,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 1,
+        "reason": "Names the provider only. No flow, no keys location, no success condition.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g09",
+        "prompt": "i got this error TypeError: Cannot read properties of undefined (reading 'map') fix am",
+        "context_note": "React page that lists products from an API call.",
+        "scores": {
+            "goal": 1,
+            "context": 1,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 2,
+        "reason": "Pasting the error is useful context, but there is no file, component or data shape.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g10",
+        "prompt": "write the whole backend for my savings app, users, wallets, transactions, interest, admin, everything, use best practices",
+        "context_note": "Empty Node.js project for a Kuda style savings app.",
+        "scores": {
+            "goal": 1,
+            "context": 1,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 2,
+        "reason": "Lists the parts, which gives some context, but it is one giant ask with no limits or checks. 'Best practices' is not a real constraint.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g11",
+        "prompt": "Add a 'Forgot password?' link under the password field on the login page that goes to /forgot-password. Use the same text style as the 'Sign up' link.",
+        "context_note": "Next.js app with a working login page at app/login/page.tsx.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 1,
+            "verification": 0,
+            "steps": 2
+        },
+        "total": 6,
+        "reason": "Clear small outcome and scoped to one step. Names the page but not the file. Style limit given. No check.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g12",
+        "prompt": "Create a users table in Postgres with id, email, password_hash and created_at. Email must be unique.",
+        "context_note": "Node.js API using Postgres. No tables yet.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 1,
+            "verification": 0,
+            "steps": 2
+        },
+        "total": 6,
+        "reason": "Specific outcome in one step. Mentions Postgres but not the ORM or migration tool. One constraint. No verification.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g13",
+        "prompt": "My signup form submits even when the email box is empty. Use Zod to validate the form on the server in src/routes/auth.ts so empty or badly formatted emails return a 400 with a clear message.",
+        "context_note": "Express API with a signup route that has no validation.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 1,
+            "verification": 1,
+            "steps": 2
+        },
+        "total": 8,
+        "reason": "Clear outcome, names the file and the library, states the expected status code. The check is implied, not a concrete test.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g14",
+        "prompt": "Explain what sortProducts in src/utils.js does, line by line, then make it faster. Right now it takes about 3 seconds for 5,000 products.",
+        "context_note": "JavaScript project with a slow nested-loop sort in src/utils.js.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 0,
+            "verification": 1,
+            "steps": 1
+        },
+        "total": 6,
+        "reason": "Names the function and file, and gives a timing that works as a rough check. No limits on behaviour changes. Two asks, loosely ordered.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g15",
+        "prompt": "Change the primary button colour to our brand purple #5A36E0 everywhere. Hover should be slightly darker. Do not touch the secondary buttons.",
+        "context_note": "Tailwind project with a Button component in components/ui/button.tsx.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 2,
+            "verification": 0,
+            "steps": 2
+        },
+        "total": 7,
+        "reason": "Precise outcome with a hex value and a clear do-not-touch limit. File not named. No way to confirm.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g16",
+        "prompt": "I want users to get an email to verify their account after they sign up. I'm using nodemailer.",
+        "context_note": "Express API with signup working. Nodemailer is installed but not configured.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 3,
+        "reason": "Outcome is clear and the library is named. No token rules, expiry, templates or check, and it is one big step.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g17",
+        "prompt": "Make the dashboard responsive. On phones the sidebar should collapse into a bottom bar with 4 icons: Home, Notes, Search, Profile.",
+        "context_note": "Notebound dashboard built with React and Tailwind. Desktop layout only.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 1,
+            "verification": 0,
+            "steps": 1
+        },
+        "total": 5,
+        "reason": "Specific mobile behaviour described. Some layout limits. No breakpoints, files or check. Partly scoped.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g18",
+        "prompt": "The total on my cart page is wrong when I add the same item twice. It shows 2 rows instead of increasing the quantity. Cart logic is in src/store/cart.ts. Fix it so the same item increases quantity.",
+        "context_note": "React shop with a Zustand cart store.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 0,
+            "verification": 1,
+            "steps": 2
+        },
+        "total": 7,
+        "reason": "Clear bug, file named, expected behaviour stated, so the check is implied. No limits on what else may change.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g19",
+        "prompt": "help me set up my database",
+        "context_note": "Next.js project. Learner has not chosen a database.",
+        "scores": {
+            "goal": 1,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 1,
+        "reason": "Wants a database but gives no data model, choice of database or outcome.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g20",
+        "prompt": "Before writing any code, give me a plan for adding Paystack payments to my checkout page. List the files you will change and the order. Wait for my approval.",
+        "context_note": "Next.js shop. Checkout page exists at app/checkout/page.tsx. No payment code yet.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 1,
+            "verification": 0,
+            "steps": 2
+        },
+        "total": 6,
+        "reason": "Asks for a plan first and approval, which is good step control. Some context. 'Wait for approval' is a process limit. No success test defined.",
+        "worked_example": true,
+        "mentor_test": false
+    },
+    {
+        "id": "g21",
+        "prompt": "Add a search bar to the notes page that filters notes by title as I type. Keep it client-side, there are never more than 200 notes. Put the logic in a useNoteSearch hook. When I type 'mat' only notes with 'mat' in the title should show, case insensitive.",
+        "context_note": "Notebound notes page at src/pages/Notes.tsx, React.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 2
+        },
+        "total": 9,
+        "reason": "Clear outcome, real limits (client side, hook), and a concrete observable check. File not named.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g22",
+        "prompt": "Why is my .env not working? I put DATABASE_URL=\"postgres://...\" and it says undefined",
+        "context_note": "Node.js project. The learner never loads dotenv.",
+        "scores": {
+            "goal": 1,
+            "context": 1,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 2,
+        "reason": "Real symptom and a value pasted, but no file, runtime or how the variable is read.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g23",
+        "prompt": "Create AGENTS.md for this project. It should tell the agent: we use Next.js 15 App Router, TypeScript strict, Tailwind, Drizzle with Postgres, pnpm. Never use any. Always run pnpm test before saying you are done.",
+        "context_note": "Existing Next.js project with no rules file.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 1,
+            "steps": 2
+        },
+        "total": 9,
+        "reason": "Clear deliverable, full stack context, firm rules, single step. The test rule is for future work, not a check of this file.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g24",
+        "prompt": "do the payment",
+        "context_note": "Shop app. The learner previously discussed Flutterwave with the agent in another chat.",
+        "scores": {
+            "goal": 0,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 0,
+        "reason": "Relies on context from a different chat. Nothing usable here.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g25",
+        "prompt": "Write a function that calculates the delivery fee: 500 naira base, plus 100 naira per km after the first 2 km, capped at 3000 naira. Add unit tests for 1 km, 5 km and 40 km.",
+        "context_note": "TypeScript project with Vitest set up.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 2
+        },
+        "total": 9,
+        "reason": "Precise rules, a cap, and concrete test cases. The only gap is where the function should live.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g26",
+        "prompt": "The images on my landing page load slowly on my phone. Can you make them faster without changing how they look? Each image should end up under 200 KB.",
+        "context_note": "Static landing page with large PNG photos in /public/images.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 1,
+            "verification": 1,
+            "steps": 0
+        },
+        "total": 5,
+        "reason": "Real problem, a 'don't change the look' limit and a size target that can be checked. No folder named and no order of work.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g27",
+        "prompt": "add stripe paystack and flutterwave and let the user choose, also add wallet and transfers between users",
+        "context_note": "Next.js app with no payments yet.",
+        "scores": {
+            "goal": 1,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 1,
+        "reason": "Several large features in one breath with no context, limits or checks.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g28",
+        "prompt": "Rename the 'notes' table to 'documents' everywhere, including the API routes and the frontend types. Write a migration that keeps the existing data. Run the tests after.",
+        "context_note": "Full-stack TypeScript app with Drizzle. About 30 references to notes.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 2,
+            "verification": 1,
+            "steps": 1
+        },
+        "total": 7,
+        "reason": "Clear outcome and a data-safety constraint. 'Run the tests' is a loose check. A big change asked for in one go.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g29",
+        "prompt": "Look at the error in the terminal and explain it to me like I'm new to coding. Don't fix anything yet.",
+        "context_note": "Agent just ran npm run dev and it failed with a port already in use error.",
+        "scores": {
+            "goal": 2,
+            "context": 1,
+            "constraints": 2,
+            "verification": 0,
+            "steps": 2
+        },
+        "total": 7,
+        "reason": "Clear learning goal, the 'don't fix' limit is useful, and it is one step. Context relies on the visible terminal.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g30",
+        "prompt": "I'm building a chatbot that answers questions from my PDF course notes in /docs. Use RAG with Postgres and pgvector. It must answer only from the notes and say 'I don't know' when the answer isn't there.",
+        "context_note": "Empty Next.js project. Learner has 12 PDF files.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 6,
+        "reason": "Clear outcome, data location and stack, plus a strong behaviour rule. No check and the whole pipeline is one ask.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g31",
+        "prompt": "I'm building ShopBook, a WhatsApp seller's answer desk. Right now the product list page loads all products at once and it's slow with 2,000 products.\n\nAdd pagination to GET /api/products in src/app/api/products/route.ts: 20 items per page, page number as a query param, return total count. Update the products page to show Next and Previous buttons. Don't change the product card component.\n\nTo check: with the seed data, page 1 shows 20 products, page 100 shows 0, and the total count says 2000.",
+        "context_note": "Next.js with Drizzle and Postgres, seed script creates 2,000 products.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 1
+        },
+        "total": 9,
+        "reason": "Strong on every criterion. Backend and frontend changes are asked together rather than in order, so steps is 1.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g32",
+        "prompt": "ok so I've been trying for 2 days now. My friend said I should use supabase but I started with firebase then I moved to mongodb because a youtube video said its easier. Now I have users in mongo but my login is still with firebase auth and my products are in a json file.\n\nI don't really know what is happening anymore. Some pages work and some don't. The checkout page was working yesterday before I changed something in the navbar, I think.\n\nI also want to add Paystack and maybe a dashboard for the admin to see orders. And the design needs to look more professional because I want to show investors next month.\n\nMy deadline is in 3 weeks. Please help me.",
+        "context_note": "Messy Next.js project with Firebase Auth, MongoDB and a JSON file for products.",
+        "scores": {
+            "goal": 1,
+            "context": 2,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 3,
+        "reason": "Lots of honest background, which counts as context, but no single outcome, no limits, no check and no order. Long is not the same as clear.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g33",
+        "prompt": "Set up email verification for signup.\n\nWhen a user signs up, create a random token with crypto.randomBytes(32), store only its SHA-256 hash in the email_verification_tokens table with user_id and expires_at (24 hours), and send the raw token in a link to /verify-email?token=... using the existing sendMail helper in src/lib/mailer.ts (Nodemailer, already configured).\n\nGET /verify-email hashes the token, finds an unexpired row, sets users.email_verified_at, deletes the token and redirects to /login?verified=1. Expired or unknown tokens show a page with a 'Resend email' button.\n\nDo not change the signup response shape. Write tests for: valid token, expired token, reused token. Do the database migration first, then the routes, then the tests, and show me the test output.",
+        "context_note": "Express API with Postgres, signup works, users table exists, mailer helper configured.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 2
+        },
+        "total": 10,
+        "reason": "Complete: precise outcome, real files and tables, security rules, test cases, and an explicit order.",
+        "worked_example": true,
+        "mentor_test": false
+    },
+    {
+        "id": "g34",
+        "prompt": "Use the skill file in .agents/skills/forms.md and build the contact form on the about page following it exactly.",
+        "context_note": "Project has a forms skill file describing labels, errors and disabled submit states.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 0,
+            "steps": 2
+        },
+        "total": 8,
+        "reason": "Points at the rules file and the page, scoped to one task. No check of the result.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g35",
+        "prompt": "Our Ship and Found students keep pasting their API keys into prompts. Add a pre-commit check to this repo that fails if any staged file contains something that looks like an OpenAI, Paystack or Flutterwave secret key.\n\nUse a small Node script in scripts/check-secrets.mjs, wired with husky. Patterns: sk- followed by 20+ characters, sk_live_ and sk_test_ for Paystack, FLWSECK for Flutterwave. Ignore .env.example.\n\nTest it by staging a file with a fake sk_test_ key and confirm the commit is blocked with a clear message, then confirm a normal commit still works.",
+        "context_note": "Node.js teaching repo, husky not installed yet.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 1
+        },
+        "total": 9,
+        "reason": "Precise goal, tools, patterns and exclusions, with a two-part check. Install, script and wiring are not ordered.",
+        "worked_example": true,
+        "mentor_test": false
+    },
+    {
+        "id": "g36",
+        "prompt": "Refactor the auth code.",
+        "context_note": "Express API with auth logic spread across routes, middleware and a 600-line utils file.",
+        "scores": {
+            "goal": 0,
+            "context": 0,
+            "constraints": 0,
+            "verification": 0,
+            "steps": 0
+        },
+        "total": 0,
+        "reason": "No target shape, no reason, no limits, no check.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g37",
+        "prompt": "I want to redesign the onboarding screens of my budgeting app to look more trustworthy. The audience is young Nigerians earning their first salary.\n\nUse our type scale (Inter, 14, 16, 20, 28, 40), 8px spacing grid, and colours: ink #0A0A0A, off-white #F6F5F2, accent #FF5A1F used only on the main button. Each screen gets one idea: track spending, set a goal, see your progress.\n\nKeep the existing React components in src/components/onboarding and only change styles and copy. All text must pass WCAG AA contrast. Show me screenshots of the 3 screens at 375px width when you're done.",
+        "context_note": "React Native Web prototype with 3 unstyled onboarding screens.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 1
+        },
+        "total": 9,
+        "reason": "Clear outcome and audience, design tokens, scope limits, accessibility rule and a visual check. All three screens in one go.",
+        "worked_example": false,
+        "mentor_test": true
+    },
+    {
+        "id": "g38",
+        "prompt": "We're adding Flutterwave payments to the Pendix-style course store. I want this done in small safe steps.\n\nStep 1 only for now: create POST /api/payments/checkout in src/app/api/payments/checkout/route.ts. It takes { courseId }, looks up the price from the courses table (never trust a price from the client), creates a pending row in payments with a unique tx_ref, and calls Flutterwave's standard checkout to get a payment link. Return { link }.\n\nUse the FLW_SECRET_KEY from env, never log it. Use integer kobo for money. If the course doesn't exist return 404.\n\nWrite tests with a mocked Flutterwave client: valid course returns a link and creates a pending payment; unknown course returns 404; the price used is the database price even if the client sends a price.\n\nDon't build the webhook yet. That's step 2. Show me the test output and the diff.\n\nIf anything in the Flutterwave docs differs from what I described, tell me before changing the plan.",
+        "context_note": "Next.js 15 store with Drizzle, Postgres and a courses table. Flutterwave test keys in .env.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 2
+        },
+        "total": 10,
+        "reason": "Model prompt: one scoped step, precise context and money rules, concrete tests, and a request to flag doc differences.",
+        "worked_example": true,
+        "mentor_test": false
+    },
+    {
+        "id": "g39",
+        "prompt": "Write Vitest tests for src/store/cart.ts: adding an item, adding the same item twice, removing an item, and the cart total.",
+        "context_note": "React shop with a Zustand cart store and Vitest installed.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 0,
+            "verification": 1,
+            "steps": 2
+        },
+        "total": 7,
+        "reason": "Clear target, file and cases, scoped to one task. Running the tests is the implied check. No limits.",
+        "worked_example": false,
+        "mentor_test": false
+    },
+    {
+        "id": "g40",
+        "prompt": "I'm learning, so turn on teach mode style for this: I want to understand how sessions work for login.\n\nAdd database sessions to my Express app. On login, create a sessions row with a random id, user_id and expires_at in 7 days, and set it in an httpOnly, secure, sameSite=lax cookie called sid. Add a requireAuth middleware that loads the session and rejects expired ones with 401. Logout deletes the row and clears the cookie.\n\nExplain each part to me in simple words before you write it, and ask me one question after the middleware so I can check I understood.\n\nThen write tests: login sets the cookie, a protected route works with it, an expired session gets 401, logout clears it.",
+        "context_note": "Express API with argon2 password checks already working, no sessions.",
+        "scores": {
+            "goal": 2,
+            "context": 2,
+            "constraints": 2,
+            "verification": 2,
+            "steps": 1
+        },
+        "total": 9,
+        "reason": "Strong and learning-focused. The explanation and question come before tests, but implementation pieces are not separated.",
+        "worked_example": false,
+        "mentor_test": false
+    }
+]
