@@ -1,6 +1,7 @@
 import crypto from "node:crypto"
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { deviceAuthorization } from "better-auth/plugins"
 import { eq } from "drizzle-orm"
 import type { CloudDatabase } from "./db/index.js"
 import { schema } from "./db/schema.js"
@@ -8,6 +9,10 @@ import { buildVerificationEmail, type Mailer } from "./mailer.js"
 
 export const GUARDIAN_APPROVAL_TTL_MS = 7 * 24 * 60 * 60 * 1000
 export const GUARDIAN_LOGIN_TTL_MS = 60 * 60 * 1000
+export const DEVICE_CODE_TTL_MS = 10 * 60 * 1000
+export const DEVICE_POLL_INTERVAL_SECONDS = 5
+export const DEVICE_TOKEN_TTL_MS = 90 * 24 * 60 * 60 * 1000
+export const DEVICE_REFRESH_TTL_MS = 180 * 24 * 60 * 60 * 1000
 
 export interface CreateAuthOptions {
   readonly db: CloudDatabase
@@ -33,8 +38,30 @@ export function createAuth(options: CreateAuthOptions) {
         session: schema.authSessions,
         account: schema.authAccounts,
         verification: schema.authVerifications,
+        deviceCode: schema.deviceCodes,
       },
     }),
+    plugins: [
+      deviceAuthorization({
+        expiresIn: "10m",
+        interval: "5s",
+        userCodeLength: 8,
+        verificationUri: `${options.baseUrl.replace(/\/$/, "")}/device/verify`,
+        schema: {
+          deviceCode: {
+            fields: {
+              deviceCode: "device_code",
+              userCode: "user_code",
+              userId: "user_id",
+              expiresAt: "expires_at",
+              lastPolledAt: "last_polled_at",
+              pollingInterval: "polling_interval",
+              clientId: "client_id",
+            },
+          },
+        },
+      }),
+    ],
     advanced: {
       database: {
         generateId: "uuid",
@@ -168,6 +195,10 @@ type SignedPayload = GuardianApprovalTokenPayload | GuardianLoginTokenPayload
 
 export function hashToken(token: string): string {
   return crypto.createHash("sha256").update(token).digest("hex")
+}
+
+export function generateOpaqueToken(prefix: string): string {
+  return `${prefix}_${crypto.randomBytes(32).toString("base64url")}`
 }
 
 export function signToken(payload: SignedPayload, secret: string): string {

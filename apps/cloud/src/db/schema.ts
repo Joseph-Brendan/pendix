@@ -97,8 +97,26 @@ export const devices = pgTable("devices", {
     .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull().default(""),
   token_hash: text("token_hash").notNull().unique(),
+  refresh_token_hash: text("refresh_token_hash").unique(),
+  expires_at: timestamp("expires_at", { withTimezone: true }),
+  refresh_expires_at: timestamp("refresh_expires_at", { withTimezone: true }),
   last_used_at: timestamp("last_used_at", { withTimezone: true }),
   revoked_at: timestamp("revoked_at", { withTimezone: true }),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+})
+
+export const deviceCodes = pgTable("device_codes", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  device_code: text("device_code").notNull().unique(),
+  user_code: text("user_code").notNull().unique(),
+  user_id: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  expires_at: timestamp("expires_at", { withTimezone: true }).notNull(),
+  status: text("status").notNull().default("pending"),
+  last_polled_at: timestamp("last_polled_at", { withTimezone: true }),
+  polling_interval: integer("polling_interval"),
+  client_id: text("client_id"),
+  scope: text("scope"),
+  device_name: text("device_name").notNull().default(""),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
@@ -519,6 +537,7 @@ export const schema = {
   consents,
   guardians,
   devices,
+  deviceCodes,
   sessions,
   sessionRecords,
   grades,

@@ -1,6 +1,6 @@
-import { and, eq, gt } from "drizzle-orm"
+import { and, eq, gt, isNull, or } from "drizzle-orm"
 import type { Context, MiddlewareHandler } from "hono"
-import type { CloudAuth } from "../auth.js"
+import { hashToken, type CloudAuth } from "../auth.js"
 import type { CloudDatabase } from "../db/index.js"
 import { schema } from "../db/schema.js"
 import { AppError } from "../errors.js"
@@ -28,11 +28,32 @@ export async function resolveSessionUser(
     if (authHeader?.startsWith("Bearer ")) {
       const token = authHeader.slice("Bearer ".length).trim()
       if (token) {
-        const [row] = await deps.db
+        const nowDate = new Date(deps.now())
+        const [sessionRow] = await deps.db
           .select()
           .from(schema.authSessions)
-          .where(and(eq(schema.authSessions.token, token), gt(schema.authSessions.expires_at, new Date(deps.now()))))
-        if (row) userId = row.user_id
+          .where(and(eq(schema.authSessions.token, token), gt(schema.authSessions.expires_at, nowDate)))
+        if (sessionRow) {
+          userId = sessionRow.user_id
+        } else {
+          const [deviceRow] = await deps.db
+            .select()
+            .from(schema.devices)
+            .where(
+              and(
+                eq(schema.devices.token_hash, hashToken(token)),
+                isNull(schema.devices.revoked_at),
+                or(isNull(schema.devices.expires_at), gt(schema.devices.expires_at, nowDate)),
+              ),
+            )
+          if (deviceRow) {
+            userId = deviceRow.user_id
+            await deps.db
+              .update(schema.devices)
+              .set({ last_used_at: nowDate })
+              .where(eq(schema.devices.id, deviceRow.id))
+          }
+        }
       }
     }
   }

@@ -10,6 +10,7 @@ import type { AuthVariables } from "./middleware/auth.js"
 import { rateLimitMiddleware, type RateLimitOptions } from "./middleware/rate-limit.js"
 import { requestIdMiddleware } from "./middleware/request-id.js"
 import { createAuthRoutes } from "./routes/auth.js"
+import { createDeviceRoutes } from "./routes/device.js"
 import { createGuardianRoutes } from "./routes/guardian.js"
 import { createMeRoutes } from "./routes/me.js"
 import { captureException } from "./sentry.js"
@@ -65,6 +66,7 @@ export function createApp(options: CreateAppOptions = {}) {
     })
 
     app.route("/", createAuthRoutes({ auth, db: options.db, mailer, authSecret, webUrl, now }))
+    app.route("/", createDeviceRoutes({ auth, db: options.db, apiUrl, now }))
     app.route("/", createGuardianRoutes({ auth, db: options.db, mailer, authSecret, webUrl, now }))
     app.route("/", createMeRoutes({ auth, db: options.db, now }))
   }
