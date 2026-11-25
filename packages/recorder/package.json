@@ -9,7 +9,12 @@
     ".": "./src/index.ts",
     "./types": "./src/types.ts",
     "./sanitize": "./src/sanitize.ts",
-    "./redact": "./src/redact.ts"
+    "./redact": "./src/redact.ts",
+    "./preferences": "./src/preferences.ts",
+    "./uploader": "./src/uploader.ts"
+  },
+  "dependencies": {
+    "@pendix/shared": "workspace:*"
   },
   "scripts": {
     "test": "vitest run",

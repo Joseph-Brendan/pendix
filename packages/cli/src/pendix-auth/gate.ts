@@ -1,3 +1,5 @@
+import { createRecorderStateStore, drainUploadQueue } from "@pendix/recorder"
+import { resolvePendixApiUrl } from "@pendix/shared/urls"
 import type { TuiAccountSnapshot, TuiAccountSource } from "@pendix/tui"
 import { Global } from "@pendix/util/global"
 import { Effect } from "effect"
@@ -28,6 +30,17 @@ export const requirePendixSignedIn = Effect.fn("pendix.auth.gate")(function* () 
   if (!result.ok) {
     process.exitCode = 1
     return undefined
+  }
+
+  // Drain any queued session uploads from previous runs and clean up 30-day-old local files.
+  if (!result.offline) {
+    const stateStore = createRecorderStateStore(global.data)
+    void drainUploadQueue({
+      dataDir: global.data,
+      stateStore,
+      apiUrl: resolvePendixApiUrl(),
+      authToken: result.token.device_token,
+    }).catch(() => undefined)
   }
 
   let current = toTuiSnapshot(result.account, result.offline)

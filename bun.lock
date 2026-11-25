@@ -31,6 +31,7 @@
       "name": "@pendix/cloud",
       "version": "0.1.0",
       "dependencies": {
+        "@pendix/recorder": "workspace:*",
         "@pendix/shared": "workspace:*",
         "@sentry/node": "^9.47.1",
         "better-auth": "^1.3.27",
@@ -666,6 +667,9 @@
     "packages/recorder": {
       "name": "@pendix/recorder",
       "version": "0.1.0",
+      "dependencies": {
+        "@pendix/shared": "workspace:*",
+      },
       "devDependencies": {
         "@tsconfig/bun": "catalog:",
         "@types/bun": "catalog:",

@@ -14,6 +14,17 @@ export const DEVICE_POLL_INTERVAL_SECONDS = 5
 export const DEVICE_TOKEN_TTL_MS = 90 * 24 * 60 * 60 * 1000
 export const DEVICE_REFRESH_TTL_MS = 180 * 24 * 60 * 60 * 1000
 
+const USER_CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789" // No 0, 1, I, L, O
+
+function generateNoLookAlikeUserCode(): string {
+  const bytes = crypto.randomBytes(8)
+  let code = ""
+  for (let i = 0; i < bytes.length; i += 1) {
+    code += USER_CODE_ALPHABET[bytes[i]! % USER_CODE_ALPHABET.length]
+  }
+  return code
+}
+
 export interface CreateAuthOptions {
   readonly db: CloudDatabase
   readonly mailer: Mailer
@@ -46,6 +57,7 @@ export function createAuth(options: CreateAuthOptions) {
         expiresIn: "10m",
         interval: "5s",
         userCodeLength: 8,
+        generateUserCode: generateNoLookAlikeUserCode,
         verificationUri: `${options.baseUrl.replace(/\/$/, "")}/device/verify`,
         schema: {
           deviceCode: {

@@ -270,6 +270,12 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
         json: Flag.Boolean("json").pipe(Flag.withDescription("Output account details as JSON"), Flag.withDefault(false)),
       },
     }),
+    Spec.make("sessions", {
+      description: "List recent Pendix sessions with status and score",
+      params: {
+        json: Flag.Boolean("json").pipe(Flag.withDescription("Output sessions as JSON"), Flag.withDefault(false)),
+      },
+    }),
     Spec.make("mcp", {
       description: "Manage MCP (Model Context Protocol) servers",
       commands: [

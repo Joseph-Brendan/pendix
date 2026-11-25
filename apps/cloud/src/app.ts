@@ -13,6 +13,7 @@ import { createAuthRoutes } from "./routes/auth.js"
 import { createDeviceRoutes } from "./routes/device.js"
 import { createGuardianRoutes } from "./routes/guardian.js"
 import { createMeRoutes } from "./routes/me.js"
+import { createSessionsRoutes } from "./routes/sessions.js"
 import { captureException } from "./sentry.js"
 
 export interface CreateAppOptions {
@@ -66,9 +67,10 @@ export function createApp(options: CreateAppOptions = {}) {
     })
 
     app.route("/", createAuthRoutes({ auth, db: options.db, mailer, authSecret, webUrl, now }))
-    app.route("/", createDeviceRoutes({ auth, db: options.db, apiUrl, now }))
+    app.route("/", createDeviceRoutes({ auth, db: options.db, mailer, authSecret, apiUrl, webUrl, now }))
     app.route("/", createGuardianRoutes({ auth, db: options.db, mailer, authSecret, webUrl, now }))
     app.route("/", createMeRoutes({ auth, db: options.db, now }))
+    app.route("/", createSessionsRoutes({ auth, db: options.db, now }))
   }
 
   app.notFound((c) =>

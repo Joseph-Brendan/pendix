@@ -65,6 +65,7 @@ const Handlers = Runtime.handlers(Commands, {
   login: () => import("./commands/handlers/login"),
   logout: () => import("./commands/handlers/logout"),
   whoami: () => import("./commands/handlers/whoami"),
+  sessions: () => import("./commands/handlers/sessions"),
   debug: {
     agents: () => import("./commands/handlers/debug/agents"),
     config: () => import("./commands/handlers/debug/config"),

@@ -5,7 +5,7 @@ import { z } from "zod"
 import type { CloudAuth } from "../auth.js"
 import type { CloudDatabase } from "../db/index.js"
 import { schema } from "../db/schema.js"
-import { requireActiveAccount, requireAuth, type AuthVariables } from "../middleware/auth.js"
+import { requireAuth, type AuthVariables } from "../middleware/auth.js"
 
 const DeleteMeSchema = z.object({
   confirm: z.literal(true),
@@ -54,13 +54,6 @@ export function createMeRoutes(deps: MeRoutesDeps) {
     await deps.db.delete(schema.users).where(eq(schema.users.id, user.id))
 
     return c.json({ ok: true, deleted: true })
-  })
-
-  // Active-account protected route used by learner clients.
-  router.get("/sessions", authMiddleware, requireActiveAccount(), async (c) => {
-    const user = c.get("user")!
-    const rows = await deps.db.select().from(schema.sessions).where(eq(schema.sessions.user_id, user.id))
-    return c.json({ sessions: rows })
   })
 
   return router

@@ -1,3 +1,4 @@
+import { accountKindFor } from "@pendix/shared/age"
 import { BRAND_CSS_VARIABLES } from "@pendix/shared/brand"
 import { and, desc, eq, isNull } from "drizzle-orm"
 import { Hono, type Context } from "hono"
@@ -7,13 +8,17 @@ import {
   DEVICE_POLL_INTERVAL_SECONDS,
   DEVICE_REFRESH_TTL_MS,
   DEVICE_TOKEN_TTL_MS,
+  GUARDIAN_APPROVAL_TTL_MS,
   generateOpaqueToken,
   hashToken,
+  signToken,
   type CloudAuth,
+  type GuardianApprovalTokenPayload,
 } from "../auth.js"
 import type { CloudDatabase } from "../db/index.js"
 import { schema } from "../db/schema.js"
 import { AppError } from "../errors.js"
+import { buildGuardianApprovalEmail, type Mailer } from "../mailer.js"
 import {
   requireActiveAccount,
   requireAuth,
@@ -46,7 +51,10 @@ const UuidSchema = z.string().uuid()
 export interface DeviceRoutesDeps {
   readonly auth: CloudAuth
   readonly db: CloudDatabase
+  readonly mailer: Mailer
+  readonly authSecret: string
   readonly apiUrl: string
+  readonly webUrl: string
   readonly now: () => number
 }
 
@@ -244,7 +252,9 @@ export function createDeviceRoutes(deps: DeviceRoutesDeps) {
   router.get("/device/verify", async (c) => {
     const rawCode = c.req.query("code") ?? c.req.query("user_code") ?? ""
     const code = rawCode ? normalizeUserCode(rawCode) : ""
+    const mode = c.req.query("mode") === "signup" ? "signup" : "signin"
     const errorMsg = c.req.query("error") ?? ""
+    const noticeMsg = c.req.query("notice") ?? ""
     const user = await resolveSessionUser(c, deps)
 
     let deviceLabel = ""
@@ -256,6 +266,43 @@ export function createDeviceRoutes(deps: DeviceRoutesDeps) {
     if (!user) {
       const codeBlock = code ? `<div class="code">${escapeHtml(code)}</div>` : ""
       const errBlock = errorMsg ? `<div class="notice">${escapeHtml(errorMsg)}</div><p></p>` : ""
+      const noticeBlock = noticeMsg ? `<div class="notice">${escapeHtml(noticeMsg)}</div><p></p>` : ""
+      const codeParam = code ? `code=${encodeURIComponent(code)}` : ""
+      const signupLink = codeParam ? `/device/verify?${codeParam}&mode=signup` : "/device/verify?mode=signup"
+      const signinLink = codeParam ? `/device/verify?${codeParam}` : "/device/verify"
+
+      if (mode === "signup") {
+        return c.html(
+          renderHtmlShell(
+            "Create your Pendix account",
+            `<h1>Create your Pendix account</h1>
+            <p>Check that this code matches what you see in your terminal or editor.</p>
+            ${codeBlock}
+            ${errBlock}
+            ${noticeBlock}
+            <form method="post" action="/device/verify/signup">
+              <input type="hidden" name="code" value="${escapeHtml(code)}" />
+              <label for="display_name">Display name</label>
+              <input id="display_name" name="display_name" type="text" required autocomplete="name" />
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email" />
+              <label for="password">Password (at least 8 characters)</label>
+              <input id="password" name="password" type="password" minlength="8" required autocomplete="new-password" />
+              <label for="dob">Date of birth</label>
+              <input id="dob" name="dob" type="date" required />
+              <label for="guardian_email">Parent or guardian email (ages 15 to 17 only)</label>
+              <input id="guardian_email" name="guardian_email" type="email" autocomplete="off" />
+              <div class="actions">
+                <button class="primary" type="submit">Create account</button>
+              </div>
+            </form>
+            <p style="margin-top: 14px; text-align: center;">
+              Already have an account? <a href="${escapeHtml(signinLink)}" style="color: var(--pendix-ink);">Sign in</a>
+            </p>`,
+          ),
+        )
+      }
+
       return c.html(
         renderHtmlShell(
           "Sign in to Pendix",
@@ -263,6 +310,7 @@ export function createDeviceRoutes(deps: DeviceRoutesDeps) {
           <p>Check that this code matches what you see in your terminal or editor.</p>
           ${codeBlock}
           ${errBlock}
+          ${noticeBlock}
           <form method="post" action="/device/verify/signin">
             <input type="hidden" name="code" value="${escapeHtml(code)}" />
             <label for="email">Email</label>
@@ -272,7 +320,10 @@ export function createDeviceRoutes(deps: DeviceRoutesDeps) {
             <div class="actions">
               <button class="primary" type="submit">Sign in</button>
             </div>
-          </form>`,
+          </form>
+          <p style="margin-top: 14px; text-align: center;">
+            New to Pendix? <a href="${escapeHtml(signupLink)}" style="color: var(--pendix-ink);">Create an account</a>
+          </p>`,
         ),
       )
     }
@@ -340,6 +391,119 @@ export function createDeviceRoutes(deps: DeviceRoutesDeps) {
     if (setCookie) headers.set("set-cookie", setCookie)
     headers.set("location", redirectUrl.pathname + redirectUrl.search)
     return new Response(null, { status: 303, headers })
+  })
+
+  router.post("/device/verify/signup", async (c) => {
+    const body = await readBodyObject(c)
+    const displayName = typeof body.display_name === "string" ? body.display_name.trim() : ""
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
+    const password = typeof body.password === "string" ? body.password : ""
+    const dob = typeof body.dob === "string" ? body.dob.trim() : ""
+    const guardianEmail = typeof body.guardian_email === "string" ? body.guardian_email.trim().toLowerCase() : ""
+    const code = typeof body.code === "string" ? normalizeUserCode(body.code) : ""
+
+    const redirectWith = (params: { mode?: string; error?: string; notice?: string }) => {
+      const target = new URL("/device/verify", deps.apiUrl)
+      if (code) target.searchParams.set("code", code)
+      if (params.mode) target.searchParams.set("mode", params.mode)
+      if (params.error) target.searchParams.set("error", params.error)
+      if (params.notice) target.searchParams.set("notice", params.notice)
+      return c.redirect(target.pathname + target.search, 303)
+    }
+
+    if (!displayName || !email || password.length < 8 || !/^\d{4}-\d{2}-\d{2}$/.test(dob)) {
+      return redirectWith({ mode: "signup", error: "Fill in all required fields. Password must be at least 8 characters." })
+    }
+
+    let kind: "blocked" | "teen" | "adult"
+    try {
+      kind = accountKindFor(dob, new Date(deps.now()))
+    } catch {
+      return redirectWith({ mode: "signup", error: "Enter a valid date of birth." })
+    }
+
+    if (kind === "blocked") {
+      return redirectWith({
+        mode: "signup",
+        error: "Pendix is for learners aged 15 and older. We have not saved your details.",
+      })
+    }
+
+    if (kind === "teen" && (!guardianEmail || guardianEmail === email)) {
+      return redirectWith({
+        mode: "signup",
+        error: "A parent or guardian email different from your own is required for ages 15 to 17.",
+      })
+    }
+
+    const initialStatus = kind === "teen" ? "pending_guardian" : "pending_verification"
+    const callbackUrl = new URL("/device/verify", deps.apiUrl)
+    if (code) callbackUrl.searchParams.set("code", code)
+    callbackUrl.searchParams.set("notice", "Email verified. Sign in below to approve your device.")
+
+    let created: { user: { id: string; email: string } }
+    try {
+      created = (await deps.auth.api.signUpEmail({
+        body: {
+          email,
+          password,
+          name: displayName,
+          dob,
+          account_kind: kind,
+          status: initialStatus,
+          callbackURL: callbackUrl.toString(),
+        },
+      })) as { user: { id: string; email: string } }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not create account."
+      return redirectWith({
+        mode: "signup",
+        error: /already exists|unique/i.test(message) ? "An account with this email already exists." : message,
+      })
+    }
+
+    await deps.db.insert(schema.consents).values([
+      { user_id: created.user.id, kind: "terms", version: "2026-01" },
+      { user_id: created.user.id, kind: "privacy", version: "2026-01" },
+    ])
+
+    if (kind === "teen") {
+      const expiresAt = new Date(deps.now() + GUARDIAN_APPROVAL_TTL_MS)
+      const [guardian] = await deps.db
+        .insert(schema.guardians)
+        .values({
+          email: guardianEmail,
+          teen_user_id: created.user.id,
+          expires_at: expiresAt,
+        })
+        .returning()
+      const payload: GuardianApprovalTokenPayload = {
+        kind: "guardian_approval",
+        guardianId: guardian!.id,
+        teenUserId: created.user.id,
+        exp: expiresAt.getTime(),
+      }
+      const token = signToken(payload, deps.authSecret)
+      await deps.db
+        .update(schema.guardians)
+        .set({ token_hash: hashToken(token) })
+        .where(eq(schema.guardians.id, guardian!.id))
+      const approvalUrl = `${deps.webUrl.replace(/\/$/, "")}/guardian/approval/${token}`
+      await deps.mailer.send(
+        buildGuardianApprovalEmail({
+          to: guardianEmail,
+          teenDisplayName: displayName,
+          approvalUrl,
+        }),
+      )
+      return redirectWith({
+        notice: "Account created. We emailed your parent or guardian for approval before you can connect a device.",
+      })
+    }
+
+    return redirectWith({
+      notice: "Check your email and click the verification link, then sign in below.",
+    })
   })
 
   router.post("/device/approve", authMiddleware, requireActiveAccount(), async (c) => {
