@@ -32,6 +32,7 @@
     "@pendix/client": "workspace:*",
     "@pendix/plugin": "workspace:*",
     "@opencode/pty": "0.6.0",
+    "@pendix/recorder": "workspace:*",
     "@pendix/schema": "workspace:*",
     "@pendix/server": "workspace:*",
     "@pendix/shared": "workspace:*",

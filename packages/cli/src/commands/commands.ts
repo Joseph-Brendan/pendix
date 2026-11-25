@@ -183,6 +183,16 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
             ),
           },
         }),
+        Spec.make("redact", {
+          description: "Preview the redacted session record that would be sent",
+          params: {
+            sessionID: Argument.String("session-id").pipe(Argument.withDescription("Session ID to preview")),
+            project: Flag.String("project").pipe(
+              Flag.withDescription("Project directory to read local .env values from (defaults to current directory)"),
+              Flag.optional,
+            ),
+          },
+        }),
       ],
     }),
     Spec.make("auth", {

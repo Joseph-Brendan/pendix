@@ -19,6 +19,21 @@ export {
 } from "./sanitize.js"
 
 export {
+  loadProjectEnvValues,
+  parseEnvValues,
+  redactRecord,
+  redactSession,
+  redactText,
+  type RedactOptions,
+  type RedactRecordResult,
+  type RedactSessionResult,
+  type RedactTextOptions,
+  type RedactTextResult,
+  type RedactionCounts,
+  type RedactionKind,
+} from "./redact.js"
+
+export {
   createAsyncJsonlWriter,
   type AppendFileFn,
   type AsyncJsonlWriter,

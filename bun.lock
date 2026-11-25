@@ -146,6 +146,7 @@
         "@parcel/watcher": "2.5.1",
         "@pendix/client": "workspace:*",
         "@pendix/plugin": "workspace:*",
+        "@pendix/recorder": "workspace:*",
         "@pendix/schema": "workspace:*",
         "@pendix/server": "workspace:*",
         "@pendix/shared": "workspace:*",
