@@ -124,6 +124,7 @@
     "@pendix/plugin-browser": "workspace:*",
     "@pendix/recorder": "workspace:*",
     "@pendix/schema": "workspace:*",
+    "@pendix/shared": "workspace:*",
     "@pendix/util": "workspace:*",
     "@parcel/watcher": "2.5.1",
     "@silvia-odwyer/photon-node": "0.3.4",

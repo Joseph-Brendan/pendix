@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "teach_lock" text DEFAULT 'none' NOT NULL;

@@ -51,7 +51,7 @@ describe("terminal status area account display", () => {
       await app.renderOnce()
       const onlineFrame = app.captureCharFrame()
       expect(onlineFrame).toContain("Ada Learner")
-      expect(onlineFrame).toContain("solo")
+      expect(onlineFrame).toContain("Solo")
       expect(onlineFrame.toLowerCase()).not.toContain("offline")
 
       const next: TuiAccountSnapshot = {
@@ -65,7 +65,7 @@ describe("terminal status area account display", () => {
 
       const offlineFrame = app.captureCharFrame()
       expect(offlineFrame).toContain("Ada Learner")
-      expect(offlineFrame).toContain("solo")
+      expect(offlineFrame).toContain("Solo")
       expect(offlineFrame.toLowerCase()).toContain("offline")
     } finally {
       app.renderer.destroy()

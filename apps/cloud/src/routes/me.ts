@@ -1,4 +1,6 @@
 import { entitlementsFor, type PlanId } from "@pendix/shared/plans"
+import { normalizeTeachLock } from "@pendix/shared/teach"
+import type { TeachLock } from "@pendix/shared/types"
 import { and, eq } from "drizzle-orm"
 import { Hono } from "hono"
 import { z } from "zod"
@@ -33,6 +35,16 @@ export function createMeRoutes(deps: MeRoutesDeps) {
       .from(schema.subscriptions)
       .where(and(eq(schema.subscriptions.user_id, user.id), eq(schema.subscriptions.status, "active")))
 
+    const groupLocks = await deps.db
+      .select({ teach_lock: schema.groups.teach_lock })
+      .from(schema.groupMembers)
+      .innerJoin(schema.groups, eq(schema.groupMembers.group_id, schema.groups.id))
+      .where(eq(schema.groupMembers.user_id, user.id))
+
+    const hasClassLock = groupLocks.some((row) => row.teach_lock === "class")
+    const userLock = normalizeTeachLock(user.teach_lock)
+    const teachLock: TeachLock = hasClassLock ? "class" : userLock === "self" ? "self" : "none"
+
     const plan = normalizePlan(activeSub?.plan)
 
     return c.json({
@@ -43,6 +55,7 @@ export function createMeRoutes(deps: MeRoutesDeps) {
       status: user.status,
       plan,
       entitlements: entitlementsFor(plan),
+      teach_lock: teachLock,
     })
   })
 

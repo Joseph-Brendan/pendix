@@ -5,6 +5,7 @@ import { useTerminalDimensions } from "@opentui/solid"
 import { TextAttributes } from "@opentui/core"
 import { useInteractivity } from "../../context/interactivity"
 import { useTuiAccount } from "../../context/account"
+import { useTuiTeach } from "../../context/teach"
 import { stringWidth } from "../../util/string-width"
 import { createGoal, GoalStatus } from "./goal"
 import { busyCounts, busyTab } from "../../routes/session/composer/tabs"
@@ -22,6 +23,7 @@ export function PromptFooter(props: {
 }) {
   const dimensions = useTerminalDimensions()
   const account = useTuiAccount()
+  const teach = useTuiTeach()
   const [liveHovered, setLiveHovered] = createSignal(false)
   const counts = createMemo(() =>
     props.sessionID
@@ -123,10 +125,20 @@ export function PromptFooter(props: {
             <span style={interactive() ? { fg: props.context.theme.text.muted } : {}}>commands</span>
           </text>
         </Show>
+        <Show when={props.showDetails && teach.enabled()}>
+          <text
+            fg={props.context.theme.pendix?.teachModeTag ?? props.context.theme.text.feedback.warning.base}
+            wrapMode="none"
+            flexShrink={0}
+          >
+            Teach
+          </text>
+        </Show>
         <Show when={props.showDetails && account()}>
           {(info) => (
             <text fg={props.context.theme.text.muted} wrapMode="none" flexShrink={0}>
-              <span style={{ fg: props.context.theme.text.base }}>{info().displayName}</span> · {info().plan}
+              <span style={{ fg: props.context.theme.text.base }}>{info().displayName}</span> ·{" "}
+              {info().plan ? info().plan[0].toUpperCase() + info().plan.slice(1) : ""}
               <Show when={info().offline}>
                 {" "}
                 <span style={{ fg: props.context.theme.text.feedback.warning.base }}>offline</span>

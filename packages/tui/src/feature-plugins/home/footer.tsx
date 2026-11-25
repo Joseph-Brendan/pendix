@@ -3,6 +3,7 @@ import { createMemo, Match, Show, Switch } from "solid-js"
 import { useTerminalDimensions } from "@opentui/solid"
 import { usePlugin } from "../../plugin/context"
 import { useTuiAccount } from "../../context/account"
+import { useTuiTeach } from "../../context/teach"
 import { Slot } from "../../plugin/render"
 
 export function homeFooterVisibility(width: number) {
@@ -75,20 +76,34 @@ function Plugins(props: { context: Plugin.Context }) {
   )
 }
 
+function formatPlan(plan: string) {
+  return plan ? plan[0].toUpperCase() + plan.slice(1) : plan
+}
+
 export function AccountStatus(props: { context: Plugin.Context }) {
   const account = useTuiAccount()
+  const teach = useTuiTeach()
 
   return (
-    <Show when={account()}>
-      {(info) => (
-        <box gap={1} flexDirection="row" flexShrink={0}>
-          <text fg={props.context.theme.text.base}>{info().displayName}</text>
-          <text fg={props.context.theme.text.muted}>{info().plan}</text>
-          <Show when={info().offline}>
-            <text fg={props.context.theme.text.feedback.warning.base}>offline</text>
-          </Show>
-        </box>
-      )}
+    <Show when={account() || teach.enabled()}>
+      <box gap={1} flexDirection="row" flexShrink={0}>
+        <Show when={teach.enabled()}>
+          <text fg={props.context.theme.pendix?.teachModeTag ?? props.context.theme.text.feedback.warning.base}>
+            Teach
+          </text>
+        </Show>
+        <Show when={account()}>
+          {(info) => (
+            <>
+              <text fg={props.context.theme.text.base}>{info().displayName}</text>
+              <text fg={props.context.theme.text.muted}>{formatPlan(info().plan)}</text>
+              <Show when={info().offline}>
+                <text fg={props.context.theme.text.feedback.warning.base}>offline</text>
+              </Show>
+            </>
+          )}
+        </Show>
+      </box>
     </Show>
   )
 }

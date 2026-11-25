@@ -22,6 +22,7 @@ export const users = pgTable("users", {
   country: text("country").notNull().default(""),
   tz: text("tz").notNull().default("UTC"),
   role: text("role").notNull().default("learner"),
+  teach_lock: text("teach_lock").notNull().default("none"),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 })

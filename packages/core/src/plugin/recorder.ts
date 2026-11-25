@@ -4,6 +4,7 @@ import { define } from "@pendix/plugin/effect/plugin"
 import { createSessionRecorder } from "@pendix/recorder"
 import { Global } from "@pendix/util/global"
 import { Effect, Stream } from "effect"
+import { PendixTeachPlugin } from "./teach.js"
 
 const RECORDED_EVENT_TYPES = [
   "session.created",
@@ -32,6 +33,7 @@ export const Plugin = define({
     const runFork = Effect.runForkWith(yield* Effect.context<never>())
     const recorder = createSessionRecorder({
       dataDir: global.data,
+      isTeachModeEnabled: () => PendixTeachPlugin.isTeachModeActive(global.config),
       onError(error, context) {
         runFork(Effect.logWarning("pendix recorder write failed; event dropped", { filePath: context.filePath, error }))
       },

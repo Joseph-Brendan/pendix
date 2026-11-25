@@ -13,6 +13,8 @@
     "./models": "./src/models.ts",
     "./age": "./src/age.ts",
     "./urls": "./src/urls.ts",
+    "./teach": "./src/teach.ts",
+    "./prompts/teach.md": "./src/prompts/teach.md",
     "./types": "./src/types.ts"
   },
   "scripts": {

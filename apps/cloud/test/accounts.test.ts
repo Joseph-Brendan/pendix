@@ -98,6 +98,7 @@ describe("accounts, email verification, age blocking, and /me", () => {
       status: "active",
       plan: "free",
       entitlements: entitlementsFor("free"),
+      teach_lock: "none",
     })
 
     const consents = await testDb.db

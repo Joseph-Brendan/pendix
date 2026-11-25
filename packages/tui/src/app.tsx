@@ -116,6 +116,7 @@ import { PanelProvider, usePanel } from "./context/panel"
 import { SessionFrame } from "./component/session-frame"
 import { createTuiClipboard } from "./clipboard"
 import { TuiAccountProvider, type TuiAccountSource } from "./context/account"
+import { TuiTeachProvider, useTuiTeach } from "./context/teach"
 
 const appGlobalBindingCommands = ["session.list", "session.new", "open.menu", "terminal.suspend"] as const
 
@@ -162,6 +163,7 @@ const appBindingCommands = [
   "usage.show",
   "agent.cycle",
   "agent.cycle.reverse",
+  "teach.toggle",
   "variant.cycle",
   "variant.list",
   "speed.cycle",
@@ -442,7 +444,9 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
                                                                                 directories={pluginDirectories}
                                                                               >
                                                                                 <TuiAccountProvider source={input.account}>
-                                                                                  <App />
+                                                                                  <TuiTeachProvider configDir={global.config}>
+                                                                                    <App />
+                                                                                  </TuiTeachProvider>
                                                                                 </TuiAccountProvider>
                                                                               </PluginProvider>
                                                                             </PanelProvider>
@@ -507,6 +511,7 @@ function App() {
   const renderer = useRenderer()
   const dialog = useDialog()
   const local = useLocal()
+  const teach = useTuiTeach()
   const sessionTabs = useSessionTabs()
   const panels = usePanel()
   const keymap = Keymap.use()
@@ -1059,6 +1064,27 @@ function App() {
         palette: undefined,
         run: () => {
           local.agent.move(-1)
+        },
+      },
+      {
+        name: "teach.toggle",
+        title: teach.enabled() ? "Turn off teach mode" : "Turn on teach mode",
+        category: "Agent",
+        slash: { name: "teach" },
+        run: () => {
+          const result = teach.toggle()
+          dialog.clear()
+          if (!result.changed) {
+            toast.show({
+              variant: "warning",
+              message: result.message ?? "Teach mode is locked.",
+            })
+            return
+          }
+          toast.show({
+            variant: "info",
+            message: result.enabled ? "Teach mode on" : "Teach mode off",
+          })
         },
       },
       {

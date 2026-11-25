@@ -1,4 +1,5 @@
 import path from "node:path"
+import { extractTeachCheckQuestion } from "@pendix/shared/teach"
 import {
   countLines,
   estimateEditLineCounts,
@@ -27,6 +28,7 @@ export interface SessionRecorderOptions {
   readonly now?: () => number
   readonly appendFile?: AppendFileFn
   readonly onError?: ErrorHandler
+  readonly isTeachModeEnabled?: () => boolean
 }
 
 interface PendingTurn {
@@ -48,6 +50,7 @@ interface ActiveSession {
   provider: string
   model: string
   teachMode: boolean
+  pendingTeachQuestion?: string
   ended: boolean
   turn?: PendingTurn
   idleTimer?: ReturnType<typeof setTimeout>
@@ -159,6 +162,15 @@ export function createSessionRecorder(options: SessionRecorderOptions): SessionR
       errored: turn.errored,
       reply_preview: truncateReply(turn.latestReply),
     })
+
+    const teachActive = session.teachMode || Boolean(options.isTeachModeEnabled?.())
+    if (teachActive && turn.latestReply) {
+      session.teachMode = true
+      const question = extractTeachCheckQuestion(turn.latestReply)
+      if (question) {
+        session.pendingTeachQuestion = question
+      }
+    }
   }
 
   const ensureTurn = (session: ActiveSession): PendingTurn => {
@@ -223,7 +235,7 @@ export function createSessionRecorder(options: SessionRecorderOptions): SessionR
     const provider = typeof modelRef?.providerID === "string" ? modelRef.providerID : ""
     const model = typeof modelRef?.id === "string" ? modelRef.id : ""
     const metadata = isRecord(event.data.metadata) ? event.data.metadata : undefined
-    const teachMode = metadata?.teach_mode === true
+    const teachMode = metadata?.teach_mode === true || Boolean(options.isTeachModeEnabled?.())
 
     const session: ActiveSession = {
       sessionId,
@@ -289,6 +301,15 @@ export function createSessionRecorder(options: SessionRecorderOptions): SessionR
             text: redactSecrets(payload.text),
             files,
           })
+          if (session.pendingTeachQuestion && payload.text.trim().length > 0) {
+            const question = session.pendingTeachQuestion
+            session.pendingTeachQuestion = undefined
+            recordTeachQA(sessionId, {
+              question,
+              answer: payload.text.trim(),
+              time: event.created,
+            })
+          }
           return
         }
 

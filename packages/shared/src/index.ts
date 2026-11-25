@@ -66,6 +66,18 @@ export {
 
 export { accountKindFor, ageFromDob, type AccountKind, type DateInput } from "./age.js"
 export { DEFAULT_PENDIX_API_URL, DEFAULT_PENDIX_WEB_URL, PENDIX_DOMAIN, resolvePendixApiUrl } from "./urls.js"
+export {
+  TEACH_CLASS_LOCK_MESSAGE,
+  TEACH_MODE_FILE_NAME,
+  TEACH_SELF_LOCK_MESSAGE,
+  extractTeachCheckQuestion,
+  normalizeTeachLock,
+  resolveTeachMode,
+  teachLockMessage,
+  toggleTeachMode,
+  type TeachModeState,
+  type TeachModeToggleResult,
+} from "./teach.js"
 
 export type {
   Assessment,

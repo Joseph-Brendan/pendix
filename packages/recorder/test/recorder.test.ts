@@ -379,4 +379,80 @@ describe("@pendix/recorder", () => {
     expect(records).toHaveLength(1000)
     expect(elapsedMs).toBeLessThan(200)
   })
+
+  it("captures a teach mode check question and the learner's next-turn answer automatically", async () => {
+    const dataDir = await makeTempDir()
+    let currentTime = new Date("2026-11-25T11:00:00.000Z").getTime()
+    const recorder = createSessionRecorder({
+      dataDir,
+      now: () => currentTime,
+      isTeachModeEnabled: () => true,
+    })
+
+    const sessionId = "ses_teach_qa_auto"
+    recorder.handleEngineEvent({
+      type: "session.created",
+      created: currentTime,
+      data: {
+        sessionID: sessionId,
+        location: { directory: "/workspace/learn-app" },
+        model: { providerID: "google", id: "gemini-2.5-pro" },
+      },
+    })
+
+    currentTime += 1000
+    recorder.handleEngineEvent({
+      type: "session.inbox.enqueued",
+      created: currentTime,
+      data: {
+        sessionID: sessionId,
+        item: { type: "user", payload: { text: "Add input validation to signup.ts" } },
+      },
+    })
+    recorder.handleEngineEvent({
+      type: "session.execution.started",
+      created: currentTime,
+      data: { sessionID: sessionId },
+    })
+    recorder.handleEngineEvent({
+      type: "session.text.ended",
+      created: currentTime,
+      data: {
+        sessionID: sessionId,
+        text: "I added a Zod schema in signup.ts so bad payloads fail before touching the database.\n\nQuick check: Why do we validate on the server even when the form validates in the browser?",
+      },
+    })
+    recorder.handleEngineEvent({
+      type: "session.execution.succeeded",
+      created: currentTime,
+      data: { sessionID: sessionId },
+    })
+
+    currentTime += 2000
+    recorder.handleEngineEvent({
+      type: "session.inbox.enqueued",
+      created: currentTime,
+      data: {
+        sessionID: sessionId,
+        item: {
+          type: "user",
+          payload: { text: "Because anyone can send raw HTTP requests directly and skip the browser form." },
+        },
+      },
+    })
+
+    recorder.endSession(sessionId, "quit")
+    await recorder.flush()
+
+    const records = await readJsonl(recorder.filePathFor(sessionId))
+    expect(records[0]).toMatchObject({ type: "start", teach_mode: true })
+    const qa = records.find((r) => r.type === "teach_qa")
+    expect(qa).toBeDefined()
+    expect(qa).toMatchObject({
+      type: "teach_qa",
+      session_id: sessionId,
+      question: "Why do we validate on the server even when the form validates in the browser?",
+      answer: "Because anyone can send raw HTTP requests directly and skip the browser form.",
+    })
+  })
 })
