@@ -2,6 +2,7 @@ import { Plugin } from "@pendix/plugin/tui"
 import { createMemo, Match, Show, Switch } from "solid-js"
 import { useTerminalDimensions } from "@opentui/solid"
 import { usePlugin } from "../../plugin/context"
+import { useTuiAccount } from "../../context/account"
 import { Slot } from "../../plugin/render"
 
 export function homeFooterVisibility(width: number) {
@@ -74,6 +75,24 @@ function Plugins(props: { context: Plugin.Context }) {
   )
 }
 
+export function AccountStatus(props: { context: Plugin.Context }) {
+  const account = useTuiAccount()
+
+  return (
+    <Show when={account()}>
+      {(info) => (
+        <box gap={1} flexDirection="row" flexShrink={0}>
+          <text fg={props.context.theme.text.base}>{info().displayName}</text>
+          <text fg={props.context.theme.text.muted}>{info().plan}</text>
+          <Show when={info().offline}>
+            <text fg={props.context.theme.text.feedback.warning.base}>offline</text>
+          </Show>
+        </box>
+      )}
+    </Show>
+  )
+}
+
 function View(props: { context: Plugin.Context }) {
   const dimensions = useTerminalDimensions()
   const visibility = createMemo(() => homeFooterVisibility(dimensions().width))
@@ -94,6 +113,7 @@ function View(props: { context: Plugin.Context }) {
         <Plugins context={props.context} />
         <Slot path="home.footer.status" />
         <box flexGrow={1} />
+        <AccountStatus context={props.context} />
         <Show when={visibility().version}>
           <box flexShrink={0}>
             <text fg={props.context.theme.text.muted}>{props.context.app.version}</text>

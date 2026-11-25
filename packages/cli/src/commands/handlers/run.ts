@@ -1,10 +1,13 @@
 import { Effect, Option } from "effect"
 import { Commands } from "../commands"
 import { Runtime } from "../../framework/runtime"
+import { requirePendixSignedIn } from "../../pendix-auth/gate"
 import { ServerConnection } from "../../services/server-connection"
 
 export default Runtime.handler(Commands.commands.run, (input) =>
   Effect.gen(function* () {
+    const signedIn = yield* requirePendixSignedIn()
+    if (!signedIn) return
     const { reportRunError, runNonInteractive } = yield* Effect.promise(() => import("../../run/run"))
     // A one-off run uses the background service when it is already up, but never leaves a new one running.
     const server = yield* ServerConnection.resolve({ autostart: false }).pipe(

@@ -5,11 +5,14 @@ import { ServerConnection } from "../../services/server-connection"
 import { Config } from "../../config"
 import { resolve } from "@pendix/tui/config"
 import { Global } from "@pendix/util/global"
+import { requirePendixSignedIn } from "../../pendix-auth/gate"
 
 export default Runtime.handler(Commands.commands.mini, (input) =>
   Effect.gen(function* () {
     const { runMini, validateMiniTerminal } = yield* Effect.promise(() => import("../../mini"))
     yield* Effect.promise(async () => validateMiniTerminal())
+    const signedIn = yield* requirePendixSignedIn()
+    if (!signedIn) return
     const server = yield* ServerConnection.resolve({
       mismatch: "replace",
     })

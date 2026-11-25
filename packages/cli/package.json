@@ -34,6 +34,7 @@
     "@opencode/pty": "0.6.0",
     "@pendix/schema": "workspace:*",
     "@pendix/server": "workspace:*",
+    "@pendix/shared": "workspace:*",
     "@pendix/tui": "workspace:*",
     "@pendix/util": "workspace:*",
     "@opentui/core": "catalog:",

@@ -12,6 +12,7 @@
     "./plans": "./src/plans.ts",
     "./models": "./src/models.ts",
     "./age": "./src/age.ts",
+    "./urls": "./src/urls.ts",
     "./types": "./src/types.ts"
   },
   "scripts": {

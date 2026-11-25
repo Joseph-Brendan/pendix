@@ -1,23 +1,33 @@
 import { describe, expect, test } from "bun:test"
 import { ClientError, OpenCode } from "@pendix/client/promise"
 import { OPENCODE_VERSION } from "../src/version"
+import { mkdtemp, rm } from "node:fs/promises"
+import os from "node:os"
 import path from "node:path"
+import { isolatedEnv, seedTestAuthSession } from "./fixture/environment"
 import { createMiniConnection, mergeInput as mergeInteractiveInput, resolveMiniTarget } from "../src/mini"
 import { mergeInput as mergeNonInteractiveInput, parseRunModel } from "../src/run/run"
 import { parseSessionTargetModel } from "../src/session-target"
 
 async function cli(args: string[]) {
-  const child = Bun.spawn([process.execPath, "run", "src/index.ts", ...args], {
-    cwd: path.join(import.meta.dir, ".."),
-    stdout: "pipe",
-    stderr: "pipe",
-  })
-  const [stdout, stderr, exitCode] = await Promise.all([
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-    child.exited,
-  ])
-  return { stdout, stderr, exitCode }
+  const root = await mkdtemp(path.join(os.tmpdir(), "pendix-mini-cli-"))
+  seedTestAuthSession(path.join(root, "config"))
+  try {
+    const child = Bun.spawn([process.execPath, "run", "src/index.ts", ...args], {
+      cwd: path.join(import.meta.dir, ".."),
+      env: isolatedEnv(root),
+      stdout: "pipe",
+      stderr: "pipe",
+    })
+    const [stdout, stderr, exitCode] = await Promise.all([
+      new Response(child.stdout).text(),
+      new Response(child.stderr).text(),
+      child.exited,
+    ])
+    return { stdout, stderr, exitCode }
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
 }
 
 describe("mini command", () => {

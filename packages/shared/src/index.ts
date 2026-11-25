@@ -65,6 +65,7 @@ export {
 } from "./models.js"
 
 export { accountKindFor, ageFromDob, type AccountKind, type DateInput } from "./age.js"
+export { DEFAULT_PENDIX_API_URL, DEFAULT_PENDIX_WEB_URL, PENDIX_DOMAIN, resolvePendixApiUrl } from "./urls.js"
 
 export type {
   Assessment,

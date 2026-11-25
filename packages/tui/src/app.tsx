@@ -115,6 +115,7 @@ import { ClientMcp } from "./context/client-mcp"
 import { PanelProvider, usePanel } from "./context/panel"
 import { SessionFrame } from "./component/session-frame"
 import { createTuiClipboard } from "./clipboard"
+import { TuiAccountProvider, type TuiAccountSource } from "./context/account"
 
 const appGlobalBindingCommands = ["session.list", "session.new", "open.menu", "terminal.suspend"] as const
 
@@ -200,6 +201,7 @@ export type TuiInput = {
   }
   args: Args
   config: Config.Interface
+  account?: TuiAccountSource
   updater?: UpdateSource
   packages: PackageSource
   environment?: Readonly<Record<string, string>>
@@ -439,7 +441,9 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
                                                                                 packages={input.packages}
                                                                                 directories={pluginDirectories}
                                                                               >
-                                                                                <App />
+                                                                                <TuiAccountProvider source={input.account}>
+                                                                                  <App />
+                                                                                </TuiAccountProvider>
                                                                               </PluginProvider>
                                                                             </PanelProvider>
                                                                           </UpdateNotificationProvider>

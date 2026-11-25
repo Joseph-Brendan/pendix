@@ -16,6 +16,7 @@ import { Service } from "@pendix/client/effect/service"
 import { OpenCode } from "@pendix/client/promise"
 import { findSession } from "../../session-target"
 import { errorMessage } from "../../util/error"
+import { requirePendixSignedIn } from "../../pendix-auth/gate"
 
 export default Runtime.handler(Commands, (input) =>
   Effect.gen(function* () {
@@ -35,6 +36,8 @@ export default Runtime.handler(Commands, (input) =>
         })
       process.chdir(requestedDirectory)
     }
+    const signedIn = yield* requirePendixSignedIn()
+    if (!signedIn) return
     const preflight = UpdatePreflight.make()
     yield* Effect.addFinalizer(() => Effect.promise(() => preflight.close()))
     const serviceStarts = yield* Queue.unbounded<{
@@ -137,6 +140,7 @@ export default Runtime.handler(Commands, (input) =>
         get: () => runPromise(config.get()),
         update: (update) => runPromise(config.update(update)),
       },
+      account: signedIn.tuiAccount,
       updater: {
         remote: requestedServer !== undefined,
         subscribe: (notify) => {

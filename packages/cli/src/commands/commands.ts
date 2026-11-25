@@ -249,10 +249,16 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
       ],
     }),
     Spec.make("login", {
-      description: "Connect an integration (alias for auth login)",
-      hidden: true,
-      globalFlags: ServerFlags,
-      params: LoginParams,
+      description: "Sign in to your Pendix account",
+    }),
+    Spec.make("logout", {
+      description: "Sign out of your Pendix account on this device",
+    }),
+    Spec.make("whoami", {
+      description: "Show your signed-in Pendix account, plan, and credits",
+      params: {
+        json: Flag.Boolean("json").pipe(Flag.withDescription("Output account details as JSON"), Flag.withDefault(false)),
+      },
     }),
     Spec.make("mcp", {
       description: "Manage MCP (Model Context Protocol) servers",

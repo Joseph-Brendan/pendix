@@ -8,12 +8,18 @@ import { Config } from "../src/config"
 import { Server } from "../src/commands/commands"
 import type { MiniCommandInput } from "../src/mini"
 import { OPENCODE_VERSION } from "../src/version"
+import { seedTestAuthSession } from "./fixture/environment"
 
 test("mini handler passes resolved CLI keybinds to the runtime", async () => {
   const root = await Bun.$`mktemp -d`.text().then((value) => value.trim())
   const configDirectory = path.join(root, "config")
   const stateDirectory = path.join(root, "state")
   await mkdir(configDirectory, { recursive: true })
+  seedTestAuthSession(configDirectory)
+  const prevApiUrl = process.env.PENDIX_API_URL
+  const prevDisableKeychain = process.env.PENDIX_DISABLE_KEYCHAIN
+  process.env.PENDIX_API_URL = "http://127.0.0.1:1"
+  process.env.PENDIX_DISABLE_KEYCHAIN = "1"
   await Bun.write(
     path.join(configDirectory, "cli.json"),
     JSON.stringify({
@@ -62,6 +68,10 @@ test("mini handler passes resolved CLI keybinds to the runtime", async () => {
     expect(config?.leader.timeout).toBe(321)
     expect(config?.keybinds.get("composer.subagent.interrupt")).toMatchObject([{ key: "ctrl+i" }])
   } finally {
+    if (prevApiUrl === undefined) delete process.env.PENDIX_API_URL
+    else process.env.PENDIX_API_URL = prevApiUrl
+    if (prevDisableKeychain === undefined) delete process.env.PENDIX_DISABLE_KEYCHAIN
+    else process.env.PENDIX_DISABLE_KEYCHAIN = prevDisableKeychain
     server.stop(true)
     mock.restore()
     await rm(root, { recursive: true, force: true })

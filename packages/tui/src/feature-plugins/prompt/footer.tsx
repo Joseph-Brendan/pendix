@@ -4,6 +4,7 @@ import { contextUsage, formatContextUsage } from "../../util/session"
 import { useTerminalDimensions } from "@opentui/solid"
 import { TextAttributes } from "@opentui/core"
 import { useInteractivity } from "../../context/interactivity"
+import { useTuiAccount } from "../../context/account"
 import { stringWidth } from "../../util/string-width"
 import { createGoal, GoalStatus } from "./goal"
 import { busyCounts, busyTab } from "../../routes/session/composer/tabs"
@@ -20,6 +21,7 @@ export function PromptFooter(props: {
   showDetails: boolean
 }) {
   const dimensions = useTerminalDimensions()
+  const account = useTuiAccount()
   const [liveHovered, setLiveHovered] = createSignal(false)
   const counts = createMemo(() =>
     props.sessionID
@@ -120,6 +122,17 @@ export function PromptFooter(props: {
             {shortcut("command.palette.show")}{" "}
             <span style={interactive() ? { fg: props.context.theme.text.muted } : {}}>commands</span>
           </text>
+        </Show>
+        <Show when={props.showDetails && account()}>
+          {(info) => (
+            <text fg={props.context.theme.text.muted} wrapMode="none" flexShrink={0}>
+              <span style={{ fg: props.context.theme.text.base }}>{info().displayName}</span> · {info().plan}
+              <Show when={info().offline}>
+                {" "}
+                <span style={{ fg: props.context.theme.text.feedback.warning.base }}>offline</span>
+              </Show>
+            </text>
+          )}
         </Show>
       </Match>
       <Match when={props.mode === "shell"}>

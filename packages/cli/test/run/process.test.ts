@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 import { symlink } from "node:fs/promises"
 import path from "node:path"
-import { isolatedEnv } from "../fixture/environment"
+import { isolatedEnv, seedTestAuthSession } from "../fixture/environment"
 import { tmpdir } from "../fixture/tmpdir"
 
 // A server that admits the prompt and then keeps the Session running until interrupted.
@@ -63,6 +63,7 @@ async function serve(directory: string) {
 }
 
 function spawnRun(url: string, directory: string, message: string[], stdin: "pipe" | "ignore") {
+  seedTestAuthSession(path.join(directory, "config"))
   return Bun.spawn([process.execPath, "run", "src/index.ts", "run", "--server", url, ...message], {
     cwd: path.join(import.meta.dir, "../.."),
     env: isolatedEnv(directory, { PWD: directory }),
@@ -166,6 +167,7 @@ posix(
   async () => {
     await using directory = await tmpdir()
     const fake = await serve(directory.path)
+    seedTestAuthSession(path.join(directory.path, "config"))
     const command = `(sleep 4; echo slow context) | "${process.execPath}" run src/index.ts run --server ${fake.server.url} review`
     const child = Bun.spawn(["sh", "-c", command], {
       cwd: path.join(import.meta.dir, "../.."),

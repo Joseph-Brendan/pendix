@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test"
 import path from "node:path"
-import { isolatedEnv } from "../fixture/environment"
+import { isolatedEnv, seedTestAuthSession } from "../fixture/environment"
 import { tmpdir } from "../fixture/tmpdir"
 
 test("run --archived archives the new session before subscribing to its prompt", async () => {
@@ -37,6 +37,7 @@ test("run --archived archives the new session before subscribing to its prompt",
       return new Response(null, { status: 503 })
     },
   })
+  seedTestAuthSession(path.join(directory.path, "config"))
   const child = Bun.spawn(
     [
       process.execPath,
