@@ -1,37 +1,73 @@
 import { Hono, type Context } from "hono"
 import type { Logger } from "pino"
 import pkg from "../package.json" with { type: "json" }
+import { createAuth } from "./auth.js"
+import type { CloudDatabase } from "./db/index.js"
 import { toErrorResponse } from "./errors.js"
 import { createLogger } from "./logger.js"
+import { createFakeMailer, type Mailer } from "./mailer.js"
+import type { AuthVariables } from "./middleware/auth.js"
 import { rateLimitMiddleware, type RateLimitOptions } from "./middleware/rate-limit.js"
-import { requestIdMiddleware, type RequestVariables } from "./middleware/request-id.js"
+import { requestIdMiddleware } from "./middleware/request-id.js"
+import { createAuthRoutes } from "./routes/auth.js"
+import { createGuardianRoutes } from "./routes/guardian.js"
+import { createMeRoutes } from "./routes/me.js"
 import { captureException } from "./sentry.js"
 
 export interface CreateAppOptions {
   readonly version?: string
   readonly nodeEnv?: string
   readonly logger?: Logger
+  readonly db?: CloudDatabase
+  readonly mailer?: Mailer
+  readonly authSecret?: string
+  readonly apiUrl?: string
+  readonly webUrl?: string
+  readonly googleClientId?: string
+  readonly googleClientSecret?: string
+  readonly now?: () => number
   readonly rateLimit?: Omit<RateLimitOptions, "resolveUserId">
-  readonly resolveUserId?: (c: Context<{ Variables: RequestVariables }>) => string | undefined
+  readonly resolveUserId?: (c: Context<{ Variables: AuthVariables }>) => string | undefined
 }
 
 export function createApp(options: CreateAppOptions = {}) {
   const version = options.version ?? pkg.version
   const nodeEnv = options.nodeEnv ?? process.env.NODE_ENV ?? "development"
   const logger = options.logger ?? createLogger()
+  const now = options.now ?? (() => Date.now())
   const rateLimit = options.rateLimit ?? {
     ipMax: Number(process.env.RATE_LIMIT_IP_MAX ?? 100),
     ipWindowMs: Number(process.env.RATE_LIMIT_IP_WINDOW_MS ?? 60_000),
     userMax: Number(process.env.RATE_LIMIT_USER_MAX ?? 200),
     userWindowMs: Number(process.env.RATE_LIMIT_USER_WINDOW_MS ?? 60_000),
+    now,
   }
 
-  const app = new Hono<{ Variables: RequestVariables }>()
+  const app = new Hono<{ Variables: AuthVariables }>()
 
   app.use("*", requestIdMiddleware(logger))
   app.use("*", rateLimitMiddleware({ ...rateLimit, resolveUserId: options.resolveUserId }))
 
   app.get("/health", (c) => c.json({ ok: true, version }))
+
+  if (options.db) {
+    const authSecret = options.authSecret || process.env.AUTH_SECRET || "dev-only-insecure-fallback-secret-32"
+    const apiUrl = options.apiUrl ?? process.env.API_URL ?? "http://127.0.0.1:3001"
+    const webUrl = options.webUrl ?? process.env.WEB_URL ?? "http://127.0.0.1:5173"
+    const mailer = options.mailer ?? createFakeMailer()
+    const auth = createAuth({
+      db: options.db,
+      mailer,
+      secret: authSecret,
+      baseUrl: apiUrl,
+      googleClientId: options.googleClientId,
+      googleClientSecret: options.googleClientSecret,
+    })
+
+    app.route("/", createAuthRoutes({ auth, db: options.db, mailer, authSecret, webUrl, now }))
+    app.route("/", createGuardianRoutes({ auth, db: options.db, mailer, authSecret, webUrl, now }))
+    app.route("/", createMeRoutes({ auth, db: options.db, now }))
+  }
 
   app.notFound((c) =>
     c.json(

@@ -13,14 +13,57 @@ import {
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
   email: text("email").notNull().unique(),
+  email_verified: boolean("email_verified").notNull().default(false),
   display_name: text("display_name").notNull(),
-  dob: text("dob").notNull(),
-  account_kind: text("account_kind").notNull(),
+  image: text("image"),
+  dob: text("dob").notNull().default(""),
+  account_kind: text("account_kind").notNull().default("pending"),
   status: text("status").notNull().default("pending_verification"),
   country: text("country").notNull().default(""),
   tz: text("tz").notNull().default("UTC"),
   role: text("role").notNull().default("learner"),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+})
+
+export const authSessions = pgTable("auth_sessions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  expires_at: timestamp("expires_at", { withTimezone: true }).notNull(),
+  token: text("token").notNull().unique(),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  ip_address: text("ip_address"),
+  user_agent: text("user_agent"),
+  user_id: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+})
+
+export const authAccounts = pgTable("auth_accounts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  account_id: text("account_id").notNull(),
+  provider_id: text("provider_id").notNull(),
+  user_id: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  access_token: text("access_token"),
+  refresh_token: text("refresh_token"),
+  id_token: text("id_token"),
+  access_token_expires_at: timestamp("access_token_expires_at", { withTimezone: true }),
+  refresh_token_expires_at: timestamp("refresh_token_expires_at", { withTimezone: true }),
+  scope: text("scope"),
+  password: text("password"),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+})
+
+export const authVerifications = pgTable("auth_verifications", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expires_at: timestamp("expires_at", { withTimezone: true }).notNull(),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
 export const consents = pgTable("consents", {
@@ -470,6 +513,9 @@ export const auditLog = pgTable("audit_log", {
 
 export const schema = {
   users,
+  authSessions,
+  authAccounts,
+  authVerifications,
   consents,
   guardians,
   devices,
