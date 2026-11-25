@@ -122,6 +122,7 @@
     "@pendix/codemode": "workspace:*",
     "@pendix/plugin": "workspace:*",
     "@pendix/plugin-browser": "workspace:*",
+    "@pendix/recorder": "workspace:*",
     "@pendix/schema": "workspace:*",
     "@pendix/util": "workspace:*",
     "@parcel/watcher": "2.5.1",

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@pendix/recorder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts",
+    "./sanitize": "./src/sanitize.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "bun check --no-script",
+    "typecheck:tsc": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tsconfig/bun": "catalog:",
+    "@types/bun": "catalog:",
+    "@typescript/native": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "^3.2.4"
+  }
+}

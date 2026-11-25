@@ -148,6 +148,7 @@
         "@pendix/plugin": "workspace:*",
         "@pendix/schema": "workspace:*",
         "@pendix/server": "workspace:*",
+        "@pendix/shared": "workspace:*",
         "@pendix/tui": "workspace:*",
         "@pendix/util": "workspace:*",
         "@silvia-odwyer/photon-node": "0.3.4",
@@ -269,6 +270,7 @@
         "@pendix/codemode": "workspace:*",
         "@pendix/plugin": "workspace:*",
         "@pendix/plugin-browser": "workspace:*",
+        "@pendix/recorder": "workspace:*",
         "@pendix/schema": "workspace:*",
         "@pendix/util": "workspace:*",
         "@silvia-odwyer/photon-node": "0.3.4",
@@ -658,6 +660,17 @@
         "@typescript/native": "catalog:",
         "prettier": "3.6.2",
         "typescript": "catalog:",
+      },
+    },
+    "packages/recorder": {
+      "name": "@pendix/recorder",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@tsconfig/bun": "catalog:",
+        "@types/bun": "catalog:",
+        "@typescript/native": "catalog:",
+        "typescript": "catalog:",
+        "vitest": "^3.2.4",
       },
     },
     "packages/schema": {
@@ -2203,6 +2216,8 @@
     "@pendix/plugin-figma": ["@pendix/plugin-figma@workspace:packages/plugins/figma"],
 
     "@pendix/protocol": ["@pendix/protocol@workspace:packages/protocol"],
+
+    "@pendix/recorder": ["@pendix/recorder@workspace:packages/recorder"],
 
     "@pendix/schema": ["@pendix/schema@workspace:packages/schema"],
 

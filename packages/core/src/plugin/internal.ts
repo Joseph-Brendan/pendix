@@ -114,6 +114,7 @@ import { IdentityPlugin } from "./identity.js"
 import { ForkNoticePlugin } from "./fork-notice.js"
 import { HomeMemoryPlugin } from "./home-memory.js"
 import { PlanPlugin } from "./plan.js"
+import { PendixRecorderPlugin } from "./recorder.js"
 import { GoalPlugin } from "./goal.js"
 import { ModelsDevPlugin } from "./models-dev.js"
 import { McpCodeModeDefaultsPlugin } from "./mcp-codemode-defaults.js"
@@ -272,6 +273,7 @@ const pre = [
   ForkNoticePlugin.Plugin,
   HomeMemoryPlugin.Plugin,
   PlanPlugin.Plugin,
+  PendixRecorderPlugin.Plugin,
   CommandPlugin.Plugin,
   GoalPlugin.Plugin,
   SkillPlugin.Plugin,
