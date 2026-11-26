@@ -13,6 +13,10 @@ const DeleteMeSchema = z.object({
   confirm: z.literal(true),
 })
 
+const PreferencesSchema = z.object({
+  session_report_emails: z.boolean(),
+})
+
 export interface MeRoutesDeps {
   readonly auth: CloudAuth
   readonly db: CloudDatabase
@@ -43,6 +47,23 @@ export function createMeRoutes(deps: MeRoutesDeps) {
     const user = c.get("user")!
     const history = await getCreditHistory(deps.db, user.id, 50)
     return c.json(history)
+  })
+
+  router.patch("/me/preferences", authMiddleware, async (c) => {
+    const user = c.get("user")!
+    const body = PreferencesSchema.parse(await c.req.json())
+
+    await deps.db
+      .update(schema.users)
+      .set({
+        session_report_emails: body.session_report_emails,
+        updated_at: new Date(deps.now()),
+      })
+      .where(eq(schema.users.id, user.id))
+
+    return c.json({
+      session_report_emails: body.session_report_emails,
+    })
   })
 
   router.delete("/me", authMiddleware, async (c) => {

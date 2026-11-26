@@ -23,6 +23,7 @@ export const users = pgTable("users", {
   tz: text("tz").notNull().default("UTC"),
   role: text("role").notNull().default("learner"),
   teach_lock: text("teach_lock").notNull().default("none"),
+  session_report_emails: boolean("session_report_emails").notNull().default(true),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 })
@@ -132,6 +133,7 @@ export const sessions = pgTable("sessions", {
   status: text("status").notNull().default("uploaded"),
   tier: text("tier"),
   graded_at: timestamp("graded_at", { withTimezone: true }),
+  report_emailed_at: timestamp("report_emailed_at", { withTimezone: true }),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
@@ -182,6 +184,7 @@ export const sessionNotes = pgTable("session_notes", {
   what_was_built: text("what_was_built").notNull(),
   learned: jsonb("learned").notNull(),
   to_work_on: jsonb("to_work_on").notNull(),
+  summary: text("summary").notNull().default(""),
   model_used: text("model_used").notNull(),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 })
@@ -513,8 +516,10 @@ export const jobs = pgTable("jobs", {
   payload: jsonb("payload").notNull().default({}),
   status: text("status").notNull().default("pending"),
   attempts: integer("attempts").notNull().default(0),
+  last_error: text("last_error"),
   run_at: timestamp("run_at", { withTimezone: true }).defaultNow().notNull(),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
 export const auditLog = pgTable("audit_log", {

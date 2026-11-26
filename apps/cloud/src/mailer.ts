@@ -36,6 +36,7 @@ export function createResendMailer(options: {
   readonly logger?: Logger
 }): Mailer {
   const key = options.apiKey.trim()
+  const from = options.from.trim().replace(/^<([^<>]+)>$/, "$1")
   const resend = key ? new Resend(key) : null
 
   return {
@@ -45,7 +46,7 @@ export function createResendMailer(options: {
         return
       }
       const result = await resend.emails.send({
-        from: options.from,
+        from,
         to: message.to,
         subject: message.subject,
         text: message.text,

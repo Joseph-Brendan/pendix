@@ -4,6 +4,7 @@ import { Global } from "@pendix/util/global"
 import { Effect } from "effect"
 import { Commands } from "../commands"
 import { Runtime } from "../../framework/runtime"
+import { formatGradedStatus } from "../../pendix-auth/graded-notice"
 import { createAuthStorage } from "../../pendix-auth/storage"
 
 interface SessionRow {
@@ -11,6 +12,7 @@ interface SessionRow {
   readonly project: string
   readonly status: "local" | "uploaded" | "graded"
   readonly score: number | null
+  readonly reportEmailed: boolean
   readonly time: string
 }
 
@@ -40,6 +42,7 @@ async function fetchRemoteSessions(apiUrl: string, token: string): Promise<Sessi
         project: typeof item.project_title === "string" && item.project_title ? item.project_title : "-",
         status: normalizeRemoteStatus(item.status),
         score: typeof item.score === "number" ? item.score : null,
+        reportEmailed: item.report_emailed === true,
         time: typeof item.created_at === "string" ? item.created_at : "",
       })
     }
@@ -71,6 +74,7 @@ export default Runtime.handler(Commands.commands.sessions, (input) =>
           project: item.projectName || "-",
           status: item.status,
           score: item.score ?? null,
+          reportEmailed: false,
           time: item.time,
         })),
     ].sort((a, b) => b.time.localeCompare(a.time))
@@ -86,6 +90,11 @@ export default Runtime.handler(Commands.commands.sessions, (input) =>
     }
 
     for (const row of combined) {
+      if (row.status === "graded" && row.score !== null) {
+        const gradedText = formatGradedStatus(row.score, row.reportEmailed)
+        process.stdout.write(`${row.project.padEnd(20)} ${gradedText.padEnd(32)} ${row.id}\n`)
+        continue
+      }
       const scoreText = row.score !== null ? `${row.score}/10` : "-"
       process.stdout.write(`${row.project.padEnd(20)} ${row.status.padEnd(10)} ${scoreText.padEnd(8)} ${row.id}\n`)
     }

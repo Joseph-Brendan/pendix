@@ -9,6 +9,8 @@ import type { CloudDatabase } from "../db/index.js"
 import { schema } from "../db/schema.js"
 import { getEntitlements } from "../entitlements.js"
 import { AppError } from "../errors.js"
+import { GRADE_SESSION_JOB_KIND } from "../jobs/grade-worker.js"
+import { enqueueJob } from "../jobs/queue.js"
 import { requireActiveAccount, requireAuth, type AuthVariables } from "../middleware/auth.js"
 
 const GradingConsentSchema = z.object({
@@ -247,6 +249,16 @@ export function createSessionsRoutes(deps: SessionsRoutesDeps) {
         })
       }
 
+      await enqueueJob(tx, {
+        kind: GRADE_SESSION_JOB_KIND,
+        payload: {
+          session_id: sessionRow!.id,
+          tier: resolvedTier,
+        },
+        runAt: nowDate,
+        createdAt: nowDate,
+      })
+
       return { createdSession: sessionRow!, tier: resolvedTier, chargedCredit: shouldChargeCredit }
     })
 
@@ -300,6 +312,7 @@ export function createSessionsRoutes(deps: SessionsRoutesDeps) {
         ...row,
         score: scoreBySession.get(row.id) ?? null,
         understanding_score: understandingBySession.get(row.id) ?? null,
+        report_emailed: row.report_emailed_at !== null,
       })),
     })
   })

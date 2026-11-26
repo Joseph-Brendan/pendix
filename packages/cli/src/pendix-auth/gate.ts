@@ -4,6 +4,7 @@ import type { TuiAccountSnapshot, TuiAccountSource } from "@pendix/tui"
 import { Global } from "@pendix/util/global"
 import { Effect } from "effect"
 import { ensureSignedIn, type EnsureSignedInResult } from "./client"
+import { checkNewGradedNotice } from "./graded-notice"
 import { createAuthStorage, type CachedMe } from "./storage"
 
 function toTuiSnapshot(account: CachedMe, offline: boolean): TuiAccountSnapshot {
@@ -34,13 +35,25 @@ export const requirePendixSignedIn = Effect.fn("pendix.auth.gate")(function* () 
 
   // Drain any queued session uploads from previous runs and clean up 30-day-old local files.
   if (!result.offline) {
+    const apiUrl = resolvePendixApiUrl()
     const stateStore = createRecorderStateStore(global.data)
     void drainUploadQueue({
       dataDir: global.data,
       stateStore,
-      apiUrl: resolvePendixApiUrl(),
+      apiUrl,
       authToken: result.token.device_token,
     }).catch(() => undefined)
+
+    const gradedNotice = yield* Effect.promise(() =>
+      checkNewGradedNotice({
+        apiUrl,
+        authToken: result.token.device_token,
+        configDir: global.config,
+      }),
+    )
+    if (gradedNotice) {
+      process.stderr.write(`${gradedNotice}\n`)
+    }
   }
 
   let current = toTuiSnapshot(result.account, result.offline)
