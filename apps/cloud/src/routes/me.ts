@@ -1,12 +1,12 @@
-import { entitlementsFor, type PlanId } from "@pendix/shared/plans"
-import { normalizeTeachLock } from "@pendix/shared/teach"
-import type { TeachLock } from "@pendix/shared/types"
-import { and, eq } from "drizzle-orm"
+import { entitlementsFor } from "@pendix/shared/plans"
+import { eq } from "drizzle-orm"
 import { Hono } from "hono"
 import { z } from "zod"
 import type { CloudAuth } from "../auth.js"
+import { getCreditHistory } from "../credits.js"
 import type { CloudDatabase } from "../db/index.js"
 import { schema } from "../db/schema.js"
+import { getEntitlements } from "../entitlements.js"
 import { requireAuth, type AuthVariables } from "../middleware/auth.js"
 
 const DeleteMeSchema = z.object({
@@ -19,33 +19,13 @@ export interface MeRoutesDeps {
   readonly now: () => number
 }
 
-function normalizePlan(value: string | undefined): PlanId {
-  if (value === "solo" || value === "mentored") return value
-  return "free"
-}
-
 export function createMeRoutes(deps: MeRoutesDeps) {
   const router = new Hono<{ Variables: AuthVariables }>()
   const authMiddleware = requireAuth(deps)
 
   router.get("/me", authMiddleware, async (c) => {
     const user = c.get("user")!
-    const [activeSub] = await deps.db
-      .select()
-      .from(schema.subscriptions)
-      .where(and(eq(schema.subscriptions.user_id, user.id), eq(schema.subscriptions.status, "active")))
-
-    const groupLocks = await deps.db
-      .select({ teach_lock: schema.groups.teach_lock })
-      .from(schema.groupMembers)
-      .innerJoin(schema.groups, eq(schema.groupMembers.group_id, schema.groups.id))
-      .where(eq(schema.groupMembers.user_id, user.id))
-
-    const hasClassLock = groupLocks.some((row) => row.teach_lock === "class")
-    const userLock = normalizeTeachLock(user.teach_lock)
-    const teachLock: TeachLock = hasClassLock ? "class" : userLock === "self" ? "self" : "none"
-
-    const plan = normalizePlan(activeSub?.plan)
+    const ent = await getEntitlements(deps.db, user.id, new Date(deps.now()))
 
     return c.json({
       id: user.id,
@@ -53,10 +33,16 @@ export function createMeRoutes(deps: MeRoutesDeps) {
       email: user.email,
       account_kind: user.account_kind,
       status: user.status,
-      plan,
-      entitlements: entitlementsFor(plan),
-      teach_lock: teachLock,
+      plan: ent.plan,
+      entitlements: entitlementsFor(ent.plan),
+      teach_lock: ent.teach_lock,
     })
+  })
+
+  router.get("/me/credits", authMiddleware, async (c) => {
+    const user = c.get("user")!
+    const history = await getCreditHistory(deps.db, user.id, 50)
+    return c.json(history)
   })
 
   router.delete("/me", authMiddleware, async (c) => {

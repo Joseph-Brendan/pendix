@@ -4,8 +4,10 @@ import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm"
 import { Hono } from "hono"
 import { z } from "zod"
 import type { CloudAuth } from "../auth.js"
+import { insertCreditEntry } from "../credits.js"
 import type { CloudDatabase } from "../db/index.js"
 import { schema } from "../db/schema.js"
+import { getEntitlements } from "../entitlements.js"
 import { AppError } from "../errors.js"
 import { requireActiveAccount, requireAuth, type AuthVariables } from "../middleware/auth.js"
 
@@ -86,40 +88,6 @@ export interface SessionsRoutesDeps {
   readonly now: () => number
 }
 
-async function resolveUploadTier(
-  db: CloudDatabase,
-  userId: string,
-): Promise<"subscriber" | "credit" | undefined> {
-  const [activeSub] = await db
-    .select({ plan: schema.subscriptions.plan })
-    .from(schema.subscriptions)
-    .where(and(eq(schema.subscriptions.user_id, userId), eq(schema.subscriptions.status, "active")))
-
-  if (activeSub && (activeSub.plan === "solo" || activeSub.plan === "mentored")) {
-    return "subscriber"
-  }
-
-  const [groupSeat] = await db
-    .select({ seat_plan: schema.groupMembers.seat_plan })
-    .from(schema.groupMembers)
-    .where(eq(schema.groupMembers.user_id, userId))
-
-  if (groupSeat && (groupSeat.seat_plan === "solo" || groupSeat.seat_plan === "mentored")) {
-    return "subscriber"
-  }
-
-  const [creditRow] = await db
-    .select({ balance: sql<number>`coalesce(sum(${schema.creditLedger.delta}), 0)::int` })
-    .from(schema.creditLedger)
-    .where(eq(schema.creditLedger.user_id, userId))
-
-  if ((creditRow?.balance ?? 0) >= CREDIT_COSTS.sessionGrade) {
-    return "credit"
-  }
-
-  return undefined
-}
-
 export function createSessionsRoutes(deps: SessionsRoutesDeps) {
   const router = new Hono<{ Variables: AuthVariables }>()
   const authMiddleware = requireAuth(deps)
@@ -188,11 +156,6 @@ export function createSessionsRoutes(deps: SessionsRoutesDeps) {
       throw new AppError(403, "GRADING_CONSENT_REQUIRED", "Grading consent is required before uploading sessions.")
     }
 
-    const tier = await resolveUploadTier(deps.db, user.id)
-    if (!tier) {
-      throw new AppError(403, "ENTITLEMENT_REQUIRED", "Buy credits or subscribe to upload sessions for grading.")
-    }
-
     // Run redactor again on the server; store cleaned version and log count only if anything was caught.
     const { records: cleanedRecords, counts } = redactSession(body.records as readonly RecorderRecord[])
     const startRecord = cleanedRecords.find((r) => r.type === "start")
@@ -218,31 +181,81 @@ export function createSessionsRoutes(deps: SessionsRoutesDeps) {
       )
     }
 
-    const [createdSession] = await deps.db
-      .insert(schema.sessions)
-      .values({
-        user_id: user.id,
-        source: body.source,
-        project_title: cleanedTitle.text,
-        model,
-        status: "queued",
-        tier,
-      })
-      .returning()
+    const nowDate = new Date(deps.now())
 
-    await deps.db.insert(schema.sessionRecords).values({
-      session_id: createdSession!.id,
-      redacted_json: {
-        local_session_id: body.local_session_id ?? null,
-        records: cleanedRecords,
-      },
+    // Charge credits or count against monthly fair use atomically under a per-user row lock.
+    const { createdSession, tier, chargedCredit } = await deps.db.transaction(async (tx) => {
+      await tx.select({ id: schema.users.id }).from(schema.users).where(eq(schema.users.id, user.id)).for("update")
+
+      const ent = await getEntitlements(tx, user.id, nowDate)
+      let resolvedTier: "subscriber" | "credit"
+      let shouldChargeCredit = false
+
+      if (ent.plan === "solo" || ent.plan === "mentored") {
+        if (ent.fair_use_remaining > 0) {
+          resolvedTier = "subscriber"
+        } else if (ent.credit_balance >= CREDIT_COSTS.sessionGrade) {
+          resolvedTier = "credit"
+          shouldChargeCredit = true
+        } else {
+          throw new AppError(
+            403,
+            "FAIR_USE_REACHED",
+            "Monthly fair use limit reached. Buy credits to grade more sessions this month.",
+          )
+        }
+      } else if (ent.credit_balance >= CREDIT_COSTS.sessionGrade) {
+        resolvedTier = "credit"
+        shouldChargeCredit = true
+      } else {
+        throw new AppError(
+          403,
+          "NO_CREDITS",
+          "Not enough credits. Buy credits or subscribe to grade this session.",
+        )
+      }
+
+      const [sessionRow] = await tx
+        .insert(schema.sessions)
+        .values({
+          user_id: user.id,
+          source: body.source,
+          project_title: cleanedTitle.text,
+          model,
+          status: "queued",
+          tier: resolvedTier,
+          created_at: nowDate,
+        })
+        .returning()
+
+      await tx.insert(schema.sessionRecords).values({
+        session_id: sessionRow!.id,
+        redacted_json: {
+          local_session_id: body.local_session_id ?? null,
+          records: cleanedRecords,
+        },
+        created_at: nowDate,
+      })
+
+      if (shouldChargeCredit) {
+        await insertCreditEntry(tx, {
+          userId: user.id,
+          amount: -CREDIT_COSTS.sessionGrade,
+          reason: "session_grade",
+          referenceId: sessionRow!.id,
+          createdAt: nowDate,
+        })
+      }
+
+      return { createdSession: sessionRow!, tier: resolvedTier, chargedCredit: shouldChargeCredit }
     })
 
     return c.json(
       {
-        id: createdSession!.id,
-        status: createdSession!.status,
+        id: createdSession.id,
+        status: createdSession.status,
         tier,
+        charged_credit: chargedCredit,
         redaction_count: totalRedactions,
       },
       201,

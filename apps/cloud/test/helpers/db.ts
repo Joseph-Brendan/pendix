@@ -7,6 +7,7 @@ export interface TestDatabase {
   readonly db: CloudDatabase
   readonly sql: ReturnType<typeof postgres>
   readonly schemaName: string
+  readonly queries: string[]
   readonly close: () => Promise<void>
 }
 
@@ -14,6 +15,7 @@ export async function createTestDatabase(): Promise<TestDatabase> {
   const env = loadEnv()
   const connectionString = env.TEST_DATABASE_URL
   const schemaName = `test_${crypto.randomBytes(8).toString("hex")}`
+  const queries: string[] = []
 
   const admin = postgres(connectionString, { max: 1, onnotice: () => {} })
   try {
@@ -23,12 +25,19 @@ export async function createTestDatabase(): Promise<TestDatabase> {
   }
 
   await runMigrations(connectionString, { schemaName })
-  const client = createDatabase(connectionString, { searchPath: schemaName, max: 5 })
+  const client = createDatabase(connectionString, {
+    searchPath: schemaName,
+    max: 5,
+    onQuery(query) {
+      queries.push(query)
+    },
+  })
 
   return {
     db: client.db,
     sql: client.sql,
     schemaName,
+    queries,
     close: async () => {
       await client.close()
       const cleanup = postgres(connectionString, { max: 1, onnotice: () => {} })

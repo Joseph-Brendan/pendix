@@ -11,6 +11,7 @@ export const DEFAULT_MIGRATIONS_FOLDER = path.resolve(currentDir, "../../migrati
 export interface DatabaseOptions {
   readonly searchPath?: string
   readonly max?: number
+  readonly onQuery?: (query: string) => void
 }
 
 export function createDatabase(connectionString: string, options: DatabaseOptions = {}) {
@@ -19,7 +20,18 @@ export function createDatabase(connectionString: string, options: DatabaseOption
     onnotice: () => {},
     ...(options.searchPath ? { connection: { search_path: options.searchPath } } : {}),
   })
-  const db = drizzle({ client: sql })
+  const db = drizzle({
+    client: sql,
+    ...(options.onQuery
+      ? {
+          logger: {
+            logQuery(query: string) {
+              options.onQuery!(query)
+            },
+          },
+        }
+      : {}),
+  })
   return {
     db,
     sql,

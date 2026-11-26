@@ -257,7 +257,7 @@ describe("POST /sessions upload, server-side redaction, and 2 MB limit", () => {
     expect(res1.status).toBe(403)
     expect(((await res1.json()) as { error: { code: string } }).error.code).toBe("GRADING_CONSENT_REQUIRED")
 
-    // Consent granted, but free plan and 0 credits -> 403 ENTITLEMENT_REQUIRED.
+    // Consent granted, but free plan and 0 credits -> 403 NO_CREDITS.
     const freeUser = await createActiveAdultWithPlan(app, testDb, mailer, "freeonly@example.com", {
       subscribe: false,
       grantConsent: true,
@@ -268,6 +268,6 @@ describe("POST /sessions upload, server-side redaction, and 2 MB limit", () => {
       body: payload,
     })
     expect(res2.status).toBe(403)
-    expect(((await res2.json()) as { error: { code: string } }).error.code).toBe("ENTITLEMENT_REQUIRED")
+    expect(((await res2.json()) as { error: { code: string } }).error.code).toBe("NO_CREDITS")
   })
 })
