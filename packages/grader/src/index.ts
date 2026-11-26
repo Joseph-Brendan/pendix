@@ -43,3 +43,18 @@ export {
   type FakeModelHandler,
   type FakeModelOptions,
 } from "./fake-model.js"
+
+export {
+  evaluateGoldenAgreement,
+  filterEvaluationPrompts,
+  formatGoldenReportMarkdown,
+  gradeGoldenPrompts,
+  type CriterionAgreementStats,
+  type CriterionDiffDetail,
+  type GoldenAgreementReport,
+  type GoldenDisagreement,
+  type GoldenPromptItem,
+  type GradeGoldenPromptsOptions,
+  type GradeGoldenPromptsResult,
+  type ModelPromptJudgment,
+} from "./golden.js"
