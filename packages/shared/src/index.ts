@@ -19,12 +19,15 @@ export {
   RUBRIC,
   RUBRIC_CRITERIA,
   SESSION_NOTES_MAX_WORDS,
+  SessionNotesSchema,
   UnderstandingScoreSchema,
+  countWords,
   type PromptGrade,
   type PromptReasons,
   type PromptScores,
   type RubricCriterion,
   type RubricCriterionDefinition,
+  type SessionNotes,
   type UnderstandingScore,
 } from "./rubric.js"
 

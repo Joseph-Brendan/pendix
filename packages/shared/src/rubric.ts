@@ -66,6 +66,12 @@ export const SESSION_NOTES_MAX_WORDS = 250
 export const GOLDEN_EXACT_MATCH_MIN = 0.8
 export const GOLDEN_OFF_BY_TWO_MAX = 0.05
 
+export function countWords(text: string): number {
+  const trimmed = text.trim()
+  if (!trimmed) return 0
+  return trimmed.split(/\s+/).length
+}
+
 export const CriterionScoreSchema = z.number().int().min(0).max(2)
 
 export const PromptScoresSchema = z.object({
@@ -113,7 +119,36 @@ export const UnderstandingScoreSchema = z.object({
   reason: z.string().trim().min(1),
 })
 
+export const SessionNotesSchema = z
+  .object({
+    what_was_built: z.string().trim().min(1),
+    things_learned: z.array(z.string().trim().min(1)).min(3).max(3),
+    things_to_work_on: z.array(z.string().trim().min(1)).min(2).max(2),
+    summary: z.string().trim().min(1),
+  })
+  .superRefine((data, ctx) => {
+    const summaryWords = countWords(data.summary)
+    if (summaryWords >= SESSION_NOTES_MAX_WORDS) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["summary"],
+        message: `Session notes summary must be under ${SESSION_NOTES_MAX_WORDS} words (got ${summaryWords})`,
+      })
+    }
+    const combinedWords = countWords(
+      [data.what_was_built, ...data.things_learned, ...data.things_to_work_on].join(" "),
+    )
+    if (combinedWords >= SESSION_NOTES_MAX_WORDS) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["what_was_built"],
+        message: `Session notes must be under ${SESSION_NOTES_MAX_WORDS} words in total (got ${combinedWords})`,
+      })
+    }
+  })
+
 export type PromptScores = z.infer<typeof PromptScoresSchema>
 export type PromptReasons = z.infer<typeof PromptReasonsSchema>
 export type PromptGrade = z.infer<typeof PromptGradeSchema>
 export type UnderstandingScore = z.infer<typeof UnderstandingScoreSchema>
+export type SessionNotes = z.infer<typeof SessionNotesSchema>
