@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: var(--pendix-ink);
+  --color-off-black: var(--pendix-off-black);
+  --color-white: var(--pendix-white);
+  --color-off-white: var(--pendix-off-white);
+  --color-line: var(--pendix-line);
+  --color-muted: var(--pendix-muted);
+  --color-hot-orange: var(--pendix-hot-orange);
+  --color-orange-tint: var(--pendix-orange-tint);
+  --font-sans: var(--pendix-font-ui);
+  --font-mono: var(--pendix-font-code);
+  --radius-pendix: var(--pendix-radius);
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--pendix-off-white);
+    color: var(--pendix-ink);
+    font-family: var(--pendix-font-ui);
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    min-height: 100%;
+  }
+
+  code,
+  pre,
+  kbd {
+    font-family: var(--pendix-font-code);
+  }
+
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--pendix-hot-orange);
+    outline-offset: 2px;
+  }
+}

@@ -1,5 +1,6 @@
 import type { GraderModelFactory } from "@pendix/grader"
 import { Hono, type Context } from "hono"
+import { cors } from "hono/cors"
 import type { Logger } from "pino"
 import pkg from "../package.json" with { type: "json" }
 import { createAuth } from "./auth.js"
@@ -55,6 +56,25 @@ export function createApp(options: CreateAppOptions = {}) {
   }
 
   const app = new Hono<{ Variables: AuthVariables }>()
+  const configuredWebUrl = (options.webUrl ?? process.env.WEB_URL ?? "http://127.0.0.1:5173").replace(/\/$/, "")
+  const allowedOrigins = new Set([configuredWebUrl, "http://127.0.0.1:5173", "http://localhost:5173"])
+
+  app.use(
+    "*",
+    cors({
+      origin: (origin) => {
+        if (!origin) return configuredWebUrl
+        if (allowedOrigins.has(origin)) return origin
+        if (nodeEnv !== "production" && /^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(origin)) {
+          return origin
+        }
+        return ""
+      },
+      credentials: true,
+      allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      allowHeaders: ["Content-Type", "Authorization"],
+    }),
+  )
 
   app.use("*", requestIdMiddleware(logger))
   app.use("*", rateLimitMiddleware({ ...rateLimit, resolveUserId: options.resolveUserId }))
@@ -71,6 +91,7 @@ export function createApp(options: CreateAppOptions = {}) {
       mailer,
       secret: authSecret,
       baseUrl: apiUrl,
+      webUrl,
       googleClientId: options.googleClientId,
       googleClientSecret: options.googleClientSecret,
     })

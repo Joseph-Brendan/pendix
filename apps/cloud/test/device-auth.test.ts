@@ -112,24 +112,30 @@ describe("device sign-in flow and device management", () => {
     expect(startBody.user_code).not.toMatch(LOOK_ALIKE_CHARS)
     expect(startBody.expires_in).toBe(600)
     expect(startBody.interval).toBeGreaterThanOrEqual(5)
-    expect(startBody.verification_url).toContain("/device/verify")
+    expect(startBody.verification_url).toBe(`http://127.0.0.1:5173/device/verify?code=${startBody.user_code}`)
 
-    // Verification HTML page shows sign-in form when logged out and "This is me" when signed in.
+    // Legacy API /device/verify redirects to the React dashboard, and /device/verify/info returns JSON state.
     const verifyUrl = new URL(startBody.verification_url)
-    const anonPage = await app.request(`${verifyUrl.pathname}${verifyUrl.search}`)
-    expect(anonPage.status).toBe(200)
-    expect(anonPage.headers.get("content-type")).toContain("text/html")
-    const anonHtml = await anonPage.text()
-    expect(anonHtml).toContain(startBody.user_code)
-    expect(anonHtml).toContain("Sign in")
+    const redirectRes = await app.request(`${verifyUrl.pathname}${verifyUrl.search}`)
+    expect(redirectRes.status).toBe(302)
+    expect(redirectRes.headers.get("location")).toBe(startBody.verification_url)
 
-    const signedInPage = await app.request(`${verifyUrl.pathname}${verifyUrl.search}`, {
+    const anonInfoRes = await app.request(`/device/verify/info?code=${startBody.user_code}`)
+    expect(anonInfoRes.status).toBe(200)
+    const anonInfo = (await anonInfoRes.json()) as { user_code: string; formatted_code: string; viewer: unknown }
+    expect(anonInfo.user_code).toBe(startBody.user_code)
+    expect(anonInfo.formatted_code).toBe(`${startBody.user_code.slice(0, 4)}-${startBody.user_code.slice(4)}`)
+    expect(anonInfo.viewer).toBeNull()
+
+    const signedInInfoRes = await app.request(`/device/verify/info?code=${startBody.user_code}`, {
       headers: { cookie },
     })
-    expect(signedInPage.status).toBe(200)
-    const signedInHtml = await signedInPage.text()
-    expect(signedInHtml).toContain(startBody.user_code)
-    expect(signedInHtml).toContain("This is me")
+    expect(signedInInfoRes.status).toBe(200)
+    const signedInInfo = (await signedInInfoRes.json()) as {
+      viewer: { display_name: string; can_approve: boolean } | null
+    }
+    expect(signedInInfo.viewer?.display_name).toBe("Ada Device")
+    expect(signedInInfo.viewer?.can_approve).toBe(true)
 
     const approveRes = await app.request("/device/approve", {
       method: "POST",
@@ -340,20 +346,21 @@ describe("device sign-in flow and device management", () => {
       body: JSON.stringify({ name: "Teen Chromebook, terminal" }),
     })
     expect(startRes.status).toBe(200)
-    const { device_code, user_code, verification_url } = (await startRes.json()) as {
+    const { device_code, user_code } = (await startRes.json()) as {
       device_code: string
       user_code: string
       verification_url: string
     }
 
-    const verifyUrl = new URL(verification_url)
-    const pageRes = await app.request(`${verifyUrl.pathname}${verifyUrl.search}`, {
+    const infoRes = await app.request(`/device/verify/info?code=${user_code}`, {
       headers: { cookie },
     })
-    expect(pageRes.status).toBe(200)
-    const html = await pageRes.text()
-    expect(html.toLowerCase()).toContain("guardian")
-    expect(html).not.toContain("This is me")
+    expect(infoRes.status).toBe(200)
+    const info = (await infoRes.json()) as {
+      viewer: { can_approve: boolean; blocked_reason: string | null } | null
+    }
+    expect(info.viewer?.can_approve).toBe(false)
+    expect((info.viewer?.blocked_reason ?? "").toLowerCase()).toContain("guardian")
 
     const approveRes = await app.request("/device/approve", {
       method: "POST",

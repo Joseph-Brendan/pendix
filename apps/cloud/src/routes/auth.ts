@@ -32,6 +32,10 @@ const SigninSchema = z.object({
   password: z.string().min(1),
 })
 
+const ForgotPasswordSchema = z.object({
+  email: z.string().trim().email(),
+})
+
 const CompleteSignupSchema = z.object({
   display_name: z.string().trim().min(1).max(80),
   dob: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be YYYY-MM-DD"),
@@ -192,6 +196,31 @@ export function createAuthRoutes(deps: AuthRoutesDeps) {
     }
 
     return response
+  })
+
+  router.post("/auth/signout", async (c) => {
+    const response = await deps.auth.api.signOut({
+      headers: c.req.raw.headers,
+      asResponse: true,
+    })
+    return response
+  })
+
+  router.post("/auth/forgot-password", async (c) => {
+    const body = ForgotPasswordSchema.parse(await c.req.json())
+    const redirectTo = `${deps.webUrl.replace(/\/$/, "")}/signin`
+    await deps.auth.api
+      .requestPasswordReset({
+        body: {
+          email: body.email.toLowerCase(),
+          redirectTo,
+        },
+      })
+      .catch(() => undefined)
+    return c.json({
+      ok: true,
+      message: "If an account exists for that email, we sent a password reset link.",
+    })
   })
 
   // Google sign-up completes date of birth, display name, and consents on the next screen.

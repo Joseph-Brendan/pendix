@@ -5,7 +5,7 @@ import { deviceAuthorization } from "better-auth/plugins"
 import { eq } from "drizzle-orm"
 import type { CloudDatabase } from "./db/index.js"
 import { schema } from "./db/schema.js"
-import { buildVerificationEmail, type Mailer } from "./mailer.js"
+import { buildPasswordResetEmail, buildVerificationEmail, type Mailer } from "./mailer.js"
 
 export const GUARDIAN_APPROVAL_TTL_MS = 7 * 24 * 60 * 60 * 1000
 export const GUARDIAN_LOGIN_TTL_MS = 60 * 60 * 1000
@@ -30,17 +30,21 @@ export interface CreateAuthOptions {
   readonly mailer: Mailer
   readonly secret: string
   readonly baseUrl: string
+  readonly webUrl?: string
   readonly googleClientId?: string
   readonly googleClientSecret?: string
 }
 
 export function createAuth(options: CreateAuthOptions) {
   const googleEnabled = Boolean(options.googleClientId && options.googleClientSecret)
+  const webUrl = (options.webUrl ?? "http://127.0.0.1:5173").replace(/\/$/, "")
+  const trustedOrigins = [...new Set([options.baseUrl.replace(/\/$/, ""), webUrl, "http://127.0.0.1:5173", "http://localhost:5173"])]
 
   return betterAuth({
     secret: options.secret,
     baseURL: options.baseUrl,
     basePath: "/api/auth",
+    trustedOrigins,
     database: drizzleAdapter(options.db, {
       provider: "pg",
       camelCase: false,
@@ -58,7 +62,7 @@ export function createAuth(options: CreateAuthOptions) {
         interval: "5s",
         userCodeLength: 8,
         generateUserCode: generateNoLookAlikeUserCode,
-        verificationUri: `${options.baseUrl.replace(/\/$/, "")}/device/verify`,
+        verificationUri: `${webUrl}/device/verify`,
         schema: {
           deviceCode: {
             fields: {
@@ -129,6 +133,15 @@ export function createAuth(options: CreateAuthOptions) {
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: true,
+      async sendResetPassword({ user, url }) {
+        await options.mailer.send(
+          buildPasswordResetEmail({
+            to: user.email,
+            displayName: user.name,
+            url,
+          }),
+        )
+      },
     },
     emailVerification: {
       sendOnSignUp: true,

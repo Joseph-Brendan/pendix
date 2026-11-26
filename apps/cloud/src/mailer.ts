@@ -80,6 +80,31 @@ export function buildVerificationEmail(input: { readonly to: string; readonly di
   }
 }
 
+export function buildPasswordResetEmail(input: {
+  readonly to: string
+  readonly displayName: string
+  readonly url: string
+}): EmailMessage {
+  const text = [
+    `Hi ${input.displayName},`,
+    "",
+    "Use this link to reset your Pendix password:",
+    "",
+    input.url,
+    "",
+    "If you did not ask for a password reset, you can ignore this email.",
+  ].join("\n")
+
+  const html = `<p>Hi ${escapeHtml(input.displayName)},</p><p>Use this link to reset your Pendix password:</p><p><a href="${escapeHtml(input.url)}">Reset password</a></p><p>If you did not ask for a password reset, you can ignore this email.</p>`
+
+  return {
+    to: input.to,
+    subject: "Reset your Pendix password",
+    text,
+    html,
+  }
+}
+
 export function buildGuardianApprovalEmail(input: {
   readonly to: string
   readonly teenDisplayName: string
