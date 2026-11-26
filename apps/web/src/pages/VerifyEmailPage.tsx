@@ -7,10 +7,11 @@ import { Card, CardContent, CardDescription, CardHeader, Skeleton } from "../ui/
 export function VerifyEmailPage() {
   const search = useSearch({ from: "/verify-email" })
   const token = typeof search.token === "string" ? search.token : ""
+  const alreadyVerified = search.verified === "1"
 
   const verifyQuery = useQuery({
     queryKey: ["verify-email", token],
-    enabled: Boolean(token),
+    enabled: Boolean(token) && !alreadyVerified,
     retry: false,
     queryFn: async () => {
       const res = await fetch(`${API_URL}/api/auth/verify-email?token=${encodeURIComponent(token)}`, {
@@ -24,27 +25,29 @@ export function VerifyEmailPage() {
     },
   })
 
+  const isVerified = alreadyVerified || verifyQuery.isSuccess
+
   return (
     <AuthShell>
       <Card>
         <CardHeader>
           <h1 className="text-xl font-semibold tracking-tight text-ink">
-            {!token
-              ? "Check your email"
-              : verifyQuery.isLoading
-                ? "Verifying your email"
-                : verifyQuery.isError
-                  ? "Verification link expired"
-                  : "Email verified"}
+            {isVerified
+              ? "Email verified"
+              : !token
+                ? "Check your email"
+                : verifyQuery.isLoading
+                  ? "Verifying your email"
+                  : "Verification link expired"}
           </h1>
           <CardDescription>
-            {!token
-              ? "Open the link we sent to your inbox to activate your Pendix account."
-              : verifyQuery.isLoading
-                ? "Just a moment while we confirm your link."
-                : verifyQuery.isError
-                  ? "That link did not work. Try signing up again or request a fresh link."
-                  : "Your email is confirmed. You can sign in now."}
+            {isVerified
+              ? "Your email is confirmed. You can sign in now."
+              : !token
+                ? "Open the link we sent to your inbox to activate your Pendix account."
+                : verifyQuery.isLoading
+                  ? "Just a moment while we confirm your link."
+                  : "That link did not work. Try signing up again or request a fresh link."}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">

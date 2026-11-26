@@ -72,6 +72,22 @@ export function SignUpPage() {
     if (isUnder15) {
       return
     }
+    if (!displayName.trim()) {
+      setFormError("Enter a display name.")
+      return
+    }
+    if (!email.trim() || !email.includes("@")) {
+      setFormError("Enter a valid email address.")
+      return
+    }
+    if (password.length < 8) {
+      setFormError("Password must be at least 8 characters.")
+      return
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dob)) {
+      setFormError("Enter your date of birth.")
+      return
+    }
     if (!agreedTerms) {
       setFormError("Please agree to the Terms and Privacy Policy to continue.")
       return

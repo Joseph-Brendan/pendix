@@ -1,4 +1,6 @@
-export const API_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") || "http://127.0.0.1:3001"
+export const API_URL =
+  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ||
+  (import.meta.env.DEV ? "/pendix-api" : "http://127.0.0.1:3001")
 
 export class ApiClientError extends Error {
   readonly status: number

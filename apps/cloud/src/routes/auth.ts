@@ -128,6 +128,7 @@ export function createAuthRoutes(deps: AuthRoutesDeps) {
     }
 
     const initialStatus = kind === "teen" ? "pending_guardian" : "pending_verification"
+    const verifyCallbackUrl = `${deps.webUrl.replace(/\/$/, "")}/verify-email?verified=1`
 
     let created: { user: { id: string; email: string } }
     try {
@@ -141,6 +142,7 @@ export function createAuthRoutes(deps: AuthRoutesDeps) {
           status: initialStatus,
           country: body.country ?? "",
           tz: body.tz ?? "UTC",
+          callbackURL: verifyCallbackUrl,
         },
       })) as { user: { id: string; email: string } }
     } catch (error) {

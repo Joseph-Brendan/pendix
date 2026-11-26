@@ -44,6 +44,7 @@ const verifyEmailRoute = createRoute({
   path: "/verify-email",
   validateSearch: (search: Record<string, unknown>) => ({
     token: typeof search.token === "string" ? search.token : undefined,
+    verified: search.verified === "1" || search.verified === 1 || search.verified === true ? "1" : undefined,
   }),
   component: VerifyEmailPage,
 })
