@@ -1,3 +1,4 @@
+import type { GraderModelFactory } from "@pendix/grader"
 import { Hono, type Context } from "hono"
 import type { Logger } from "pino"
 import pkg from "../package.json" with { type: "json" }
@@ -10,6 +11,7 @@ import { createFakeMailer, type Mailer } from "./mailer.js"
 import type { AuthVariables } from "./middleware/auth.js"
 import { rateLimitMiddleware, type RateLimitOptions } from "./middleware/rate-limit.js"
 import { requestIdMiddleware } from "./middleware/request-id.js"
+import { createAssessmentsRoutes } from "./routes/assessments.js"
 import { createAuthRoutes } from "./routes/auth.js"
 import { createBillingRoutes } from "./routes/billing.js"
 import { createDeviceRoutes } from "./routes/device.js"
@@ -33,6 +35,7 @@ export interface CreateAppOptions {
   readonly flwWebhookHash?: string
   readonly ngnPricesJson?: string
   readonly flutterwave?: FlutterwaveClient
+  readonly modelFactory?: GraderModelFactory
   readonly now?: () => number
   readonly rateLimit?: Omit<RateLimitOptions, "resolveUserId">
   readonly resolveUserId?: (c: Context<{ Variables: AuthVariables }>) => string | undefined
@@ -85,6 +88,7 @@ export function createApp(options: CreateAppOptions = {}) {
     app.route("/", createGuardianRoutes({ auth, db: options.db, mailer, authSecret, webUrl, now }))
     app.route("/", createMeRoutes({ auth, db: options.db, now }))
     app.route("/", createSessionsRoutes({ auth, db: options.db, now }))
+    app.route("/", createAssessmentsRoutes({ auth, db: options.db, now, modelFactory: options.modelFactory }))
     app.route(
       "/",
       createBillingRoutes({

@@ -201,18 +201,26 @@ export const understandingScores = pgTable("understanding_scores", {
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
-export const assessments = pgTable("assessments", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  user_id: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  status: text("status").notNull().default("available"),
-  total_score: integer("total_score"),
-  due_at: timestamp("due_at", { withTimezone: true }).notNull(),
-  opened_at: timestamp("opened_at", { withTimezone: true }),
-  submitted_at: timestamp("submitted_at", { withTimezone: true }),
-  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-})
+export const assessments = pgTable(
+  "assessments",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    user_id: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    week_key: text("week_key"),
+    tier: text("tier").notNull().default("credit"),
+    model_used: text("model_used"),
+    status: text("status").notNull().default("available"),
+    total_score: integer("total_score"),
+    is_late: boolean("is_late").notNull().default(false),
+    due_at: timestamp("due_at", { withTimezone: true }).notNull(),
+    opened_at: timestamp("opened_at", { withTimezone: true }),
+    submitted_at: timestamp("submitted_at", { withTimezone: true }),
+    created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [uniqueIndex("assessments_user_week_idx").on(table.user_id, table.week_key)],
+)
 
 export const assessmentAnswers = pgTable("assessment_answers", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -221,7 +229,10 @@ export const assessmentAnswers = pgTable("assessment_answers", {
     .references(() => assessments.id, { onDelete: "cascade" }),
   question_index: integer("question_index").notNull(),
   question_kind: text("question_kind").notNull(),
+  reference_target: text("reference_target").notNull().default(""),
   prompt: text("prompt").notNull(),
+  choices: jsonb("choices"),
+  reference_answer: text("reference_answer"),
   answer: text("answer"),
   score: integer("score"),
   feedback: text("feedback"),

@@ -1,6 +1,12 @@
 import type { GraderModelSpec } from "@pendix/shared/models"
 import type { LanguageModel } from "ai"
 import { MockLanguageModelV4 } from "ai/test"
+import {
+  ASSESSMENT_MARK_PROMPT_MARKER,
+  WEEKLY_RECORDS_PROMPT_MARKER,
+  type BuildAssessmentOutput,
+  type MarkAssessmentOutput,
+} from "./assessment.js"
 import type { BatchGradeOutput } from "./schemas.js"
 
 export interface FakeModelCall {
@@ -129,6 +135,146 @@ function extractPromptParts(promptMessages: ReadonlyArray<{ readonly role: strin
   return { system, prompt: userParts.join("\n") }
 }
 
+function extractJsonBlockAfterMarker(prompt: string, marker: string): unknown | null {
+  const idx = prompt.indexOf(marker)
+  if (idx === -1) return null
+  const afterMarker = prompt.slice(idx + marker.length)
+  const retryMarker = "\n\nYour previous response failed structured output validation"
+  const jsonText = afterMarker.includes(retryMarker)
+    ? afterMarker.slice(0, afterMarker.indexOf(retryMarker))
+    : afterMarker
+  try {
+    return JSON.parse(jsonText) as unknown
+  } catch {
+    return null
+  }
+}
+
+export function buildDefaultAssessmentResponse(call: FakeModelCall): BuildAssessmentOutput | null {
+  const raw = extractJsonBlockAfterMarker(call.prompt, WEEKLY_RECORDS_PROMPT_MARKER) as {
+    readonly sessions?: readonly {
+      readonly project_title?: string
+      readonly files?: readonly string[]
+    }[]
+  } | null
+  if (!raw || !Array.isArray(raw.sessions)) return null
+
+  const targets: string[] = []
+  for (const session of raw.sessions) {
+    if (Array.isArray(session.files)) {
+      for (const file of session.files) {
+        if (typeof file === "string" && file.trim() && !targets.includes(file)) {
+          targets.push(file)
+        }
+      }
+    }
+  }
+  if (targets.length === 0) {
+    for (const session of raw.sessions) {
+      if (session.project_title) targets.push(session.project_title)
+    }
+  }
+  const targetAt = (i: number) => targets[i % Math.max(1, targets.length)] ?? "project"
+
+  const t0 = targetAt(0)
+  const t1 = targetAt(1)
+  const t2 = targetAt(2)
+  const t3 = targetAt(3)
+  const t4 = targetAt(4)
+
+  return {
+    questions: [
+      {
+        question_index: 0,
+        question_kind: "why",
+        reference_target: t0,
+        prompt: `Why did the agent structure the change in ${t0} the way it did?`,
+        reference_answer: `It kept the logic in ${t0} focused and verifiable with tests.`,
+      },
+      {
+        question_index: 1,
+        question_kind: "why",
+        reference_target: t1,
+        prompt: `Why did the agent add explicit guards when updating ${t1}?`,
+        reference_answer: `To prevent invalid inputs or edge cases from failing silently in ${t1}.`,
+      },
+      {
+        question_index: 2,
+        question_kind: "what_would_break",
+        reference_target: t2,
+        prompt: `What would break if the validation check in ${t2} were removed?`,
+        reference_answer: `Invalid state or bad input could pass through ${t2} unchecked.`,
+      },
+      {
+        question_index: 3,
+        question_kind: "how_to_check",
+        reference_target: t3,
+        prompt: `How would you check that your update to ${t3} still handles failure cases?`,
+        reference_answer: `Write a targeted unit test for ${t3} covering invalid input and assert the failure path.`,
+      },
+      {
+        question_index: 4,
+        question_kind: "multiple_choice",
+        reference_target: t4,
+        prompt: `Which check best confirms the behavior you changed in ${t4}?`,
+        choices: [
+          `Running unit tests that assert the expected output of ${t4}`,
+          `Skipping tests and checking only that the file saves`,
+          `Removing type checks before running ${t4}`,
+          `Ignoring errors returned by ${t4}`,
+        ],
+        reference_answer: `Running unit tests that assert the expected output of ${t4}`,
+      },
+    ],
+  }
+}
+
+export function buildDefaultMarkAssessmentResponse(call: FakeModelCall): MarkAssessmentOutput | null {
+  const raw = extractJsonBlockAfterMarker(call.prompt, ASSESSMENT_MARK_PROMPT_MARKER) as {
+    readonly items?: readonly {
+      readonly question_index: number
+      readonly question_kind?: string
+      readonly learner_answer?: string
+      readonly reference_answer?: string
+    }[]
+  } | null
+  if (!raw || !Array.isArray(raw.items)) return null
+
+  const marks = raw.items.map((item) => {
+    const answer = (item.learner_answer ?? "").trim()
+    let score = 0
+    if (item.question_kind === "multiple_choice") {
+      score = answer && item.reference_answer && answer.toLowerCase() === item.reference_answer.toLowerCase() ? 2 : answer.length > 0 ? 1 : 0
+    } else if (answer.length >= 20) {
+      score = 2
+    } else if (answer.length > 0) {
+      score = 1
+    }
+    const feedback =
+      score === 2
+        ? "Clear and grounded answer."
+        : score === 1
+          ? "Partly right, add a bit more concrete detail from the file."
+          : "Missing or unclear answer."
+    return {
+      question_index: item.question_index,
+      score,
+      feedback,
+    }
+  })
+
+  const total = marks.reduce((sum, m) => sum + m.score, 0)
+  return { marks, total }
+}
+
+function buildDefaultFakeResponse(call: FakeModelCall): unknown {
+  const assessmentBuild = buildDefaultAssessmentResponse(call)
+  if (assessmentBuild) return assessmentBuild
+  const assessmentMark = buildDefaultMarkAssessmentResponse(call)
+  if (assessmentMark) return assessmentMark
+  return buildDefaultBatchResponse(call)
+}
+
 export class FakeModel {
   readonly calls: FakeModelCall[] = []
   private readonly handler: FakeModelHandler
@@ -141,7 +287,7 @@ export class FakeModel {
       const queue = [...options.responses]
       this.handler = (call) => {
         if (this.responseCursor >= queue.length) {
-          return buildDefaultBatchResponse(call)
+          return buildDefaultFakeResponse(call)
         }
         const next = queue[this.responseCursor]
         this.responseCursor += 1
@@ -149,7 +295,7 @@ export class FakeModel {
         return next
       }
     } else {
-      this.handler = (call) => buildDefaultBatchResponse(call)
+      this.handler = (call) => buildDefaultFakeResponse(call)
     }
   }
 

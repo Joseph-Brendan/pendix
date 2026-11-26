@@ -38,11 +38,36 @@ export {
 
 export {
   FakeModel,
+  buildDefaultAssessmentResponse,
   buildDefaultBatchResponse,
+  buildDefaultMarkAssessmentResponse,
   type FakeModelCall,
   type FakeModelHandler,
   type FakeModelOptions,
 } from "./fake-model.js"
+
+export {
+  ASSESSMENT_QUESTION_COUNT,
+  AssessmentQuestionKindSchema,
+  AssessmentQuestionMarkSchema,
+  AssessmentQuestionSchema,
+  BuildAssessmentOutputSchema,
+  MarkAssessmentOutputSchema,
+  buildAssessment,
+  loadAssessmentBuildInstructions,
+  loadAssessmentMarkInstructions,
+  markAssessment,
+  type AssessmentAnswerInput,
+  type AssessmentModelOptions,
+  type AssessmentQuestion,
+  type AssessmentQuestionKind,
+  type AssessmentQuestionMark,
+  type BuildAssessmentOutput,
+  type BuiltAssessmentResult,
+  type MarkAssessmentOutput,
+  type MarkedAssessmentResult,
+  type WeekSessionInput,
+} from "./assessment.js"
 
 export {
   evaluateGoldenAgreement,
