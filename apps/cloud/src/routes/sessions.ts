@@ -1,6 +1,6 @@
 import { MAX_RECORD_BYTES, redactSession, redactText, type RecorderRecord } from "@pendix/recorder"
 import { CREDIT_COSTS } from "@pendix/shared/plans"
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm"
+import { and, asc, desc, eq, inArray, isNull, sql } from "drizzle-orm"
 import { Hono } from "hono"
 import { z } from "zod"
 import type { CloudAuth } from "../auth.js"
@@ -315,6 +315,157 @@ export function createSessionsRoutes(deps: SessionsRoutesDeps) {
         report_emailed: row.report_emailed_at !== null,
       })),
     })
+  })
+
+  router.get("/sessions/:id", authMiddleware, activeMiddleware, async (c) => {
+    const user = c.get("user")!
+    const parsedId = z.string().uuid().safeParse(c.req.param("id"))
+    if (!parsedId.success) {
+      throw new AppError(404, "SESSION_NOT_FOUND", "Session not found.")
+    }
+
+    const [sessionRow] = await deps.db
+      .select()
+      .from(schema.sessions)
+      .where(and(eq(schema.sessions.id, parsedId.data), eq(schema.sessions.user_id, user.id)))
+
+    if (!sessionRow) {
+      throw new AppError(404, "SESSION_NOT_FOUND", "Session not found.")
+    }
+
+    const [[recordRow], gradeRows, [understandingRow], [notesRow]] = await Promise.all([
+      deps.db.select().from(schema.sessionRecords).where(eq(schema.sessionRecords.session_id, sessionRow.id)),
+      deps.db
+        .select()
+        .from(schema.grades)
+        .where(eq(schema.grades.session_id, sessionRow.id))
+        .orderBy(asc(schema.grades.prompt_index)),
+      deps.db
+        .select()
+        .from(schema.understandingScores)
+        .where(eq(schema.understandingScores.session_id, sessionRow.id)),
+      deps.db.select().from(schema.sessionNotes).where(eq(schema.sessionNotes.session_id, sessionRow.id)),
+    ])
+
+    const gradeIds = gradeRows.map((g) => g.id)
+    const disputedSet = new Set<string>()
+    if (gradeIds.length > 0) {
+      const disputeRows = await deps.db
+        .select({ target_id: schema.auditLog.target_id })
+        .from(schema.auditLog)
+        .where(
+          and(
+            eq(schema.auditLog.action, "grade.disputed"),
+            eq(schema.auditLog.target_type, "grade"),
+            inArray(schema.auditLog.target_id, gradeIds),
+          ),
+        )
+      for (const row of disputeRows) disputedSet.add(row.target_id)
+    }
+
+    const rawJson = recordRow?.redacted_json
+    const records: readonly RecorderRecord[] = Array.isArray(rawJson)
+      ? (rawJson as readonly RecorderRecord[])
+      : rawJson && typeof rawJson === "object" && "records" in rawJson && Array.isArray((rawJson as { records?: unknown }).records)
+        ? ((rawJson as { records: readonly RecorderRecord[] }).records)
+        : []
+    const promptTexts = records.filter((r) => r.type === "prompt").map((r) => r.text)
+
+    const avgScore =
+      gradeRows.length > 0
+        ? Math.round((gradeRows.reduce((sum, g) => sum + g.total, 0) / gradeRows.length) * 10) / 10
+        : null
+
+    return c.json({
+      session: {
+        ...sessionRow,
+        score: avgScore,
+        understanding_score: understandingRow?.score ?? null,
+        report_emailed: sessionRow.report_emailed_at !== null,
+      },
+      prompts: gradeRows.map((g) => ({
+        id: g.id,
+        prompt_index: g.prompt_index,
+        text: promptTexts[g.prompt_index] ?? `Prompt ${g.prompt_index + 1}`,
+        scores: g.scores,
+        reasons: g.reasons,
+        total: g.total,
+        improved_prompt: g.improved_prompt,
+        confidence: g.confidence,
+        model_used: g.model_used,
+        disputed: disputedSet.has(g.id),
+      })),
+      understanding: understandingRow
+        ? {
+            score: understandingRow.score,
+            reason: understandingRow.reason,
+            model_used: understandingRow.model_used,
+          }
+        : null,
+      notes: notesRow
+        ? {
+            what_was_built: notesRow.what_was_built,
+            learned: notesRow.learned,
+            to_work_on: notesRow.to_work_on,
+            summary: notesRow.summary,
+            model_used: notesRow.model_used,
+          }
+        : null,
+      model_used: notesRow?.model_used ?? understandingRow?.model_used ?? gradeRows[0]?.model_used ?? null,
+    })
+  })
+
+  router.post("/sessions/:id/grades/:gradeId/dispute", authMiddleware, activeMiddleware, async (c) => {
+    const user = c.get("user")!
+    const sessionId = z.string().uuid().safeParse(c.req.param("id"))
+    const gradeId = z.string().uuid().safeParse(c.req.param("gradeId"))
+    if (!sessionId.success || !gradeId.success) {
+      throw new AppError(404, "GRADE_NOT_FOUND", "Grade not found.")
+    }
+
+    const [sessionRow] = await deps.db
+      .select({ id: schema.sessions.id })
+      .from(schema.sessions)
+      .where(and(eq(schema.sessions.id, sessionId.data), eq(schema.sessions.user_id, user.id)))
+    if (!sessionRow) {
+      throw new AppError(404, "SESSION_NOT_FOUND", "Session not found.")
+    }
+
+    const [gradeRow] = await deps.db
+      .select({ id: schema.grades.id })
+      .from(schema.grades)
+      .where(and(eq(schema.grades.id, gradeId.data), eq(schema.grades.session_id, sessionId.data)))
+    if (!gradeRow) {
+      throw new AppError(404, "GRADE_NOT_FOUND", "Grade not found.")
+    }
+
+    const body = (await c.req.json().catch(() => ({}))) as { reason?: string }
+    const [existing] = await deps.db
+      .select({ id: schema.auditLog.id })
+      .from(schema.auditLog)
+      .where(
+        and(
+          eq(schema.auditLog.action, "grade.disputed"),
+          eq(schema.auditLog.target_type, "grade"),
+          eq(schema.auditLog.target_id, gradeRow.id),
+        ),
+      )
+
+    if (!existing) {
+      await deps.db.insert(schema.auditLog).values({
+        actor_user_id: user.id,
+        action: "grade.disputed",
+        target_type: "grade",
+        target_id: gradeRow.id,
+        after: {
+          session_id: sessionRow.id,
+          reason: typeof body.reason === "string" ? body.reason.slice(0, 300) : "Learner flagged grade",
+        },
+        created_at: new Date(deps.now()),
+      })
+    }
+
+    return c.json({ ok: true, disputed: true, grade_id: gradeRow.id })
   })
 
   return router

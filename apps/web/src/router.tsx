@@ -1,10 +1,15 @@
 import { createRootRoute, createRoute, createRouter, Outlet } from "@tanstack/react-router"
+import { AssessmentDetailPage } from "./pages/AssessmentDetailPage.js"
+import { AssessmentsPage } from "./pages/AssessmentsPage.js"
+import { BillingPage } from "./pages/BillingPage.js"
 import { DesignPage } from "./pages/DesignPage.js"
 import { DeviceVerifyPage } from "./pages/DeviceVerifyPage.js"
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.js"
 import { GuardianApprovalPage } from "./pages/GuardianApprovalPage.js"
 import { HomePage } from "./pages/HomePage.js"
-import { SectionPlaceholderPage } from "./pages/SectionPlaceholderPage.js"
+import { SessionDetailPage } from "./pages/SessionDetailPage.js"
+import { SessionsPage } from "./pages/SessionsPage.js"
+import { SettingsPage } from "./pages/SettingsPage.js"
 import { SignInPage } from "./pages/SignInPage.js"
 import { SignUpPage } from "./pages/SignUpPage.js"
 import { VerifyEmailPage } from "./pages/VerifyEmailPage.js"
@@ -78,45 +83,41 @@ const deviceVerifyRoute = createRoute({
 const sessionsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/sessions",
-  component: () => (
-    <SectionPlaceholderPage
-      title="Sessions"
-      description="Your graded coding sessions and prompt breakdowns will appear here."
-    />
-  ),
+  component: SessionsPage,
+})
+
+const sessionDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/sessions/$sessionId",
+  component: SessionDetailPage,
 })
 
 const assessmentsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/assessments",
-  component: () => (
-    <SectionPlaceholderPage
-      title="Assessments"
-      description="Your weekly five-question checks appear here every Saturday morning."
-    />
-  ),
+  component: AssessmentsPage,
+})
+
+const assessmentDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/assessments/$assessmentId",
+  component: AssessmentDetailPage,
 })
 
 const billingRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/billing",
-  component: () => (
-    <SectionPlaceholderPage
-      title="Billing"
-      description="Manage your plan, credit packs, and payment history here."
-    />
-  ),
+  validateSearch: (search: Record<string, unknown>) => ({
+    status: typeof search.status === "string" ? search.status : undefined,
+    tx_ref: typeof search.tx_ref === "string" ? search.tx_ref : undefined,
+  }),
+  component: BillingPage,
 })
 
 const settingsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/settings",
-  component: () => (
-    <SectionPlaceholderPage
-      title="Settings"
-      description="Manage your connected devices, email preferences, and teach mode lock."
-    />
-  ),
+  component: SettingsPage,
 })
 
 const designRoute = createRoute({
@@ -134,7 +135,9 @@ const childRoutes = [
   guardianApprovalRoute,
   deviceVerifyRoute,
   sessionsRoute,
+  sessionDetailRoute,
   assessmentsRoute,
+  assessmentDetailRoute,
   billingRoute,
   settingsRoute,
   ...(import.meta.env.DEV ? [designRoute] : []),

@@ -1,3 +1,4 @@
+import { desc, eq } from "drizzle-orm"
 import { Hono } from "hono"
 import { z } from "zod"
 import type { CloudAuth } from "../auth.js"
@@ -17,6 +18,7 @@ import {
   removeGroupSeat,
 } from "../billing/subscriptions.js"
 import type { CloudDatabase } from "../db/index.js"
+import { schema } from "../db/schema.js"
 import { AppError } from "../errors.js"
 import type { Mailer } from "../mailer.js"
 import { requireActiveAccount, requireAuth, type AuthVariables } from "../middleware/auth.js"
@@ -91,6 +93,58 @@ export function createBillingRoutes(deps: BillingRoutesDeps) {
   const router = new Hono<{ Variables: AuthVariables }>()
   const authMiddleware = requireAuth(deps)
   const activeMiddleware = requireActiveAccount()
+
+  router.get("/billing/summary", authMiddleware, async (c) => {
+    const user = c.get("user")!
+    const [subRows, paymentRows] = await Promise.all([
+      deps.db
+        .select()
+        .from(schema.subscriptions)
+        .where(eq(schema.subscriptions.user_id, user.id))
+        .orderBy(desc(schema.subscriptions.created_at))
+        .limit(1),
+      deps.db
+        .select({
+          id: schema.payments.id,
+          kind: schema.payments.kind,
+          tx_ref: schema.payments.tx_ref,
+          amount_cents: schema.payments.amount_cents,
+          currency: schema.payments.currency,
+          status: schema.payments.status,
+          paid_at: schema.payments.paid_at,
+          created_at: schema.payments.created_at,
+        })
+        .from(schema.payments)
+        .where(eq(schema.payments.user_id, user.id))
+        .orderBy(desc(schema.payments.created_at))
+        .limit(50),
+    ])
+
+    const sub = subRows[0] ?? null
+    return c.json({
+      subscription: sub
+        ? {
+            id: sub.id,
+            plan: sub.plan,
+            period: sub.period,
+            status: sub.status,
+            currency: sub.currency,
+            current_period_end: sub.current_period_end.toISOString(),
+            cancel_at_period_end: sub.cancel_at_period_end,
+          }
+        : null,
+      receipts: paymentRows.map((p) => ({
+        id: p.id,
+        kind: p.kind,
+        tx_ref: p.tx_ref,
+        amount_cents: p.amount_cents,
+        currency: p.currency,
+        status: p.status,
+        paid_at: p.paid_at ? p.paid_at.toISOString() : null,
+        created_at: p.created_at.toISOString(),
+      })),
+    })
+  })
 
   router.post("/billing/credits/checkout", authMiddleware, activeMiddleware, async (c) => {
     const user = c.get("user")!
