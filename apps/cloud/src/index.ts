@@ -25,6 +25,9 @@ const app = createApp({
   webUrl: env.WEB_URL,
   googleClientId: env.GOOGLE_CLIENT_ID || undefined,
   googleClientSecret: env.GOOGLE_CLIENT_SECRET || undefined,
+  flwSecretKey: env.FLW_SECRET_KEY,
+  flwWebhookHash: env.FLW_WEBHOOK_HASH,
+  ngnPricesJson: env.NGN_PRICES_JSON,
   rateLimit: {
     ipMax: env.RATE_LIMIT_IP_MAX,
     ipWindowMs: env.RATE_LIMIT_IP_WINDOW_MS,

@@ -245,13 +245,19 @@ export const payments = pgTable("payments", {
   user_id: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  payer_user_id: uuid("payer_user_id").references(() => users.id, { onDelete: "set null" }),
+  kind: text("kind").notNull().default("credits"),
   tx_ref: text("tx_ref").notNull().unique(),
   flutterwave_tx_id: text("flutterwave_tx_id"),
   flutterwave_flw_ref: text("flutterwave_flw_ref"),
   amount_cents: integer("amount_cents").notNull(),
   currency: text("currency").notNull().default("USD"),
   status: text("status").notNull().default("pending"),
+  flag_reason: text("flag_reason"),
+  metadata: jsonb("metadata").notNull().default({}),
+  paid_at: timestamp("paid_at", { withTimezone: true }),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
 export const billingPlans = pgTable("billing_plans", {
