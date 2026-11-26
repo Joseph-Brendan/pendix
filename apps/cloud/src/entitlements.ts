@@ -77,6 +77,7 @@ export async function getEntitlements(
       .select({
         group_id: schema.groupMembers.group_id,
         seat_plan: schema.groupMembers.seat_plan,
+        ends_at: schema.groupMembers.ends_at,
         teach_lock: schema.groups.teach_lock,
       })
       .from(schema.groupMembers)
@@ -111,7 +112,9 @@ export async function getEntitlements(
     }
   }
 
-  const paidGroupSeats = groupRows.filter((row) => normalizePlan(row.seat_plan) !== "free")
+  const paidGroupSeats = groupRows.filter(
+    (row) => normalizePlan(row.seat_plan) !== "free" && (row.ends_at === null || row.ends_at.getTime() > now.getTime()),
+  )
   if (paidGroupSeats.length > 0) {
     const groupIds = paidGroupSeats.map((row) => row.group_id)
     const groupSubs = await db
@@ -125,8 +128,11 @@ export async function getEntitlements(
       .where(inArray(schema.subscriptions.group_id, groupIds))
 
     const periodByGroup = new Map<string, Date>()
+    const groupsWithAnySub = new Set<string>()
     for (const sub of groupSubs) {
-      if (!sub.group_id || !isSubscriptionEffective(sub, now)) continue
+      if (!sub.group_id) continue
+      groupsWithAnySub.add(sub.group_id)
+      if (!isSubscriptionEffective(sub, now)) continue
       const existing = periodByGroup.get(sub.group_id)
       if (!existing || sub.current_period_end.getTime() > existing.getTime()) {
         periodByGroup.set(sub.group_id, sub.current_period_end)
@@ -134,11 +140,12 @@ export async function getEntitlements(
     }
 
     for (const seat of paidGroupSeats) {
+      if (groupsWithAnySub.has(seat.group_id) && !periodByGroup.has(seat.group_id)) continue
       const candidatePlan = normalizePlan(seat.seat_plan)
       if (PLAN_RANK[candidatePlan] > PLAN_RANK[bestPlan]) {
         bestPlan = candidatePlan
         bestSource = seat.group_id
-        bestPeriodEnd = periodByGroup.get(seat.group_id) ?? null
+        bestPeriodEnd = periodByGroup.get(seat.group_id) ?? seat.ends_at ?? null
       }
     }
   }

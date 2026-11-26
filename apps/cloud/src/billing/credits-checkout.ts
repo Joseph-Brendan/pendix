@@ -1,12 +1,19 @@
 import crypto from "node:crypto"
-import { CREDIT_PACKS, type CreditPackId } from "@pendix/shared/plans"
+import { CREDIT_PACKS, type BillingPeriod, type CreditPackId, type PaidPlanId } from "@pendix/shared/plans"
 import { and, eq, isNotNull, or } from "drizzle-orm"
 import { insertCreditEntry } from "../credits.js"
 import type { CloudDatabase } from "../db/index.js"
 import { schema } from "../db/schema.js"
 import { AppError } from "../errors.js"
+import type { Mailer } from "../mailer.js"
 import type { AuthenticatedUser } from "../middleware/auth.js"
 import type { FlutterwaveClient } from "./flutterwave.js"
+import {
+  DAY_MS,
+  handleSubscriptionRenewalEvent,
+  periodDurationDays,
+  scheduleTwoMonthReminder,
+} from "./subscriptions.js"
 
 export type CreditPackChoice = "3" | "10"
 
@@ -206,8 +213,11 @@ function extractCreditsFromMetadata(metadata: unknown): number {
 export async function verifyAndSettlePayment(deps: {
   readonly db: CloudDatabase
   readonly flutterwave: FlutterwaveClient
+  readonly mailer?: Mailer
   readonly transactionId: string
   readonly expectedTxRef?: string
+  readonly fallbackCustomerEmail?: string
+  readonly fallbackPaymentPlan?: string
   readonly now: () => number
 }): Promise<PaymentSettlementResult> {
   const verified = await deps.flutterwave.verifyTransaction(deps.transactionId)
@@ -217,6 +227,54 @@ export async function verifyAndSettlePayment(deps: {
   }
 
   const nowDate = new Date(deps.now())
+
+  const [existingPayment] = await deps.db
+    .select({ id: schema.payments.id })
+    .from(schema.payments)
+    .where(eq(schema.payments.tx_ref, lookupTxRef))
+
+  if (!existingPayment) {
+    const renewal = await handleSubscriptionRenewalEvent({
+      db: deps.db,
+      mailer: deps.mailer,
+      verified,
+      fallbackEmail: deps.fallbackCustomerEmail,
+      fallbackPlan: deps.fallbackPaymentPlan,
+      nowDate,
+    })
+    if (renewal.status === "renewed") {
+      return { status: "paid", paymentId: verified.id, creditsAdded: 0, txRef: lookupTxRef }
+    }
+    if (renewal.status === "already_processed") {
+      return { status: "already_paid", paymentId: verified.id, creditsAdded: 0, txRef: lookupTxRef }
+    }
+    if (renewal.status === "grace_started") {
+      return { status: "failed", paymentId: verified.id, creditsAdded: 0, txRef: lookupTxRef }
+    }
+    return { status: "ignored", reason: "unknown_tx_ref" }
+  }
+
+  // If this is a recurring subscription checkout, look up the Flutterwave subscription id before opening the DB lock.
+  let flwSubscriptionId: string | undefined
+  if (verified.status === "successful") {
+    const [peek] = await deps.db
+      .select({ kind: schema.payments.kind, metadata: schema.payments.metadata, payer_user_id: schema.payments.payer_user_id, user_id: schema.payments.user_id })
+      .from(schema.payments)
+      .where(eq(schema.payments.tx_ref, lookupTxRef))
+    const meta = (peek?.metadata ?? {}) as { payment_plan?: string }
+    if (peek?.kind === "subscription" && meta.payment_plan) {
+      const [payer] = await deps.db
+        .select({ email: schema.users.email })
+        .from(schema.users)
+        .where(eq(schema.users.id, peek.payer_user_id ?? peek.user_id))
+      if (payer?.email) {
+        const subs = await deps.flutterwave
+          .listSubscriptions({ email: payer.email, plan: meta.payment_plan })
+          .catch(() => [])
+        flwSubscriptionId = subs.find((s) => s.status === "active")?.id ?? subs[0]?.id
+      }
+    }
+  }
 
   return deps.db.transaction(async (tx) => {
     const [payment] = await tx
@@ -288,27 +346,125 @@ export async function verifyAndSettlePayment(deps: {
       }
     }
 
-    const creditsToAdd = extractCreditsFromMetadata(payment.metadata)
-    if (creditsToAdd > 0) {
-      const [existingLedger] = await tx
-        .select({ id: schema.creditLedger.id })
-        .from(schema.creditLedger)
-        .where(
-          and(
-            eq(schema.creditLedger.user_id, payment.user_id),
-            eq(schema.creditLedger.reason, "purchase"),
-            eq(schema.creditLedger.reference_id, payment.id),
-          ),
-        )
+    let creditsAdded = 0
+    const meta = (payment.metadata ?? {}) as Record<string, unknown>
 
-      if (!existingLedger) {
-        await insertCreditEntry(tx, {
-          userId: payment.user_id,
-          amount: creditsToAdd,
-          reason: "purchase",
-          referenceId: payment.id,
-          createdAt: nowDate,
+    if (payment.kind === "credits") {
+      const creditsToAdd = extractCreditsFromMetadata(payment.metadata)
+      if (creditsToAdd > 0) {
+        const [existingLedger] = await tx
+          .select({ id: schema.creditLedger.id })
+          .from(schema.creditLedger)
+          .where(
+            and(
+              eq(schema.creditLedger.user_id, payment.user_id),
+              eq(schema.creditLedger.reason, "purchase"),
+              eq(schema.creditLedger.reference_id, payment.id),
+            ),
+          )
+
+        if (!existingLedger) {
+          await insertCreditEntry(tx, {
+            userId: payment.user_id,
+            amount: creditsToAdd,
+            reason: "purchase",
+            referenceId: payment.id,
+            createdAt: nowDate,
+          })
+          creditsAdded = creditsToAdd
+        }
+      }
+    } else if (payment.kind === "subscription") {
+      const plan = (meta.plan === "mentored" ? "mentored" : "solo") as PaidPlanId
+      const period = (
+        meta.period === "two_month" || meta.period === "yearly" ? meta.period : "monthly"
+      ) as BillingPeriod
+      const periodEnd = new Date(nowDate.getTime() + periodDurationDays(period) * DAY_MS)
+      const [sub] = await tx
+        .insert(schema.subscriptions)
+        .values({
+          user_id: payment.user_id,
+          plan,
+          period,
+          currency: payment.currency,
+          status: "active",
+          flutterwave_subscription_id: flwSubscriptionId ?? null,
+          flutterwave_plan_id: typeof meta.payment_plan === "string" ? meta.payment_plan : null,
+          current_period_start: nowDate,
+          current_period_end: periodEnd,
+          created_at: nowDate,
+          updated_at: nowDate,
         })
+        .returning()
+
+      if (period === "two_month" && sub) {
+        await scheduleTwoMonthReminder(tx, {
+          subscriptionId: sub.id,
+          userId: payment.user_id,
+          plan,
+          periodEnd,
+          nowDate,
+        })
+      }
+    } else if (payment.kind === "upgrade") {
+      const subscriptionId = typeof meta.subscription_id === "string" ? meta.subscription_id : undefined
+      const toPlan = meta.to_plan === "mentored" ? "mentored" : "solo"
+      if (subscriptionId) {
+        await tx
+          .update(schema.subscriptions)
+          .set({ plan: toPlan, updated_at: nowDate })
+          .where(eq(schema.subscriptions.id, subscriptionId))
+      }
+    } else if (payment.kind === "group_checkout") {
+      const plan = (meta.plan === "mentored" ? "mentored" : "solo") as PaidPlanId
+      const period = (
+        meta.period === "two_month" || meta.period === "yearly" ? meta.period : "monthly"
+      ) as BillingPeriod
+      const seats = typeof meta.seats === "number" && Number.isInteger(meta.seats) ? meta.seats : 1
+      const groupName = typeof meta.group_name === "string" && meta.group_name.trim() ? meta.group_name.trim() : "My Group"
+      const periodEnd = new Date(nowDate.getTime() + periodDurationDays(period) * DAY_MS)
+
+      const [group] = await tx
+        .insert(schema.groups)
+        .values({
+          owner_user_id: payment.user_id,
+          name: groupName,
+          seat_count: seats,
+          created_at: nowDate,
+        })
+        .returning()
+
+      await tx.insert(schema.groupMembers).values({
+        group_id: group!.id,
+        user_id: payment.user_id,
+        role: "owner",
+        seat_plan: plan,
+        joined_at: nowDate,
+      })
+
+      await tx.insert(schema.subscriptions).values({
+        user_id: payment.user_id,
+        group_id: group!.id,
+        plan,
+        period,
+        currency: payment.currency,
+        status: "active",
+        current_period_start: nowDate,
+        current_period_end: periodEnd,
+        created_at: nowDate,
+        updated_at: nowDate,
+      })
+    } else if (payment.kind === "group_add_seats") {
+      const groupId = typeof meta.group_id === "string" ? meta.group_id : undefined
+      const addedSeats = typeof meta.added_seats === "number" && Number.isInteger(meta.added_seats) ? meta.added_seats : 0
+      if (groupId && addedSeats > 0) {
+        const [group] = await tx.select().from(schema.groups).where(eq(schema.groups.id, groupId))
+        if (group) {
+          await tx
+            .update(schema.groups)
+            .set({ seat_count: group.seat_count + addedSeats })
+            .where(eq(schema.groups.id, groupId))
+        }
       }
     }
 
@@ -326,7 +482,7 @@ export async function verifyAndSettlePayment(deps: {
     return {
       status: "paid",
       paymentId: payment.id,
-      creditsAdded: creditsToAdd,
+      creditsAdded,
       txRef: payment.tx_ref,
     }
   })

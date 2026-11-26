@@ -90,6 +90,7 @@ export function createApp(options: CreateAppOptions = {}) {
       createBillingRoutes({
         auth,
         db: options.db,
+        mailer,
         flutterwave,
         flwWebhookHash,
         apiUrl,

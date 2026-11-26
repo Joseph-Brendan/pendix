@@ -260,15 +260,19 @@ export const payments = pgTable("payments", {
   updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
-export const billingPlans = pgTable("billing_plans", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  plan: text("plan").notNull(),
-  period: text("period").notNull(),
-  currency: text("currency").notNull().default("USD"),
-  amount_cents: integer("amount_cents").notNull(),
-  flutterwave_plan_id: text("flutterwave_plan_id"),
-  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-})
+export const billingPlans = pgTable(
+  "billing_plans",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    plan: text("plan").notNull(),
+    period: text("period").notNull(),
+    currency: text("currency").notNull().default("USD"),
+    amount_cents: integer("amount_cents").notNull(),
+    flutterwave_plan_id: text("flutterwave_plan_id"),
+    created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [uniqueIndex("billing_plans_plan_period_currency_idx").on(table.plan, table.period, table.currency)],
+)
 
 export const groups = pgTable("groups", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -278,6 +282,8 @@ export const groups = pgTable("groups", {
   name: text("name").notNull(),
   grade_visibility: text("grade_visibility").notNull().default("owner_and_member"),
   teach_lock: text("teach_lock").notNull().default("none"),
+  seat_count: integer("seat_count").notNull().default(0),
+  pending_seat_removals: integer("pending_seat_removals").notNull().default(0),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
@@ -289,11 +295,16 @@ export const subscriptions = pgTable("subscriptions", {
   group_id: uuid("group_id").references(() => groups.id, { onDelete: "set null" }),
   plan: text("plan").notNull(),
   period: text("period").notNull(),
+  currency: text("currency").notNull().default("USD"),
   status: text("status").notNull().default("active"),
+  flutterwave_subscription_id: text("flutterwave_subscription_id"),
+  flutterwave_plan_id: text("flutterwave_plan_id"),
+  current_period_start: timestamp("current_period_start", { withTimezone: true }).defaultNow().notNull(),
   current_period_end: timestamp("current_period_end", { withTimezone: true }).notNull(),
   grace_until: timestamp("grace_until", { withTimezone: true }),
   cancel_at_period_end: boolean("cancel_at_period_end").notNull().default(false),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 })
 
 export const groupMembers = pgTable(
@@ -308,6 +319,7 @@ export const groupMembers = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     role: text("role").notNull().default("member"),
     seat_plan: text("seat_plan"),
+    ends_at: timestamp("ends_at", { withTimezone: true }),
     joined_at: timestamp("joined_at", { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [uniqueIndex("group_members_group_user_idx").on(table.group_id, table.user_id)],
@@ -375,6 +387,7 @@ export const matches = pgTable("matches", {
   status: text("status").notNull().default("active"),
   matched_at: timestamp("matched_at", { withTimezone: true }).defaultNow().notNull(),
   ended_at: timestamp("ended_at", { withTimezone: true }),
+  refund_flagged_at: timestamp("refund_flagged_at", { withTimezone: true }),
 })
 
 export const reviews = pgTable("reviews", {
